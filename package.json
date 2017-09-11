@@ -30,6 +30,7 @@
   "devDependencies": {
     "@angular/core": "^4.4.0-RC.0",
     "@angular/http": "^4.4.0-RC.0",
+    "@angular/router": "^4.4.0-RC.0",
     "@types/keycloak-js": "^2.5.2",
     "ts-lint": "^4.5.1"
   }
