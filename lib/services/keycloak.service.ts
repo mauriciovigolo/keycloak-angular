@@ -17,9 +17,7 @@ export class KeycloakAngular {
   private userProfile: Keycloak.KeycloakProfile;
   private keycloak: Keycloak.KeycloakInstance;
 
-  constructor(options: KeycloakOptions) {
-    this.init(options);
-  }
+  constructor() {}
 
   /**
    * @description Keycloak initialization. It should be called to initialize the adapter.
@@ -128,7 +126,7 @@ export class KeycloakAngular {
       } catch (error) {
         reject('An error happened during the register execution. Details' + error);
       }
-    });    
+    });
   }
 
   /**
