@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "Easy Keycloak setup for Angular applications (v>4)",
   "main": "index.ts",
-  "scripts": {},
+  "scripts": {
+    "lint": "./node_modules/.bin/tslint --force --format verbose \"lib/**/*.ts\""
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/mauriciovigolo/keycloak-angular.git"
@@ -32,6 +34,8 @@
     "@angular/http": "^4.4.0-RC.0",
     "@angular/router": "^4.4.0-RC.0",
     "@types/keycloak-js": "^2.5.2",
-    "ts-lint": "^4.5.1"
+    "tslint": "^5.7.0",
+    "tslint-config-airbnb": "^5.2.1",
+    "typescript": "^2.5.2"
   }
 }
