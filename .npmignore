@@ -1,0 +1,13 @@
+.DS_Store
+.github
+.gitmodules
+.project
+.settings
+.tslintrc
+.vscode
+tslint.json
+yarn.lock
+package-lock.json
+/docs/
+/scripts/
+/test/
