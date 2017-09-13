@@ -1,5 +1,5 @@
 export interface KeycloakConfig {
   url: string;
-  realm?: string;
-  clientId?: string;
+  realm: string;
+  clientId: string;
 }
