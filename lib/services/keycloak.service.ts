@@ -28,7 +28,7 @@ export class KeycloakAngular {
    * @param {KeycloakOptions} options 
    * config: may be a string representing the keycloak URI or an object with the 
    * following content:
-   * - url (meaning the Keycloak URL);
+   * - url (meaning the Keycloak json URL);
    * - realm: ();
    * - clientId?: string;
    * 
@@ -48,34 +48,20 @@ export class KeycloakAngular {
    * with OpenID Connect parameters added in URL fragment. This is generally safer and 
    * recommended over query.
    * - flow - Set the OpenID Connect flow. Valid values are standard, implicit or hybrid.
-   * @return {Promise<void>}
+   * @return {Promise<boolean>}
    */
-  init(options: KeycloakOptions): Promise<void> {
+  init(options: KeycloakOptions): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
-      let url: string;
-      let realm: string | undefined = undefined;
-      let clientId: string | undefined = undefined;
+      this.keycloak = Keycloak(options.config);
 
-      if (typeof options.config === 'string') {
-        url = options.config;
-      } else {
-        url = options.config.url;
-        realm = options.config.realm;
-        clientId = options.config.clientId;
-      }
-
-      const config: KeycloakConfig = {
-        url,
-        realm,
-        clientId
-      };
-
-      this.keycloak = Keycloak(config);
-
-      const initParams: Keycloak.KeycloakInitOptions = options.initOptions || {};
       try {
-        await this.keycloak.init(initParams);
-        resolve();
+        const initOptions = options.initOptions || {};
+        const initResult = await this.keycloak.init(initOptions);
+        if (typeof initResult === 'boolean') {
+          resolve(initResult);
+        } else {
+          throw initResult;
+        }
       } catch (e) {
         reject('An error happened during Keycloak initialization. Details: ' + e);
       }
@@ -96,7 +82,8 @@ export class KeycloakAngular {
    * authentication of user happened. If user is already authenticated for longer time than 
    * maxAge, the SSO is ignored and he will need to re-authenticate again.
    *  - loginHint: Used to pre-fill the username/email field on the login form.
-   *  - action: If value is 'register' then user is redirected to registration page, otherwise to login page.
+   *  - action: If value is 'register' then user is redirected to registration page, otherwise to 
+   * login page.
    *  - locale: Specifies the desired locale for the UI.
    */
   login(options: Keycloak.KeycloakLoginOptions = {}) {
@@ -118,7 +105,7 @@ export class KeycloakAngular {
   logout(redirectUri?: string) {
     return new Promise(async (resolve, reject) => {
       const options: any = {
-        redirectUri: redirectUri
+        redirectUri
       };
       try {
         await this.keycloak.logout(options);
@@ -169,17 +156,25 @@ export class KeycloakAngular {
    * (default value) will return only the user roles associated with the clientId. If allRoles is 
    * true it will return the clientId and realm roles associated with the logged user.
    * 
-   * @param {boolean} allRoles - flag to set if all roles should be returned.(Optional: default value 
-   * is false)
+   * @param {boolean} allRoles - flag to set if all roles should be returned.(Optional: default 
+   * value is false)
    * @return {string[]} - roles list associated with the logged user.
    */
-  getUserRoles(allRoles: boolean = false): string[] {
-    let roles: string[];
-    roles = this.keycloak.resourceAccess || [];
-    if (allRoles) {
-      roles = roles.concat(this.keycloak.realmAccess ? this.keycloak.realmAccess.roles : []);
-    }
-    return roles;
+  getUserRoles(allRoles: boolean = false): Promise<string[]> {
+    return new Promise(async (resolve, reject) => {
+      const loggedIn = await this.updateToken(20);
+      if (!loggedIn) {
+        reject('User not logged in');
+        return;
+      }
+
+      let roles: string[];
+      roles = this.keycloak.resourceAccess || [];
+      if (allRoles) {
+        roles = roles.concat(this.keycloak.realmAccess ? this.keycloak.realmAccess.roles : []);
+      }
+      return roles;
+    });
   }
 
   /**
@@ -189,7 +184,7 @@ export class KeycloakAngular {
    */
   isLoggedIn(): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
-      let loggedIn = await this.updateToken(20);
+      const loggedIn = await this.updateToken(20);
       resolve(loggedIn);
     });
   }
@@ -211,7 +206,8 @@ export class KeycloakAngular {
    * Returns promise to set functions that can be invoked if the token is still valid, or if the
    * token is no longer valid.
    * 
-   * @param {number} minValidity - seconds left. (minValidity is optional, if not specified 5 is used)
+   * @param {number} minValidity - seconds left. (minValidity is optional, if not specified 5 
+   * is used)
    * @return {Promise<boolean>}
    */
   updateToken(minValidity: number = 5): Promise<boolean> {
@@ -237,15 +233,15 @@ export class KeycloakAngular {
     return new Promise(async (resolve, reject) => {
       let userProfile: Keycloak.KeycloakProfile;
       try {
-        let result: any = await this.keycloak.loadUserProfile();
+        const result: any = await this.keycloak.loadUserProfile();
         if (result) {
           userProfile = result as Keycloak.KeycloakProfile;
           resolve(userProfile);
         } else {
-          reject("Can't get the user profile.");
+          reject('Can\'t get the user profile.');
         }
       } catch (error) {
-        reject("Can't get the user profile. Details: " + error);
+        reject('Can\'t get the user profile. Details: ' + error);
       }
     });
   }
@@ -260,7 +256,7 @@ export class KeycloakAngular {
     return new Promise(async (resolve, reject) => {
       let tokenUpdated: boolean;
       try {
-        tokenUpdated = !!await this.updateToken(10);
+        tokenUpdated = await this.updateToken(10);
       } catch (error) {
         tokenUpdated = false;
       }
@@ -268,6 +264,23 @@ export class KeycloakAngular {
         this.login();
       }
       resolve(this.keycloak.token);
+    });
+  }
+
+  /**
+   * Returns the logged username.
+   * 
+   * @return {string}
+   */
+  getUsername(): Promise<string> {
+    return new Promise(async (resolve, reject) => {
+      const loggedIn = await this.updateToken(20);
+      if (!loggedIn) {
+        reject('User not logged in');
+        return;
+      }
+
+      resolve(this.keycloak.subject as string);
     });
   }
 
@@ -287,8 +300,9 @@ export class KeycloakAngular {
    * 
    * @param {Promise<Headers>} headers updated header with Authorization and Keycloak token.
    */
-  addTokenToHeader(headers?: Headers): Promise<Headers> {
+  addTokenToHeader(headersArg?: Headers): Promise<Headers> {
     return new Promise(async (resolve, reject) => {
+      let headers = headersArg;
       if (!headers) {
         headers = new Headers();
       }
