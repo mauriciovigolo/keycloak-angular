@@ -1,19 +1,25 @@
+/**
+ * @license
+ * Copyright Mauricio Gemelli Vigolo. All Rights Reserved.
+ *
+ * Use of this source code is governed by a MIT-style license that can be
+ * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
+ */
 import * as Keycloak from 'keycloak-js';
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
 import { KeycloakConfig, KeycloakOptions } from '../interfaces';
 
 /**
- * @description Service to expose existant methods from the Keycloak JS adapter, adding new 
- * functionalities to improve the use of keycloak in Angular 4 applications.
- * 
- * This class should be inject in the application bootstrap, so the same instance will be used
- * along the web application.
- * 
  * @class
+ * @description Service to expose existant methods from the Keycloak JS adapter, adding new 
+ * functionalities to improve the use of keycloak in Angular v > 2 applications.
+ * 
+ * This class should be injected in the application bootstrap, so the same instance will be used
+ * along the web application.
  */
 @Injectable()
-export class KeycloakAngular {
+export class KeycloakAngularService {
   private userProfile: Keycloak.KeycloakProfile;
   private keycloak: Keycloak.KeycloakInstance;
 
@@ -50,21 +56,17 @@ export class KeycloakAngular {
    * - flow - Set the OpenID Connect flow. Valid values are standard, implicit or hybrid.
    * @return {Promise<boolean>}
    */
-  init(options: KeycloakOptions): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
+  init(options: KeycloakOptions = {}): Promise<boolean> {
+    return new Promise((resolve, reject) => {
       this.keycloak = Keycloak(options.config);
-
-      try {
-        const initOptions = options.initOptions || {};
-        const initResult = await this.keycloak.init(initOptions);
-        if (typeof initResult === 'boolean') {
-          resolve(initResult);
-        } else {
-          throw initResult;
-        }
-      } catch (e) {
-        reject('An error happened during Keycloak initialization. Details: ' + e);
-      }
+      this.keycloak
+        .init(options.initOptions!)
+        .success(() => {
+          resolve();
+        })
+        .error(error => {
+          reject('An error happened during Keycloak initialization. Details: ' + error);
+        });
     });
   }
 
@@ -85,15 +87,18 @@ export class KeycloakAngular {
    *  - action: If value is 'register' then user is redirected to registration page, otherwise to 
    * login page.
    *  - locale: Specifies the desired locale for the UI.
+   * @returns Promise containing the 
    */
-  login(options: Keycloak.KeycloakLoginOptions = {}) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        await this.keycloak.login(options);
-        resolve();
-      } catch (error) {
-        reject('An error happened during the login execution. Details' + error);
-      }
+  login(options: Keycloak.KeycloakLoginOptions = {}): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.keycloak
+        .login(options)
+        .success(cb => {
+          resolve(cb);
+        })
+        .error(error => {
+          reject('An error happened during the login. Details' + error);
+        });
     });
   }
 
@@ -102,17 +107,20 @@ export class KeycloakAngular {
    *
    * @param {string} redirectUri Specifies the uri to redirect to after logout.
    */
-  logout(redirectUri?: string) {
-    return new Promise(async (resolve, reject) => {
+  logout(redirectUri?: string): Promise<any> {
+    return new Promise((resolve, reject) => {
       const options: any = {
         redirectUri
       };
-      try {
-        await this.keycloak.logout(options);
-        resolve();
-      } catch (error) {
-        reject('An error happened during the register execution. Details' + error);
-      }
+
+      this.keycloak
+        .logout(options)
+        .success(cb => {
+          resolve(cb);
+        })
+        .error(error => {
+          reject('An error happened during the register execution. Details' + error);
+        });
     });
   }
 
@@ -123,7 +131,7 @@ export class KeycloakAngular {
    * 
    * @param {Keycloak.KeycloakLoginOptions} options login options
    */
-  register(options: Keycloak.KeycloakLoginOptions = { action: 'register' }): Promise<void> {
+  register(options: Keycloak.KeycloakLoginOptions = { action: 'register' }): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
         await this.keycloak.register(options);
@@ -136,7 +144,7 @@ export class KeycloakAngular {
 
   /**
    * @description Check if the user has access to the specified role. It will look for roles in 
-   * realm and clientId.
+   * realm and clientId, but will not check if the user is logged in for better performance.
    * 
    * @param {string} role - role name
    * @return {boolean}
@@ -162,18 +170,17 @@ export class KeycloakAngular {
    */
   getUserRoles(allRoles: boolean = false): Promise<string[]> {
     return new Promise(async (resolve, reject) => {
-      const loggedIn = await this.updateToken(20);
-      if (!loggedIn) {
-        reject('User not logged in');
-        return;
+      try {
+        await this.updateToken(20);
+        let roles: string[];
+        roles = this.keycloak.resourceAccess || [];
+        if (allRoles) {
+          roles = roles.concat(this.keycloak.realmAccess ? this.keycloak.realmAccess.roles : []);
+        }
+        return roles;
+      } catch (error) {
+        reject('Failed to get the user roles. The session is probably expired');
       }
-
-      let roles: string[];
-      roles = this.keycloak.resourceAccess || [];
-      if (allRoles) {
-        roles = roles.concat(this.keycloak.realmAccess ? this.keycloak.realmAccess.roles : []);
-      }
-      return roles;
     });
   }
 
@@ -184,8 +191,12 @@ export class KeycloakAngular {
    */
   isLoggedIn(): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
-      const loggedIn = await this.updateToken(20);
-      resolve(loggedIn);
+      try {
+        await this.updateToken(20);
+        resolve(true);
+      } catch (error) {
+        resolve(false);
+      }
     });
   }
 
@@ -203,8 +214,8 @@ export class KeycloakAngular {
   /**
    * @description If the token expires within minValidity seconds the token is refreshed. If the 
    * session status iframe is enabled, the session status is also checked.
-   * Returns promise to set functions that can be invoked if the token is still valid, or if the
-   * token is no longer valid.
+   * Returns a promise telling if the token was refreshed or not. If the session is not active 
+   * anymore, the promise is rejected.
    * 
    * @param {number} minValidity - seconds left. (minValidity is optional, if not specified 5 
    * is used)
@@ -212,13 +223,19 @@ export class KeycloakAngular {
    */
   updateToken(minValidity: number = 5): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
-      let refreshed: boolean;
-      try {
-        refreshed = !!await this.keycloak.updateToken(minValidity);
-        resolve(refreshed);
-      } catch (error) {
+      if (!this.keycloak) {
         reject(false);
+        return;
       }
+
+      this.keycloak
+        .updateToken(minValidity)
+        .success(refreshed => {
+          resolve(refreshed);
+        })
+        .error(error => {
+          reject('Failed to refresh the token, or the session is expired');
+        });
     });
   }
 
@@ -231,18 +248,15 @@ export class KeycloakAngular {
    */
   loadUserProfile(): Promise<Keycloak.KeycloakProfile> {
     return new Promise(async (resolve, reject) => {
-      let userProfile: Keycloak.KeycloakProfile;
-      try {
-        const result: any = await this.keycloak.loadUserProfile();
-        if (result) {
-          userProfile = result as Keycloak.KeycloakProfile;
+      this.keycloak
+        .loadUserProfile()
+        .success(result => {
+          const userProfile = result as Keycloak.KeycloakProfile;
           resolve(userProfile);
-        } else {
-          reject('Can\'t get the user profile.');
-        }
-      } catch (error) {
-        reject('Can\'t get the user profile. Details: ' + error);
-      }
+        })
+        .error(err => {
+          reject('The user profile could not be loaded. Details: ' + err);
+        });
     });
   }
 
@@ -254,33 +268,27 @@ export class KeycloakAngular {
    */
   getToken(): Promise<string> {
     return new Promise(async (resolve, reject) => {
-      let tokenUpdated: boolean;
       try {
-        tokenUpdated = await this.updateToken(10);
+        await this.updateToken(10);
+        resolve(this.keycloak.token);
       } catch (error) {
-        tokenUpdated = false;
-      }
-      if (!tokenUpdated) {
         this.login();
       }
-      resolve(this.keycloak.token);
     });
   }
 
   /**
    * Returns the logged username.
-   * 
    * @return {string}
    */
   getUsername(): Promise<string> {
     return new Promise(async (resolve, reject) => {
-      const loggedIn = await this.updateToken(20);
-      if (!loggedIn) {
+      try {
+        await this.updateToken(20);
+        resolve(this.keycloak.subject as string);
+      } catch (error) {
         reject('User not logged in');
-        return;
       }
-
-      resolve(this.keycloak.subject as string);
     });
   }
 
@@ -309,5 +317,15 @@ export class KeycloakAngular {
       headers.append('Authorization', 'Bearer ' + (await this.getToken()));
       resolve(headers);
     });
+  }
+
+  /**
+   * @description Returns the original Keycloak instance, if you need any customization that 
+   * this Angular service does not support yet. Use with caution.
+   * 
+   * @returns {@link Keycloak.KeycloakInstance}
+   */
+  getKeycloakInstance(): Keycloak.KeycloakInstance {
+    return this.keycloak;
   }
 }
