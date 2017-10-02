@@ -1,7 +1,15 @@
+/**
+* @license
+* Copyright Mauricio Gemelli Vigolo. All Rights Reserved.
+*
+* Use of this source code is governed by a MIT-style license that can be
+* found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
+*/
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { KeycloakAngular } from './';
+import { KeycloakAngularService } from './';
 
 /**
+ * @class
  * @description A simple guard implementation out of the box. This class should be inherited and 
  * implemented by the application. The only method that should be implemented is #isAccessAllowed.
  * The reason for this is that the authorization flow is usually not unique, so in this way you will
@@ -9,14 +17,12 @@ import { KeycloakAngular } from './';
  * 
  * @property authenticated: boolean that indicates if the user is authenticated or not.
  * @property roles: roles of the logged user. It contains the clientId and realm user roles.
- * 
- * @class
  */
 export abstract class KeycloakAuthGuard implements CanActivate {
   protected authenticated: boolean;
   protected roles: string[];
 
-  constructor(protected router: Router, protected keycloakAngular: KeycloakAngular) {}
+  constructor(protected router: Router, protected keycloakAngular: KeycloakAngularService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
