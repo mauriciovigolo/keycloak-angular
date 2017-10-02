@@ -4,7 +4,9 @@
   "description": "Easy Keycloak setup for Angular applications (v>4)",
   "main": "index.ts",
   "scripts": {
-    "lint": "./node_modules/.bin/tslint --force --format verbose \"lib/**/*.ts\""
+    "clean": "rm -rf ./build",
+    "lint": "./node_modules/.bin/tslint --force --format verbose \"lib/**/*.ts\"",
+    "test": "./node_modules/.bin/mocha"
   },
   "repository": {
     "type": "git",
@@ -30,10 +32,19 @@
     "keycloak-js": "^3.3.0-cr.1"
   },
   "devDependencies": {
-    "@angular/core": "^4.4.0-RC.0",
-    "@angular/http": "^4.4.0-RC.0",
-    "@angular/router": "^4.4.0-RC.0",
+    "@angular/common": "4.4.4",
+    "@angular/core": "^4.4.4",
+    "@angular/http": "^4.4.4",
+    "@angular/platform-browser": "4.4.4",
+    "@angular/router": "^4.4.4",
     "@types/keycloak-js": "^2.5.2",
+    "reflect-metadata": "^0.1.10",
+    "rxjs": "5.0.1",
+    "zone.js": "0.8.4",
+    "core-js": "^2.5.1",
+    "nock": "^9.0.22",
+    "superagent": "^3.6.2",
+    "ts-node": "^3.3.0",
     "tslint": "^5.7.0",
     "tslint-config-airbnb": "^5.2.1",
     "typescript": "^2.5.2"
