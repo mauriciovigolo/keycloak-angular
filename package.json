@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf ./build",
     "lint": "./node_modules/.bin/tslint --force --format verbose \"lib/**/*.ts\"",
-    "test": "./node_modules/.bin/ng test"
+    "test": "./node_modules/.bin/karma start"
   },
   "repository": {
     "type": "git",
