@@ -19,9 +19,34 @@ describe('KeycloakAngularService', () => {
 
   describe('#init', () => {
     it(
-      'Should initialize the Keycloak instance using the keycloak.json file',
-      inject([KeycloakAngularService], (service: KeycloakAngularService) => {
-        expect(service).toBeTruthy();
+      'Should result in error if there is no keycloak.json file and init parameters.',
+      inject([KeycloakAngularService], async (service: KeycloakAngularService) => {
+        let result;
+        try {
+          result = await service.init();
+        } catch (err) {
+          expect(err).toBeDefined();
+        }
+        expect(result).toBeUndefined();
+      })
+    );
+
+    it(
+      'Should initialize the Keycloak instance using the config parameters.',
+      inject([KeycloakAngularService], async (service: KeycloakAngularService) => {
+        let result;
+        try {
+          result = await service.init({
+            config: {
+              clientId: '',
+              realm: '',
+              url: ''
+            }
+          });
+        } catch (err) {
+          expect(err).toBeUndefined();
+        }
+        expect(result).toBeUndefined();
       })
     );
   });
