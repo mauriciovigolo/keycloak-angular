@@ -93,8 +93,8 @@ export class KeycloakAngularService {
     return new Promise((resolve, reject) => {
       this.keycloak
         .login(options)
-        .success(cb => {
-          resolve(cb);
+        .success(() => {
+          resolve();
         })
         .error(error => {
           reject('An error happened during the login. Details' + error);
@@ -115,8 +115,8 @@ export class KeycloakAngularService {
 
       this.keycloak
         .logout(options)
-        .success(cb => {
-          resolve(cb);
+        .success(() => {
+          resolve();
         })
         .error(error => {
           reject('An error happened during the register execution. Details' + error);
