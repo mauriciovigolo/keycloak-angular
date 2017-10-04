@@ -4,9 +4,10 @@
   "description": "Easy Keycloak setup for Angular applications (v>4)",
   "main": "index.ts",
   "scripts": {
-    "clean": "rm -rf ./build",
+    "clean": "node ./node_modules/shx/lib/cli.js rm -rf ./build",
     "lint": "./node_modules/.bin/tslint --force --format verbose \"lib/**/*.ts\"",
-    "test": "./node_modules/.bin/karma start"
+    "test": "./node_modules/.bin/karma start",
+    "build": "npm run clean && node ./node_modules/shx/lib/cli.js mkdir -p build/keycloak-angular && node ./node_modules/shx/lib/cli.js cp -r ./{index.ts,package.json,./src} ./build/keycloak-angular"
   },
   "repository": {
     "type": "git",
@@ -58,6 +59,7 @@
     "nock": "^9.0.22",
     "reflect-metadata": "^0.1.10",
     "rxjs": "5.0.1",
+    "shx": "^0.2.2",
     "superagent": "^3.6.2",
     "ts-node": "^3.3.0",
     "tslint": "^5.7.0",
