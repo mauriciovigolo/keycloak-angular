@@ -6,9 +6,9 @@
 * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
 */
 import { NgModule } from '@angular/core';
-import { KeycloakAngularService } from './services';
+import { KeycloakService } from './services';
 
 @NgModule({
-  providers: [KeycloakAngularService]
+  providers: [KeycloakService]
 })
-export class KeycloakModule {}
+export class KeycloakAngularModule {}

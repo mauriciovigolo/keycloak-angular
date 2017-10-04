@@ -7,4 +7,4 @@
 */
 export * from './src/interfaces';
 export * from './src/services';
-export * from './src/keycloak.module';
+export * from './src/keycloak-angular.module';
