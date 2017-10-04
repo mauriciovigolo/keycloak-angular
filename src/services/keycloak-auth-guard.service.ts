@@ -6,7 +6,7 @@
 * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
 */
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { KeycloakAngularService } from './';
+import { KeycloakService } from './';
 
 /**
  * @class
@@ -22,7 +22,7 @@ export abstract class KeycloakAuthGuard implements CanActivate {
   protected authenticated: boolean;
   protected roles: string[];
 
-  constructor(protected router: Router, protected keycloakAngular: KeycloakAngularService) {}
+  constructor(protected router: Router, protected keycloakAngular: KeycloakService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     return new Promise(async (resolve, reject) => {

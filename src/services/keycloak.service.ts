@@ -19,9 +19,8 @@ import { KeycloakConfig, KeycloakOptions } from '../interfaces';
  * along the web application.
  */
 @Injectable()
-export class KeycloakAngularService {
-  private userProfile: Keycloak.KeycloakProfile;
-  private keycloak: Keycloak.KeycloakInstance;
+export class KeycloakService {
+  private static instance: Keycloak.KeycloakInstance;
 
   constructor() {}
 
@@ -56,10 +55,10 @@ export class KeycloakAngularService {
    * - flow - Set the OpenID Connect flow. Valid values are standard, implicit or hybrid.
    * @return {Promise<boolean>}
    */
-  init(options: KeycloakOptions = {}): Promise<boolean> {
+  static init(options: KeycloakOptions = {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.keycloak = Keycloak(options.config);
-      this.keycloak
+      this.instance = Keycloak(options.config);
+      this.instance
         .init(options.initOptions!)
         .success(() => {
           resolve();
@@ -91,7 +90,7 @@ export class KeycloakAngularService {
    */
   login(options: Keycloak.KeycloakLoginOptions = {}): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.keycloak
+      KeycloakService.instance
         .login(options)
         .success(() => {
           resolve();
@@ -113,7 +112,7 @@ export class KeycloakAngularService {
         redirectUri
       };
 
-      this.keycloak
+      KeycloakService.instance
         .logout(options)
         .success(() => {
           resolve();
@@ -134,7 +133,7 @@ export class KeycloakAngularService {
   register(options: Keycloak.KeycloakLoginOptions = { action: 'register' }): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
-        await this.keycloak.register(options);
+        await KeycloakService.instance.register(options);
         resolve();
       } catch (error) {
         reject('An error happened during the register execution. Details' + error);
@@ -151,11 +150,10 @@ export class KeycloakAngularService {
    */
   isUserInRole(role: string): boolean {
     let hasRole: boolean;
-    hasRole = this.keycloak.hasResourceRole(role);
+    hasRole = KeycloakService.instance.hasResourceRole(role);
     if (!hasRole) {
-      hasRole = this.keycloak.hasRealmRole(role);
+      hasRole = KeycloakService.instance.hasRealmRole(role);
     }
-    this.keycloak.profile;
     return hasRole;
   }
 
@@ -173,9 +171,11 @@ export class KeycloakAngularService {
       try {
         await this.updateToken(20);
         let roles: string[];
-        roles = this.keycloak.resourceAccess || [];
+        roles = KeycloakService.instance.resourceAccess || [];
         if (allRoles) {
-          roles = roles.concat(this.keycloak.realmAccess ? this.keycloak.realmAccess.roles : []);
+          roles = roles.concat(
+            KeycloakService.instance.realmAccess ? KeycloakService.instance.realmAccess.roles : []
+          );
         }
         return roles;
       } catch (error) {
@@ -208,7 +208,7 @@ export class KeycloakAngularService {
    * @return {boolean}
    */
   isTokenExpired(minValidity: number = 0): boolean {
-    return this.keycloak.isTokenExpired(minValidity);
+    return KeycloakService.instance.isTokenExpired(minValidity);
   }
 
   /**
@@ -223,12 +223,12 @@ export class KeycloakAngularService {
    */
   updateToken(minValidity: number = 5): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
-      if (!this.keycloak) {
+      if (!KeycloakService.instance) {
         reject(false);
         return;
       }
 
-      this.keycloak
+      KeycloakService.instance
         .updateToken(minValidity)
         .success(refreshed => {
           resolve(refreshed);
@@ -248,7 +248,7 @@ export class KeycloakAngularService {
    */
   loadUserProfile(): Promise<Keycloak.KeycloakProfile> {
     return new Promise(async (resolve, reject) => {
-      this.keycloak
+      KeycloakService.instance
         .loadUserProfile()
         .success(result => {
           const userProfile = result as Keycloak.KeycloakProfile;
@@ -270,7 +270,7 @@ export class KeycloakAngularService {
     return new Promise(async (resolve, reject) => {
       try {
         await this.updateToken(10);
-        resolve(this.keycloak.token);
+        resolve(KeycloakService.instance.token);
       } catch (error) {
         this.login();
       }
@@ -285,7 +285,7 @@ export class KeycloakAngularService {
     return new Promise(async (resolve, reject) => {
       try {
         await this.updateToken(20);
-        resolve(this.keycloak.subject as string);
+        resolve(KeycloakService.instance.subject as string);
       } catch (error) {
         reject('User not logged in');
       }
@@ -298,7 +298,7 @@ export class KeycloakAngularService {
    * Invoking this results in onAuthLogout callback listener being invoked.
    */
   clearToken(): void {
-    this.keycloak.clearToken();
+    KeycloakService.instance.clearToken();
   }
 
   /**
@@ -326,6 +326,6 @@ export class KeycloakAngularService {
    * @returns {@link Keycloak.KeycloakInstance}
    */
   getKeycloakInstance(): Keycloak.KeycloakInstance {
-    return this.keycloak;
+    return KeycloakService.instance;
   }
 }
