@@ -5,14 +5,17 @@
 * Use of this source code is governed by a MIT-style license that can be
 * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
 */
-import { KeycloakAngularService } from '../';
+import { KeycloakService, KeycloakAngularModule } from '../';
 import { TestBed, inject, async } from '@angular/core/testing';
 
-describe('KeycloakAngularService', () => {
+describe('KeycloakService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        KeycloakAngularService
+        KeycloakService
+      ],
+      imports: [
+        KeycloakAngularModule
       ]
     });
   });
@@ -20,10 +23,10 @@ describe('KeycloakAngularService', () => {
   describe('#init', () => {
     it(
       'Should result in error if there is no keycloak.json file and init parameters.',
-      inject([KeycloakAngularService], async (service: KeycloakAngularService) => {
+      inject([KeycloakService], async (service: KeycloakService) => {
         let result;
         try {
-          result = await service.init();
+          result = await KeycloakService.init();
         } catch (err) {
           expect(err).toBeDefined();
         }
@@ -33,10 +36,10 @@ describe('KeycloakAngularService', () => {
 
     it(
       'Should initialize the Keycloak instance using the config parameters.',
-      inject([KeycloakAngularService], async (service: KeycloakAngularService) => {
+      inject([KeycloakService], async (service: KeycloakService) => {
         let result;
         try {
-          result = await service.init({
+          result = await KeycloakService.init({
             config: {
               clientId: '',
               realm: '',
@@ -50,4 +53,7 @@ describe('KeycloakAngularService', () => {
       })
     );
   });
+
+  describe('#login', () => {
+  });  
 });
