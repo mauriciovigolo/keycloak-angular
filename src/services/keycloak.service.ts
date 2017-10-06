@@ -20,9 +20,8 @@ import { KeycloakConfig, KeycloakOptions } from '../interfaces';
  */
 @Injectable()
 export class KeycloakService {
-  private static instance: Keycloak.KeycloakInstance;
-
-  constructor() {}
+  private instance: Keycloak.KeycloakInstance;
+  private userProfile: Keycloak.KeycloakProfile;
 
   /**
    * @description Keycloak initialization. It should be called to initialize the adapter.
@@ -55,16 +54,19 @@ export class KeycloakService {
    * - flow - Set the OpenID Connect flow. Valid values are standard, implicit or hybrid.
    * @return {Promise<boolean>}
    */
-  static init(options: KeycloakOptions = {}): Promise<boolean> {
+  init(options: KeycloakOptions = {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.instance = Keycloak(options.config);
       this.instance
         .init(options.initOptions!)
-        .success(() => {
-          resolve();
+        .success(async (authenticated) => {
+          if (authenticated) {
+            await this.loadUserProfile();
+          }
+          resolve(authenticated);
         })
         .error(error => {
-          reject('An error happened during Keycloak initialization. Details: ' + error);
+          reject('An error happened during Keycloak initialization.');
         });
     });
   }
@@ -90,13 +92,14 @@ export class KeycloakService {
    */
   login(options: Keycloak.KeycloakLoginOptions = {}): Promise<any> {
     return new Promise((resolve, reject) => {
-      KeycloakService.instance
+      this.instance
         .login(options)
-        .success(() => {
+        .success(async () => {
+          await this.loadUserProfile();
           resolve();
         })
         .error(error => {
-          reject('An error happened during the login. Details' + error);
+          reject('An error happened during the login.');
         });
     });
   }
@@ -112,13 +115,14 @@ export class KeycloakService {
         redirectUri
       };
 
-      KeycloakService.instance
+      this.instance
         .logout(options)
         .success(() => {
+          this.userProfile = undefined!;
           resolve();
         })
         .error(error => {
-          reject('An error happened during the register execution. Details' + error);
+          reject('An error happened during logout.');
         });
     });
   }
@@ -131,13 +135,14 @@ export class KeycloakService {
    * @param {Keycloak.KeycloakLoginOptions} options login options
    */
   register(options: Keycloak.KeycloakLoginOptions = { action: 'register' }): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        await KeycloakService.instance.register(options);
-        resolve();
-      } catch (error) {
-        reject('An error happened during the register execution. Details' + error);
-      }
+    return new Promise((resolve, reject) => {
+      this.instance.register(options)
+        .success(() => {
+          resolve();
+        })
+        .error(() => {
+          reject('An error happened during the register execution');
+        });
     });
   }
 
@@ -150,38 +155,37 @@ export class KeycloakService {
    */
   isUserInRole(role: string): boolean {
     let hasRole: boolean;
-    hasRole = KeycloakService.instance.hasResourceRole(role);
+    hasRole = this.instance.hasResourceRole(role);
     if (!hasRole) {
-      hasRole = KeycloakService.instance.hasRealmRole(role);
+      hasRole = this.instance.hasRealmRole(role);
     }
     return hasRole;
   }
 
-  /**
-   * @description Return the roles of the logged user. The default with allRoles set to false 
-   * (default value) will return only the user roles associated with the clientId. If allRoles is 
-   * true it will return the clientId and realm roles associated with the logged user.
-   * 
-   * @param {boolean} allRoles - flag to set if all roles should be returned.(Optional: default 
-   * value is false)
+ /**
+   * @description Return the roles of the logged user. The allRoles parameter, with default value
+   * true, will return the clientId and realm roles associated with the logged user. If set to false
+   * it will only return the user roles associated with the clientId.
+   *
+   * @param {boolean} allRoles - flag to set if all roles should be returned.(Optional: default
+   * value is true)
    * @return {string[]} - roles list associated with the logged user.
    */
-  getUserRoles(allRoles: boolean = false): Promise<string[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        await this.updateToken(20);
-        let roles: string[];
-        roles = KeycloakService.instance.resourceAccess || [];
-        if (allRoles) {
-          roles = roles.concat(
-            KeycloakService.instance.realmAccess ? KeycloakService.instance.realmAccess.roles : []
-          );
+  getUserRoles(allRoles: boolean = true): string[] {
+    let roles: string[] = [];
+    if (this.instance.resourceAccess) {
+      for (const key in this.instance.resourceAccess) {
+        if (this.instance.resourceAccess.hasOwnProperty(key)) {
+          const resourceAccess: any = this.instance.resourceAccess[key];
+          const clientRoles = (resourceAccess)['roles'] || [];
+          roles = roles.concat(clientRoles);
         }
-        return roles;
-      } catch (error) {
-        reject('Failed to get the user roles. The session is probably expired');
       }
-    });
+    }
+    if (allRoles && this.instance.realmAccess) {
+      roles = this.instance.realmAccess['roles'] || [];
+    }
+    return roles;
   }
 
   /**
@@ -208,7 +212,7 @@ export class KeycloakService {
    * @return {boolean}
    */
   isTokenExpired(minValidity: number = 0): boolean {
-    return KeycloakService.instance.isTokenExpired(minValidity);
+    return this.instance.isTokenExpired(minValidity);
   }
 
   /**
@@ -223,12 +227,12 @@ export class KeycloakService {
    */
   updateToken(minValidity: number = 5): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
-      if (!KeycloakService.instance) {
+      if (!this.instance) {
         reject(false);
         return;
       }
 
-      KeycloakService.instance
+      this.instance
         .updateToken(minValidity)
         .success(refreshed => {
           resolve(refreshed);
@@ -246,16 +250,20 @@ export class KeycloakService {
    * 
    * @return {Promise<Keycloak.KeycloakProfile>}
    */
-  loadUserProfile(): Promise<Keycloak.KeycloakProfile> {
+  loadUserProfile(forceReload: boolean = false): Promise<Keycloak.KeycloakProfile> {
     return new Promise(async (resolve, reject) => {
-      KeycloakService.instance
+      if (this.userProfile && !forceReload) {
+        return resolve(this.userProfile);
+      }
+
+      this.instance
         .loadUserProfile()
         .success(result => {
-          const userProfile = result as Keycloak.KeycloakProfile;
-          resolve(userProfile);
+          this.userProfile = result as Keycloak.KeycloakProfile;
+          resolve(this.userProfile);
         })
         .error(err => {
-          reject('The user profile could not be loaded. Details: ' + err);
+          reject('The user profile could not be loaded.');
         });
     });
   }
@@ -270,7 +278,7 @@ export class KeycloakService {
     return new Promise(async (resolve, reject) => {
       try {
         await this.updateToken(10);
-        resolve(KeycloakService.instance.token);
+        resolve(this.instance.token);
       } catch (error) {
         this.login();
       }
@@ -281,15 +289,12 @@ export class KeycloakService {
    * Returns the logged username.
    * @return {string}
    */
-  getUsername(): Promise<string> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        await this.updateToken(20);
-        resolve(KeycloakService.instance.subject as string);
-      } catch (error) {
-        reject('User not logged in');
-      }
-    });
+  getUsername(): string {
+    if (!this.userProfile) {
+      throw new Error('User not logged in');
+    }
+    
+    return this.userProfile.username!;
   }
 
   /**
@@ -298,7 +303,7 @@ export class KeycloakService {
    * Invoking this results in onAuthLogout callback listener being invoked.
    */
   clearToken(): void {
-    KeycloakService.instance.clearToken();
+    this.instance.clearToken();
   }
 
   /**
@@ -326,6 +331,6 @@ export class KeycloakService {
    * @returns {@link Keycloak.KeycloakInstance}
    */
   getKeycloakInstance(): Keycloak.KeycloakInstance {
-    return KeycloakService.instance;
+    return this.instance;
   }
 }
