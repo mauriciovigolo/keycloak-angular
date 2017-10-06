@@ -26,7 +26,7 @@ describe('KeycloakService', () => {
       inject([KeycloakService], async (service: KeycloakService) => {
         let result;
         try {
-          result = await KeycloakService.init();
+          result = await service.init();
         } catch (err) {
           expect(err).toBeDefined();
         }
@@ -35,11 +35,11 @@ describe('KeycloakService', () => {
     );
 
     it(
-      'Should initialize the Keycloak instance using the config parameters.',
+      'Should result in error if there is no valid config initialization for keycloak',
       inject([KeycloakService], async (service: KeycloakService) => {
         let result;
         try {
-          result = await KeycloakService.init({
+          result = await service.init({
             config: {
               clientId: '',
               realm: '',
@@ -47,13 +47,10 @@ describe('KeycloakService', () => {
             }
           });
         } catch (err) {
-          expect(err).toBeUndefined();
+          expect(err).toBeDefined();
         }
         expect(result).toBeUndefined();
       })
     );
   });
-
-  describe('#login', () => {
-  });  
 });
