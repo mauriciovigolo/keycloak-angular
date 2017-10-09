@@ -11,4 +11,5 @@ import { KeycloakConfig } from './keycloak-config';
 export interface KeycloakOptions {
   config?: string | KeycloakConfig;
   initOptions?: KeycloakInitOptions;
+  bearerExcludedUrls?: string[];
 }
