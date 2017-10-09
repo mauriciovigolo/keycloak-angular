@@ -7,7 +7,7 @@
  */
 import * as Keycloak from 'keycloak-js';
 import { Injectable } from '@angular/core';
-import { Headers } from '@angular/http';
+import { HttpHeaders } from '@angular/common/http';
 import { KeycloakConfig, KeycloakOptions } from '../interfaces';
 
 /**
@@ -22,6 +22,7 @@ import { KeycloakConfig, KeycloakOptions } from '../interfaces';
 export class KeycloakService {
   private instance: Keycloak.KeycloakInstance;
   private userProfile: Keycloak.KeycloakProfile;
+  private bearerExcludedUrls: string[];
 
   /**
    * @description Keycloak initialization. It should be called to initialize the adapter.
@@ -56,6 +57,7 @@ export class KeycloakService {
    */
   init(options: KeycloakOptions = {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
+      this.bearerExcludedUrls = options.bearerExcludedUrls || [];
       this.instance = Keycloak(options.config);
       this.instance
         .init(options.initOptions!)
@@ -313,13 +315,13 @@ export class KeycloakService {
    * 
    * @param {Promise<Headers>} headers updated header with Authorization and Keycloak token.
    */
-  addTokenToHeader(headersArg?: Headers): Promise<Headers> {
+  addTokenToHeader(headersArg?: HttpHeaders): Promise<HttpHeaders> {
     return new Promise(async (resolve, reject) => {
       let headers = headersArg;
       if (!headers) {
-        headers = new Headers();
+        headers = new HttpHeaders();
       }
-      headers.append('Authorization', 'Bearer ' + (await this.getToken()));
+      headers.append('Authorization', 'bearer ' + (await this.getToken()));
       resolve(headers);
     });
   }
@@ -332,5 +334,13 @@ export class KeycloakService {
    */
   getKeycloakInstance(): Keycloak.KeycloakInstance {
     return this.instance;
+  }
+
+  /**
+   * @description Returns the excluded URLs that should not be considered by
+   * the http interceptor which automatically adds the authorization header in the Http Request.
+   */
+  getBearerExcludedUrls(): string[] {
+    return this.bearerExcludedUrls;
   }
 }
