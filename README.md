@@ -1,7 +1,7 @@
 Keycloak Angular
 ========================
 
-keycloak-js port for Angular > v2 applications. 
+[Keycloak-js](https://github.com/keycloak/keycloak-js-bower) port for Angular > v4.3 applications. 
 
 ---
 * [About](#about)
@@ -12,19 +12,81 @@ keycloak-js port for Angular > v2 applications.
 
 ## About
 
-TODO: Add documentation.
-
-* Easy integration of Keycloak with Angular > v.4 apps.
-* Get the init information from default keycloak.json location or in custom path.
+This library helps you to use keycloak-js in Angular > v4.3 applications providing the following  
+features:
+- A **Keycloak Service** which wraps the keycloak-js methods to be used in Angular, giving extra 
+functionalities to the original functions and adding new methods to make it easier to be consumed by 
+Angular applications.
+- Generic **AuthGuard implementation**, so you can customize your own AuthGuard logic inheriting the authentication logic and the roles load.
+- A **HtppClient interceptor** that adds the authorization header to all HttpClient requests.
+It is also possible to exclude routes from having the authorization header.
+- This documentation also assists you to configure the keycloak in the Angular applications and with
+the client setup in the admin console of your keycloak installation.
 
 ## Install
 
-TODO: Add documentation.
+In your angular application directory:
 
-## Setup in Angular
+- NPM
 
-TODO: Add documentation.
-* Possibility to initialize in the beginning of the angular app start. [(APP_INITIALIZER)](https://angular.io/api/core/APP_INITIALIZER).
+```sh
+npm install --save keycloak-angular
+```
+
+or with yarn:
+
+- YARN
+
+```sh
+yarn add keycloak-angular
+```
+
+## Setup
+
+### Angular
+
+The KeycloakService must be initialized during the application loading, using the [APP_INITIALIZER](https://angular.io/api/core/APP_INITIALIZER) token.
+
+#### AppModule
+```js
+import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
+import { initializer } from '../utils/app-init';
+
+@NgModule({
+  imports: [KeycloakAngularModule],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializer,
+      multi: true,
+      deps: [KeycloakService]
+    }
+  ]
+})
+export class AppModule {}
+```
+
+#### initializer Function
+
+This function can be named and placed in the way you think is most appropriate. 
+
+```js
+import { KeycloakService } from 'keycloak-angular';
+
+export function initializer(keycloak: KeycloakService): () => Promise<any> {
+  return (): Promise<any> => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        await keycloak.init();
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+}
+```
 
 ## License
 
