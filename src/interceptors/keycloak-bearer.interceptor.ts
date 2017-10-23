@@ -28,7 +28,7 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
     const addHeader: string | undefined = excludedUrls.find(urlPattern =>
       /urlPattern/gi.test(urlRequest)
     );
-    if (!addHeader) {
+    if (addHeader) {
       return next.handle(req);
     }
 
