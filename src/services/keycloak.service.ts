@@ -318,10 +318,11 @@ export class KeycloakService {
   addTokenToHeader(headersArg?: HttpHeaders): Promise<HttpHeaders> {
     return new Promise(async (resolve, reject) => {
       let headers = headersArg;
-      if (!headers) {
+      if (headers) {
         headers = new HttpHeaders();
       }
-      headers.append('Authorization', 'bearer ' + (await this.getToken()));
+      const token: string = await this.getToken();
+      headers = headers.set('Authorization', 'bearer ' + token);
       resolve(headers);
     });
   }
