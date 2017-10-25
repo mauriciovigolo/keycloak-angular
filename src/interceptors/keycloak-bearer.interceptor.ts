@@ -24,6 +24,9 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const urlRequest = req.url;
     const excludedUrls: string[] = this.keycloak.getBearerExcludedUrls();
+    if (!excludedUrls) {
+      return next.handle(req);
+    }
 
     const addHeader: string | undefined = excludedUrls.find(urlPattern =>
       /urlPattern/gi.test(urlRequest)
