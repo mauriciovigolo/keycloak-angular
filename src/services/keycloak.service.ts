@@ -9,6 +9,7 @@ import * as Keycloak from 'keycloak-js';
 import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { KeycloakConfig, KeycloakOptions } from '../interfaces';
+import { Observer, Observable } from 'rxjs/Rx';
 
 /**
  * @class
@@ -61,7 +62,7 @@ export class KeycloakService {
       this.instance = Keycloak(options.config);
       this.instance
         .init(options.initOptions!)
-        .success(async (authenticated) => {
+        .success(async authenticated => {
           if (authenticated) {
             await this.loadUserProfile();
           }
@@ -138,7 +139,8 @@ export class KeycloakService {
    */
   register(options: Keycloak.KeycloakLoginOptions = { action: 'register' }): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.instance.register(options)
+      this.instance
+        .register(options)
         .success(() => {
           resolve();
         })
@@ -164,7 +166,7 @@ export class KeycloakService {
     return hasRole;
   }
 
- /**
+  /**
    * @description Return the roles of the logged user. The allRoles parameter, with default value
    * true, will return the clientId and realm roles associated with the logged user. If set to false
    * it will only return the user roles associated with the clientId.
@@ -179,7 +181,7 @@ export class KeycloakService {
       for (const key in this.instance.resourceAccess) {
         if (this.instance.resourceAccess.hasOwnProperty(key)) {
           const resourceAccess: any = this.instance.resourceAccess[key];
-          const clientRoles = (resourceAccess)['roles'] || [];
+          const clientRoles = resourceAccess['roles'] || [];
           roles = roles.concat(clientRoles);
         }
       }
@@ -295,7 +297,7 @@ export class KeycloakService {
     if (!this.userProfile) {
       throw new Error('User not logged in');
     }
-    
+
     return this.userProfile.username!;
   }
 
@@ -315,15 +317,19 @@ export class KeycloakService {
    * 
    * @param {Promise<Headers>} headers updated header with Authorization and Keycloak token.
    */
-  addTokenToHeader(headersArg?: HttpHeaders): Promise<HttpHeaders> {
-    return new Promise(async (resolve, reject) => {
+  addTokenToHeader(headersArg?: HttpHeaders): Observable<HttpHeaders> {
+    return Observable.create(async (observer: Observer<any>) => {
       let headers = headersArg;
       if (headers) {
         headers = new HttpHeaders();
       }
-      const token: string = await this.getToken();
-      headers = headers.set('Authorization', 'bearer ' + token);
-      resolve(headers);
+      try {
+        const token: string = await this.getToken();
+        headers = headers.set('Authorization', 'bearer ' + token);
+        observer.next(headers);
+      } catch (error) {
+        observer.error(error);
+      }
     });
   }
 

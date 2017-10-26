@@ -5,7 +5,6 @@
 * Use of this source code is governed by a MIT-style license that can be
 * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
 */
-import { Observer } from 'rxjs/Rx';
 import {
   HttpInterceptor,
   HttpRequest,
@@ -13,8 +12,8 @@ import {
   HttpEvent,
   HttpHeaders
 } from '@angular/common/http';
+import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { KeycloakService } from '../services';
 
 @Injectable()
@@ -35,14 +34,9 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    return Observable.create(async (observer: Observer<any>) => {
-      try {
-        const headersWithBearer: HttpHeaders = await this.keycloak.addTokenToHeader(req.headers);
-        const kcReq = req.clone({ headers: headersWithBearer });
-        return next.handle(kcReq);
-      } catch (error) {
-        observer.error(error);
-      }
+    return this.keycloak.addTokenToHeader(req.headers).mergeMap(headersWithBearer => {
+      const kcReq = req.clone({ headers: headersWithBearer });
+      return next.handle(kcReq);
     });
   }
 }
