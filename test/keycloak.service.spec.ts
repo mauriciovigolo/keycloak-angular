@@ -1,6 +1,6 @@
 /**
 * @license
-* Copyright Mauricio Gemelli Vigolo. All Rights Reserved.
+* Copyright Mauricio Gemelli Vigolo.
 *
 * Use of this source code is governed by a MIT-style license that can be
 * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
@@ -11,12 +11,8 @@ import { TestBed, inject, async } from '@angular/core/testing';
 describe('KeycloakService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        KeycloakService
-      ],
-      imports: [
-        KeycloakAngularModule
-      ]
+      providers: [KeycloakService],
+      imports: [KeycloakAngularModule]
     });
   });
 
