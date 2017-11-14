@@ -98,14 +98,19 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
 ### Keycloak
 
 Besides configuring the keycloak lib in your application it is also necessary to setup the
-access for the account and the client applications that you intend to protect.
+access - scope for the **account** client.
 
-In this documentation we are supposing that you already installed, configured your Keycloak 
-instance and created the client app.
+In this documentation we suppose that you already installed and configured your Keycloak 
+instance, as well created the client app. 
 
-> TODO add screens
+**Hint:** If you need to create an environment for testing purposes, try out the [Keycloak demo](http://www.keycloak.org/downloads.html).
 
-There is also a setup in [Keycloak](http://www.keycloak.org/) to be done, giving the right 
+
+#### Client configuration
+
+When requesting the method to get the User's Profile, the client app should have the scope and access to the account **view-profile** role. To do it, access **Clients** :arrow_right: **My-app** :arrow_right: **Scope**. Select the **account** app in Client Roles and assign the view-profile role.
+
+![keycloak-account-scope](./docs/images/keycloak-account-scope.png)
 
 ## AuthGuard
 
@@ -151,15 +156,36 @@ export class AppAuthGuard extends KeycloakAuthGuard {
 }
 ```
 
-
-
 ## HttpClient Interceptor
 
-> TODO documentation
+By default all HttpClient requests will add the Authorization header in the format of: Authorization: Bearer ***TOKEN***. 
+
+There is also the possibility to exclude a list of URLs that should not have the authorization header. The excluded list must be informed in the keycloak initialization. For example:
+```js
+ try {
+  await keycloak.init({
+    config: {
+      url: 'http://localhost:8080/auth',
+      realm: 'your-realm',
+      clientId: 'client-id'
+    },
+    initOptions: {
+      onLoad: 'login-required',
+      checkLoginIframe: false
+    },
+    bearerExcludedUrls: [
+      '/assets',
+      '/clients/public'
+    ],    
+  });
+  resolve();
+} catch (error) {}
+```
 
 ## Contributing
 
-> TODO documentation
+If you want to contribute to the project, please check out the [contributing](CONTRIBUTING.md) 
+document.
 
 ## License
 
