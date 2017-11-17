@@ -320,7 +320,7 @@ export class KeycloakService {
   addTokenToHeader(headersArg?: HttpHeaders): Observable<HttpHeaders> {
     return Observable.create(async (observer: Observer<any>) => {
       let headers = headersArg;
-      if (headers) {
+      if (!headers) {
         headers = new HttpHeaders();
       }
       try {

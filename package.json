@@ -1,25 +1,25 @@
 {
   "name": "keycloak-angular",
-  "version": "0.1.0",
-  "description": "Easy Keycloak setup for Angular applications (v>4)",
+  "version": "1.1.0",
+  "description": "Easy Keycloak setup for Angular applications (v > 4.3)",
   "main": "index.ts",
   "scripts": {
     "clean": "node ./node_modules/shx/lib/cli.js rm -rf ./build",
     "lint": "./node_modules/.bin/tslint --force --format verbose \"lib/**/*.ts\"",
     "test": "./node_modules/.bin/karma start",
-    "build": "npm run clean && node ./node_modules/shx/lib/cli.js mkdir -p build/keycloak-angular && node ./node_modules/shx/lib/cli.js cp -r ./{index.ts,package.json,./src} ./build/keycloak-angular"
+    "copy-files":
+      "node ./node_modules/shx/lib/cli.js mkdir -p ./build/keycloak-angular && node ./node_modules/shx/lib/cli.js cp -r {package.json,README.md,./src} ./build/keycloak-angular",
+    "remove-unwanted-files":
+      "node ./node_modules/shx/lib/cli.js rm -rf {./build/**/*.ts,./build/keycloak-angular/test,./build/keycloak-angular/*.spec*}",
+    "compile": "tsc",
+    "build":
+      "npm run clean && npm run copy-files && npm run remove-unwanted-files && npm run compile"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/mauriciovigolo/keycloak-angular.git"
   },
-  "keywords": [
-    "Angular 4",
-    "Authentication",
-    "Authorization",
-    "Keycloak",
-    "Angular"
-  ],
+  "keywords": ["Angular 4", "Angular 5", "Authentication", "Authorization", "Keycloak", "Angular"],
   "author": {
     "name": "Mauricio Gemelli Vigolo",
     "email": "@mauriciovigolo"
@@ -30,17 +30,17 @@
   },
   "homepage": "https://github.com/mauriciovigolo/keycloak-angular#readme",
   "dependencies": {
-    "keycloak-js": "^3.3.0-cr.2"
+    "keycloak-js": "^3.4.0"
   },
   "devDependencies": {
-    "@angular/common": "4.4.4",
-    "@angular/compiler": "^4.4.4",
-    "@angular/compiler-cli": "^4.4.4",
-    "@angular/core": "^4.4.4",
-    "@angular/http": "^4.4.4",
-    "@angular/platform-browser": "^4.4.4",
-    "@angular/platform-browser-dynamic": "^4.4.4",
-    "@angular/router": "^4.4.4",
+    "@angular/common": "5.0.1",
+    "@angular/compiler": "^5.0.1",
+    "@angular/compiler-cli": "^5.0.1",
+    "@angular/core": "^5.0.1",
+    "@angular/http": "^5.0.1",
+    "@angular/platform-browser": "^5.0.1",
+    "@angular/platform-browser-dynamic": "^5.0.1",
+    "@angular/router": "^5.0.1",
     "@types/jasmine": "^2.6.0",
     "@types/jasminewd2": "^2.0.3",
     "@types/keycloak-js": "^2.5.2",
