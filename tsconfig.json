@@ -57,5 +57,9 @@
     /* Experimental Options */
     "experimentalDecorators": true /* Enables experimental support for ES7 decorators. */,
     "emitDecoratorMetadata": true /* Enables experimental support for emitting type metadata for decorators. */
-  }
+  },
+  "angularCompilerOptions": {
+    "genDir": "./build/keycloak-angular"
+  },
+  "exclude": ["**/*.spec.ts", "./examples/**", "./node_modules/**"]
 }

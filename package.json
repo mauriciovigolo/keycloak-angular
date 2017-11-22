@@ -1,6 +1,6 @@
 {
   "name": "keycloak-angular",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Easy Keycloak setup for Angular applications (v > 4.3)",
   "main": "index.ts",
   "scripts": {
@@ -11,7 +11,7 @@
       "node ./node_modules/shx/lib/cli.js mkdir -p ./build/keycloak-angular && node ./node_modules/shx/lib/cli.js cp -r {package.json,README.md,./src} ./build/keycloak-angular",
     "remove-unwanted-files":
       "node ./node_modules/shx/lib/cli.js rm -rf {./build/**/*.ts,./build/keycloak-angular/test,./build/keycloak-angular/*.spec*}",
-    "compile": "tsc",
+    "compile": "node ./node_modules/.bin/ngc -p ./tsconfig.json",
     "build":
       "npm run clean && npm run copy-files && npm run remove-unwanted-files && npm run compile"
   },
