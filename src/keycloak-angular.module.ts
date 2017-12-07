@@ -10,6 +10,11 @@ import { KeycloakService } from './services';
 import { KeycloakBearerInterceptor } from './interceptors';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
+/**
+ * The Keycloak Angular Module. 
+ * 
+ * Provides the KeycloakService and the bearer interceptor.
+ */
 @NgModule({
   providers: [
     KeycloakService,

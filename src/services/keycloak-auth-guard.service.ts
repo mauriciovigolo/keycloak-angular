@@ -9,17 +9,19 @@ import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from
 import { KeycloakService } from './';
 
 /**
- * @class
- * @description A simple guard implementation out of the box. This class should be inherited and 
+ * A simple guard implementation out of the box. This class should be inherited and 
  * implemented by the application. The only method that should be implemented is #isAccessAllowed.
  * The reason for this is that the authorization flow is usually not unique, so in this way you will
  * have more freedom to customize your authorization flow.
- * 
- * @property authenticated: boolean that indicates if the user is authenticated or not.
- * @property roles: roles of the logged user. It contains the clientId and realm user roles.
  */
 export abstract class KeycloakAuthGuard implements CanActivate {
+  /**
+   * Indicates if the user is authenticated or not.
+   */
   protected authenticated: boolean;
+  /**
+   * Roles of the logged user. It contains the clientId and realm user roles.
+   */
   protected roles: string[];
 
   constructor(protected router: Router, protected keycloakAngular: KeycloakService) {}

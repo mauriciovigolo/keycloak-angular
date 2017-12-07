@@ -12,9 +12,8 @@ import { KeycloakConfig, KeycloakOptions } from '../interfaces';
 import { Observer, Observable } from 'rxjs/Rx';
 
 /**
- * @class
- * @description Service to expose existant methods from the Keycloak JS adapter, adding new 
- * functionalities to improve the use of keycloak in Angular v > 2 applications.
+ * Service to expose existant methods from the Keycloak JS adapter, adding new 
+ * functionalities to improve the use of keycloak in Angular v > 4.3 applications.
  * 
  * This class should be injected in the application bootstrap, so the same instance will be used
  * along the web application.
@@ -26,7 +25,7 @@ export class KeycloakService {
   private bearerExcludedUrls: string[];
 
   /**
-   * @description Keycloak initialization. It should be called to initialize the adapter.
+   * Keycloak initialization. It should be called to initialize the adapter.
    * Options is a object with 2 main parameters: config and initOptions. The first one
    * will be used to create the Keycloak instance. The second one are options to initialize the 
    * keycloak instance.
@@ -75,7 +74,7 @@ export class KeycloakService {
   }
 
   /**
-   * @description Redirects to login form on (options is an optional object with redirectUri and/or 
+   * Redirects to login form on (options is an optional object with redirectUri and/or 
    * prompt fields).
    * 
    * @param {Keycloak.KeycloakLoginOptions} - Object, where:
@@ -108,7 +107,7 @@ export class KeycloakService {
   }
 
   /**
-   * @description Redirects to logout.
+   * Redirects to logout.
    *
    * @param {string} redirectUri Specifies the uri to redirect to after logout.
    */
@@ -131,7 +130,7 @@ export class KeycloakService {
   }
 
   /**
-   * @description Redirects to registration form. Shortcut for login with option 
+   * Redirects to registration form. Shortcut for login with option 
    * action = 'register'. Options are same as for the login method but 'action' is set to 
    * 'register'.
    * 
@@ -151,7 +150,7 @@ export class KeycloakService {
   }
 
   /**
-   * @description Check if the user has access to the specified role. It will look for roles in 
+   * Check if the user has access to the specified role. It will look for roles in 
    * realm and clientId, but will not check if the user is logged in for better performance.
    * 
    * @param {string} role - role name
@@ -167,7 +166,7 @@ export class KeycloakService {
   }
 
   /**
-   * @description Return the roles of the logged user. The allRoles parameter, with default value
+   * Return the roles of the logged user. The allRoles parameter, with default value
    * true, will return the clientId and realm roles associated with the logged user. If set to false
    * it will only return the user roles associated with the clientId.
    *
@@ -193,7 +192,7 @@ export class KeycloakService {
   }
 
   /**
-   * @description Check if user is logged in.
+   * Check if user is logged in.
    * 
    * @return {boolean}
    */
@@ -209,7 +208,7 @@ export class KeycloakService {
   }
 
   /**
-   * @description Returns true if the token has less than minValidity seconds left before 
+   * Returns true if the token has less than minValidity seconds left before 
    * it expires.
    * 
    * @param {number} minValidity seconds left. (minValidity) is optional. Default value is 0.
@@ -220,7 +219,7 @@ export class KeycloakService {
   }
 
   /**
-   * @description If the token expires within minValidity seconds the token is refreshed. If the 
+   * If the token expires within minValidity seconds the token is refreshed. If the 
    * session status iframe is enabled, the session status is also checked.
    * Returns a promise telling if the token was refreshed or not. If the session is not active 
    * anymore, the promise is rejected.
@@ -248,7 +247,7 @@ export class KeycloakService {
   }
 
   /**
-   * @description Loads the users profile.
+   * Loads the users profile.
    * Returns promise to set functions to be invoked if the profile was loaded successfully, or if 
    * the profile could not be loaded.
    * 
@@ -273,7 +272,7 @@ export class KeycloakService {
   }
 
   /**
-   * @description Returns the authenticated token, calling updateToken to get a refreshed one if 
+   * Returns the authenticated token, calling updateToken to get a refreshed one if 
    * necessary. If the session is expired this method calls the login method for a new login.
    * 
    * @return {Promise<string>}
@@ -302,7 +301,7 @@ export class KeycloakService {
   }
 
   /**
-   * @description Clear authentication state, including tokens. This can be useful if application 
+   * Clear authentication state, including tokens. This can be useful if application 
    * has detected the session was expired, for example if updating token fails.
    * Invoking this results in onAuthLogout callback listener being invoked.
    */
@@ -311,7 +310,7 @@ export class KeycloakService {
   }
 
   /**
-   * @description Adds a valid token in header. The key & value format is: 
+   * Adds a valid token in header. The key & value format is: 
    * Authorization Bearer <token>.
    * If the headers param is undefined it will create the Angular headers object.
    * 
@@ -334,7 +333,7 @@ export class KeycloakService {
   }
 
   /**
-   * @description Returns the original Keycloak instance, if you need any customization that 
+   * Returns the original Keycloak instance, if you need any customization that 
    * this Angular service does not support yet. Use with caution.
    * 
    * @returns {@link Keycloak.KeycloakInstance}
@@ -344,7 +343,7 @@ export class KeycloakService {
   }
 
   /**
-   * @description Returns the excluded URLs that should not be considered by
+   * Returns the excluded URLs that should not be considered by
    * the http interceptor which automatically adds the authorization header in the Http Request.
    */
   getBearerExcludedUrls(): string[] {
