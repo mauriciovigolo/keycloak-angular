@@ -1,0 +1,21 @@
+<div class="main-container">
+  <header class="header header-6">
+    keycloak-angular sandbox
+  </header>
+  <nav class="subnav">
+    <ul id="demoTabs" class="nav" role="tablist">
+      <li role="presentation" class="nav-item">
+        <button id="tab1" class="btn btn-link nav-link active" aria-controls="panel1" aria-selected="true" type="button">Heroes</button>
+      </li>
+      <li role="presentation" class="nav-item">
+        <button id="tab2" class="btn btn-link nav-link" aria-controls="panel2" aria-selected="false" type="button">Players</button>
+      </li>
+      <li role="presentation" class="nav-item">
+        <button id="tab3" class="btn btn-link nav-link" aria-controls="panel3" aria-selected="false" type="button">Teams</button>
+      </li>
+    </ul>
+  </nav>
+  <div class="content-container">
+    <router-outlet></router-outlet>
+  </div>
+</div>
