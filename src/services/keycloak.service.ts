@@ -12,9 +12,9 @@ import { KeycloakConfig, KeycloakOptions } from '../interfaces';
 import { Observer, Observable } from 'rxjs/Rx';
 
 /**
- * Service to expose existant methods from the Keycloak JS adapter, adding new 
+ * Service to expose existent methods from the Keycloak JS adapter, adding new
  * functionalities to improve the use of keycloak in Angular v > 4.3 applications.
- * 
+ *
  * This class should be injected in the application bootstrap, so the same instance will be used
  * along the web application.
  */
@@ -27,32 +27,32 @@ export class KeycloakService {
   /**
    * Keycloak initialization. It should be called to initialize the adapter.
    * Options is a object with 2 main parameters: config and initOptions. The first one
-   * will be used to create the Keycloak instance. The second one are options to initialize the 
+   * will be used to create the Keycloak instance. The second one are options to initialize the
    * keycloak instance.
-   * 
-   * @param {KeycloakOptions} options 
-   * config: may be a string representing the keycloak URI or an object with the 
+   *
+   * @param {KeycloakOptions} options
+   * config: may be a string representing the keycloak URI or an object with the
    * following content:
-   * - url (meaning the Keycloak json URL);
-   * - realm: ();
-   * - clientId?: string;
-   * 
-   * initOptions: 
-   * - onLoad - Specifies an action to do on load. Supported values are 'login-required' or 
+   * - url: Keycloak json URL
+   * - realm: realm name
+   * - clientId: client id
+   *
+   * initOptions:
+   * - onLoad: Specifies an action to do on load. Supported values are 'login-required' or
    * 'check-sso'.
-   * - token - Set an initial value for the token.
-   * - refreshToken - Set an initial value for the refresh token.
-   * - idToken - Set an initial value for the id token (only together with token or refreshToken).
-   * - timeSkew - Set an initial value for skew between local time and Keycloak server in seconds 
+   * - token: Set an initial value for the token.
+   * - refreshToken: Set an initial value for the refresh token.
+   * - idToken: Set an initial value for the id token (only together with token or refreshToken).
+   * - timeSkew: Set an initial value for skew between local time and Keycloak server in seconds
    * (only together with token or refreshToken).
-   * - checkLoginIframe - Set to enable/disable monitoring login state (default is true).
-   * - checkLoginIframeInterval - Set the interval to check login state (default is 5 seconds).
-   * - responseMode - Set the OpenID Connect response mode send to Keycloak server at login 
-   * request. Valid values are query or fragment . Default value is fragment, which means 
-   * that after successful authentication will Keycloak redirect to javascript application 
-   * with OpenID Connect parameters added in URL fragment. This is generally safer and 
+   * - checkLoginIframe: Set to enable/disable monitoring login state (default is true).
+   * - checkLoginIframeInterval: Set the interval to check login state (default is 5 seconds).
+   * - responseMode: Set the OpenID Connect response mode send to Keycloak server at login
+   * request. Valid values are query or fragment . Default value is fragment, which means
+   * that after successful authentication will Keycloak redirect to javascript application
+   * with OpenID Connect parameters added in URL fragment. This is generally safer and
    * recommended over query.
-   * - flow - Set the OpenID Connect flow. Valid values are standard, implicit or hybrid.
+   * - flow: Set the OpenID Connect flow. Valid values are standard, implicit or hybrid.
    * @return {Promise<boolean>}
    */
   init(options: KeycloakOptions = {}): Promise<boolean> {
@@ -74,23 +74,23 @@ export class KeycloakService {
   }
 
   /**
-   * Redirects to login form on (options is an optional object with redirectUri and/or 
+   * Redirects to login form on (options is an optional object with redirectUri and/or
    * prompt fields).
-   * 
+   *
    * @param {Keycloak.KeycloakLoginOptions} - Object, where:
    *  - redirectUri: Specifies the uri to redirect to after login.
-   *  - prompt:By default the login screen is displayed if the user is not logged-in to Keycloak. 
-   * To only authenticate to the application if the user is already logged-in and not display the 
-   * login page if the user is not logged-in, set this option to none. To always require 
+   *  - prompt:By default the login screen is displayed if the user is not logged-in to Keycloak.
+   * To only authenticate to the application if the user is already logged-in and not display the
+   * login page if the user is not logged-in, set this option to none. To always require
    * re-authentication and ignore SSO, set this option to login .
-   *  - maxAge: Used just if user is already authenticated. Specifies maximum time since the 
-   * authentication of user happened. If user is already authenticated for longer time than 
+   *  - maxAge: Used just if user is already authenticated. Specifies maximum time since the
+   * authentication of user happened. If user is already authenticated for longer time than
    * maxAge, the SSO is ignored and he will need to re-authenticate again.
    *  - loginHint: Used to pre-fill the username/email field on the login form.
-   *  - action: If value is 'register' then user is redirected to registration page, otherwise to 
+   *  - action: If value is 'register' then user is redirected to registration page, otherwise to
    * login page.
    *  - locale: Specifies the desired locale for the UI.
-   * @returns Promise containing the 
+   * @returns Promise containing the
    */
   login(options: Keycloak.KeycloakLoginOptions = {}): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -130,10 +130,10 @@ export class KeycloakService {
   }
 
   /**
-   * Redirects to registration form. Shortcut for login with option 
-   * action = 'register'. Options are same as for the login method but 'action' is set to 
+   * Redirects to registration form. Shortcut for login with option
+   * action = 'register'. Options are same as for the login method but 'action' is set to
    * 'register'.
-   * 
+   *
    * @param {Keycloak.KeycloakLoginOptions} options login options
    */
   register(options: Keycloak.KeycloakLoginOptions = { action: 'register' }): Promise<any> {
@@ -150,9 +150,9 @@ export class KeycloakService {
   }
 
   /**
-   * Check if the user has access to the specified role. It will look for roles in 
+   * Check if the user has access to the specified role. It will look for roles in
    * realm and clientId, but will not check if the user is logged in for better performance.
-   * 
+   *
    * @param {string} role - role name
    * @return {boolean}
    */
@@ -193,7 +193,7 @@ export class KeycloakService {
 
   /**
    * Check if user is logged in.
-   * 
+   *
    * @return {boolean}
    */
   isLoggedIn(): Promise<boolean> {
@@ -208,9 +208,9 @@ export class KeycloakService {
   }
 
   /**
-   * Returns true if the token has less than minValidity seconds left before 
+   * Returns true if the token has less than minValidity seconds left before
    * it expires.
-   * 
+   *
    * @param {number} minValidity seconds left. (minValidity) is optional. Default value is 0.
    * @return {boolean}
    */
@@ -219,12 +219,12 @@ export class KeycloakService {
   }
 
   /**
-   * If the token expires within minValidity seconds the token is refreshed. If the 
+   * If the token expires within minValidity seconds the token is refreshed. If the
    * session status iframe is enabled, the session status is also checked.
-   * Returns a promise telling if the token was refreshed or not. If the session is not active 
+   * Returns a promise telling if the token was refreshed or not. If the session is not active
    * anymore, the promise is rejected.
-   * 
-   * @param {number} minValidity - seconds left. (minValidity is optional, if not specified 5 
+   *
+   * @param {number} minValidity - seconds left. (minValidity is optional, if not specified 5
    * is used)
    * @return {Promise<boolean>}
    */
@@ -248,9 +248,9 @@ export class KeycloakService {
 
   /**
    * Loads the users profile.
-   * Returns promise to set functions to be invoked if the profile was loaded successfully, or if 
+   * Returns promise to set functions to be invoked if the profile was loaded successfully, or if
    * the profile could not be loaded.
-   * 
+   *
    * @return {Promise<Keycloak.KeycloakProfile>}
    */
   loadUserProfile(forceReload: boolean = false): Promise<Keycloak.KeycloakProfile> {
@@ -272,9 +272,9 @@ export class KeycloakService {
   }
 
   /**
-   * Returns the authenticated token, calling updateToken to get a refreshed one if 
+   * Returns the authenticated token, calling updateToken to get a refreshed one if
    * necessary. If the session is expired this method calls the login method for a new login.
-   * 
+   *
    * @return {Promise<string>}
    */
   getToken(): Promise<string> {
@@ -301,7 +301,7 @@ export class KeycloakService {
   }
 
   /**
-   * Clear authentication state, including tokens. This can be useful if application 
+   * Clear authentication state, including tokens. This can be useful if application
    * has detected the session was expired, for example if updating token fails.
    * Invoking this results in onAuthLogout callback listener being invoked.
    */
@@ -310,10 +310,10 @@ export class KeycloakService {
   }
 
   /**
-   * Adds a valid token in header. The key & value format is: 
+   * Adds a valid token in header. The key & value format is:
    * Authorization Bearer <token>.
    * If the headers param is undefined it will create the Angular headers object.
-   * 
+   *
    * @param {Promise<Headers>} headers updated header with Authorization and Keycloak token.
    */
   addTokenToHeader(headersArg?: HttpHeaders): Observable<HttpHeaders> {
@@ -333,9 +333,9 @@ export class KeycloakService {
   }
 
   /**
-   * Returns the original Keycloak instance, if you need any customization that 
+   * Returns the original Keycloak instance, if you need any customization that
    * this Angular service does not support yet. Use with caution.
-   * 
+   *
    * @returns {@link Keycloak.KeycloakInstance}
    */
   getKeycloakInstance(): Keycloak.KeycloakInstance {

@@ -1,15 +1,15 @@
 /**
-* @license
-* Copyright Mauricio Gemelli Vigolo.
-*
-* Use of this source code is governed by a MIT-style license that can be
-* found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
-*/
+ * @license
+ * Copyright Mauricio Gemelli Vigolo.
+ *
+ * Use of this source code is governed by a MIT-style license that can be
+ * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
+ */
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { KeycloakService } from './';
 
 /**
- * A simple guard implementation out of the box. This class should be inherited and 
+ * A simple guard implementation out of the box. This class should be inherited and
  * implemented by the application. The only method that should be implemented is #isAccessAllowed.
  * The reason for this is that the authorization flow is usually not unique, so in this way you will
  * have more freedom to customize your authorization flow.
@@ -24,8 +24,19 @@ export abstract class KeycloakAuthGuard implements CanActivate {
    */
   protected roles: string[];
 
+  /**
+   * @param router
+   * @param keycloakAngular
+   */
   constructor(protected router: Router, protected keycloakAngular: KeycloakService) {}
 
+  /**
+   * CanActivate checks if the user is logged in and get the full list of roles (REALM + CLIENT)
+   * of the logged user. This values are set to authenticated and roles params.
+   *
+   * @param route
+   * @param state
+   */
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -41,9 +52,9 @@ export abstract class KeycloakAuthGuard implements CanActivate {
   }
 
   /**
-   * Create your own customized authorization flow in this method. From here you already known 
+   * Create your own customized authorization flow in this method. From here you already known
    * if the user is authenticated (this.authenticated) and the user roles (this.roles).
-   * 
+   *
    * @param {ActivatedRouteSnapshot} route
    * @param {RouterStateSnapshot} state
    */
