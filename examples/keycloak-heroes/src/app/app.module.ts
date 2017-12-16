@@ -5,7 +5,7 @@ import { ClarityModule } from 'clarity-angular';
 import { KeycloakAngularModule } from 'keycloak-angular';
 
 import { AppHeroesModule } from './app-heroes';
-import { AppRoutingModule } from './app-routing';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 @NgModule({
