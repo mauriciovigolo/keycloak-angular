@@ -1,21 +1,35 @@
-<div class="main-container">
-  <header class="header header-6">
-    keycloak-angular sandbox
-  </header>
-  <nav class="subnav">
-    <ul id="demoTabs" class="nav" role="tablist">
-      <li role="presentation" class="nav-item">
-        <a class="btn btn-link nav-link" routerLink="/heroes">Heroes</a>
-      </li>
-      <li role="presentation" class="nav-item">
-        <a class="btn btn-link nav-link" routerLink="/players">Players</a>
-      </li>
-      <li role="presentation" class="nav-item">
-        <a class="btn btn-link nav-link" routerLink="/teams">Teams</a>
-      </li>
-    </ul>
-  </nav>
+<clr-main-container>
+  <clr-header>
+    <div class="branding">
+      <a routerLink="/" class="nav-link">
+        <span class="logo"></span>
+      </a>
+      <span class="title">
+        <a href="https://github.com/mauriciovigolo/keycloak-angular" target="_blank">keycloak-angular</a>
+        - Dota Heroes
+      </span>
+    </div>
+    <div class="header-nav" [clr-nav-level]="1">
+      <a routerLink="/" class="active nav-link nav-text">Home</a>
+      <a class="nav-link nav-text" routerLink="/heroes">Heroes</a>
+      <a class="nav-link nav-text" routerLink="/players">Players</a>
+      <a class="nav-link nav-text" routerLink="/teams">Teams</a>
+    </div>
+    <div class="header-actions">
+      <clr-dropdown>
+        <button class="nav-icon" clrDropdownTrigger>
+          <clr-icon shape="user"></clr-icon>
+          <clr-icon shape="caret down"></clr-icon>
+        </button>
+        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+          <a href="#" clrDropdownItem>Log out</a>
+        </clr-dropdown-menu>
+      </clr-dropdown>
+    </div>
+  </clr-header>
   <div class="content-container">
-    <router-outlet></router-outlet>
+    <main class="content-area">
+      <router-outlet></router-outlet>
+    </main>
   </div>
-</div>
+</clr-main-container>

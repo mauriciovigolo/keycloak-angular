@@ -6,4 +6,5 @@ export interface Hero {
   attack_type?: string;
   roles?: string[];
   legs?: number;
+  image_url?: string;
 }

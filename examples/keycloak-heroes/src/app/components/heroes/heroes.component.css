@@ -1,0 +1,8 @@
+.heroes-small-image {
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50px 29px;
+  width: 50px;
+  height: 29px;
+}

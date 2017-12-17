@@ -1,9 +1,14 @@
-const dotaApi = `https://api.opendota.com/api`;
-const heroesApi = `${dotaApi}'/heroes`;
+import { environment } from '../../environments';
+
+const dotaApi = environment.apis.dota;
+const dotaImages = environment.assets.dotaImages;
+const heroesApi = `${dotaApi}/heroes`;
+const heroesImages = `${dotaImages}/heroes`;
 
 const pathValues = {
   dotaApi,
-  heroesApi
+  heroesApi,
+  heroesImages,
 };
 
-export default pathValues;
+export { pathValues };
