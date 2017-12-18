@@ -6,7 +6,7 @@
 export const environment = {
   production: false,
   assets: {
-    dotaImages: 'https://api.opendota.com/apps/dota2/images/'
+    dotaImages: 'https://api.opendota.com/apps/dota2/images'
   },
   apis: {
     dota: 'https://api.opendota.com/api'

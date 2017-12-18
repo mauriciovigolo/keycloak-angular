@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { Routes } from '@angular/router';
-import { HeroesComponent, PlayersComponent, TeamsComponent, HomeComponent, LoginComponent } from './components';
+import { HeroesComponent, HeroDetailsComponent, HomeComponent, LoginComponent } from './components';
 
 const routes: Routes = [
   {
@@ -23,17 +23,13 @@ const routes: Routes = [
     component: HeroesComponent
   },
   {
-    path: 'players',
-    component: PlayersComponent
-  },
-  {
-    path: 'teams',
-    component: TeamsComponent
+    path: 'heroes/:id',
+    component: HeroDetailsComponent
   }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {}

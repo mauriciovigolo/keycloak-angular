@@ -15,7 +15,7 @@
         <clr-dg-row *clrDgItems="let hero of heroes">
           <clr-dg-cell>
             <span class="heroes-small-image" [style.backgroundImage]="hero.image_url"></span>
-            {{hero.localized_name}}
+            <a routerLink="/heroes/{{hero.id}}">{{hero.localized_name}} ></a>
           </clr-dg-cell>
           <clr-dg-cell>
             {{hero.attack_type}}

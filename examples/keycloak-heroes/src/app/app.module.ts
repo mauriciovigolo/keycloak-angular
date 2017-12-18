@@ -4,16 +4,24 @@ import { HttpClientModule } from '@angular/common/http';
 import { ClarityModule } from 'clarity-angular';
 import { KeycloakAngularModule } from 'keycloak-angular';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { HeroesComponent, PlayersComponent, TeamsComponent } from './components';
+import {
+  AppComponent,
+  HeroesComponent,
+  HomeComponent,
+  LoginComponent,
+  HeroDetailsComponent
+} from './components';
 import { HeroesService } from './services';
-import { HomeComponent } from './components/home/home.component';
-import { LoginComponent } from './components/login/login.component';
-
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
-  declarations: [AppComponent, HeroesComponent, PlayersComponent, TeamsComponent, HomeComponent, LoginComponent ],
+  declarations: [
+    AppComponent,
+    HeroesComponent,
+    HomeComponent,
+    LoginComponent,
+    HeroDetailsComponent
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,

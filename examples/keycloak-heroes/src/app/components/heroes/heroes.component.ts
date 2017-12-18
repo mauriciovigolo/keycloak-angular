@@ -19,15 +19,6 @@ export class HeroesComponent implements OnInit {
   }
 
   listHeroes(): void {
-    this.heroesService.list().subscribe((heroes: Hero[]) => {
-      heroes.map(hero => {
-        let heroName = hero.localized_name.toLocaleLowerCase();
-        if (heroName.search(/(\s)|(\-)/ig) > 0) {
-          heroName = heroName.replace(' ', '_').replace('-', '');
-        }
-        hero.image_url = `url(${pathValues.heroesImages}/${heroName}_full.png)`;
-      });
-      this.heroes = heroes;
-    }, err => {});
+    this.heroesService.list().subscribe((heroes: Hero[]) => (this.heroes = heroes), err => {});
   }
 }
