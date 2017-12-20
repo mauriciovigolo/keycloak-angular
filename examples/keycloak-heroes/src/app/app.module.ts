@@ -1,8 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ClarityModule } from 'clarity-angular';
-import { KeycloakAngularModule } from 'keycloak-angular';
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
 import {
   AppComponent,
@@ -13,6 +13,7 @@ import {
 } from './components';
 import { HeroesService } from './services';
 import { AppRoutingModule } from './app-routing.module';
+import { initializer } from './utils/app-init';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,15 @@ import { AppRoutingModule } from './app-routing.module';
     KeycloakAngularModule,
     AppRoutingModule
   ],
-  providers: [HeroesService],
+  providers: [
+    HeroesService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializer,
+      multi: true,
+      deps: [KeycloakService]
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
