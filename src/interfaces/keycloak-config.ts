@@ -18,4 +18,12 @@ export interface KeycloakConfig {
    *
    */
   clientId: string;
+  /**
+   *
+   */
+  clientSecret?: string;
+  /**
+   *
+   */
+  credentials?: any;
 }
