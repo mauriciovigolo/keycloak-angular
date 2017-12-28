@@ -194,7 +194,7 @@ document.
 
 ## License
 
-Copyright (C) 2017 Mauricio Gemelli Vigolo
+Copyright (C) 2017 Mauricio Gemelli Vigolo and contributors.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
