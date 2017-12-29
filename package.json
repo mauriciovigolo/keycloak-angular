@@ -43,7 +43,6 @@
     "@angular/router": "^5.1.2",
     "@types/jasmine": "^2.6.0",
     "@types/jasminewd2": "^2.0.3",
-    "@types/keycloak-js": "^3.4.2",
     "@types/node": "^8.0.32",
     "codelyzer": "^3.2.0",
     "core-js": "^2.5.1",
