@@ -4,25 +4,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { ClarityModule } from 'clarity-angular';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
-import {
-  AppComponent,
-  HeroesComponent,
-  HomeComponent,
-  LoginComponent,
-  HeroDetailsComponent
-} from './components';
+import { AppComponent, HeroesComponent, HomeComponent } from './components';
 import { HeroesService } from './services';
 import { AppRoutingModule } from './app-routing.module';
 import { initializer } from './utils/app-init';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeroesComponent,
-    HomeComponent,
-    LoginComponent,
-    HeroDetailsComponent
-  ],
+  declarations: [AppComponent, HeroesComponent, HomeComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

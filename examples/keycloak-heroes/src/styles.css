@@ -19,6 +19,6 @@
   margin-right: 10px;
 }
 
-.content-container {
-  width: 100%;
+.main-container .content-container .content-area {
+  padding: 0 1rem 1rem 1rem !important;
 }
