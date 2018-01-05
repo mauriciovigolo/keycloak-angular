@@ -31,9 +31,11 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
    *
    * @param keycloak - Injected KeycloakService instance.
    */
-  constructor(private keycloak: KeycloakService) {
+  constructor(private keycloak: KeycloakService) {}
+
+  private loadExcludedUrlsRegex() {
     const excludedUrls: string[] = this.keycloak.getBearerExcludedUrls();
-    this.excludedUrlsRegex = excludedUrls.map(urlPattern => new RegExp(urlPattern, 'gi'));
+    this.excludedUrlsRegex = excludedUrls.map(urlPattern => new RegExp(urlPattern, 'gi')) || [];
   }
 
   /**
@@ -44,6 +46,15 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
    * @param next
    */
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    // If keycloak service is not initialized yet
+    if (!this.keycloak || !this.keycloak.getBearerExcludedUrls()) {
+      return next.handle(req);
+    }
+
+    if (!this.excludedUrlsRegex) {
+      this.loadExcludedUrlsRegex();
+    }
+
     const urlRequest = req.url;
     const shallPass: boolean = !!this.excludedUrlsRegex.find(regex => regex.test(urlRequest));
     if (shallPass) {
