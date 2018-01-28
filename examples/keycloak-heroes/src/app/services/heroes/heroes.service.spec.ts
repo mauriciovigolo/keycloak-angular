@@ -27,4 +27,14 @@ describe('HeroesService', () => {
       });
     })
   );
+
+  it(
+    'should list dota heroes returning a Promise',
+    inject([HeroesService], (service: HeroesService) => {
+      service.listToPromise().then(heroes => {
+        expect(heroes).toBeTruthy();
+        expect(heroes.length).toBeGreaterThan(0);
+      });
+    })
+  );
 });
