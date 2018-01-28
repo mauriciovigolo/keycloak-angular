@@ -6,9 +6,9 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
       try {
         await keycloak.init({
           config: {
-            url: 'http://localhost:8080/auth', // .ie: http://localhost:8080/auth/
-            realm: 'sandbox', // .ie: master
-            clientId: 'keycloak-heroes' // .ie: account
+            url: 'KEYCLOAK-INSTANCE-URL', // .ie: http://localhost:8080/auth/
+            realm: 'REALM-NAME', // .ie: master
+            clientId: 'CLIENT-ID-NAME' // .ie: account
           },
           initOptions: {
             onLoad: 'login-required',
