@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { Routes } from '@angular/router';
 import { HeroesComponent, HomeComponent } from './components';
+import { AppAuthGuard } from './app.authguard';
 
 const routes: Routes = [
   {
@@ -12,16 +13,19 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    component: HomeComponent
+    component: HomeComponent,
+    canActivate: [AppAuthGuard]
   },
   {
     path: 'heroes',
-    component: HeroesComponent
+    component: HeroesComponent,
+    canActivate: [AppAuthGuard]
   }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AppAuthGuard]
 })
 export class AppRoutingModule {}

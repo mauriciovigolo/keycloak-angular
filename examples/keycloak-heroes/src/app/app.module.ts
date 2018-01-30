@@ -7,6 +7,7 @@ import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { AppComponent, HeroesComponent, HomeComponent } from './components';
 import { HeroesService } from './services';
 import { AppRoutingModule } from './app-routing.module';
+import { AppAuthGuard } from './app.authguard';
 import { initializer } from './utils/app-init';
 
 @NgModule({
