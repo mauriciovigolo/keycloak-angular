@@ -35,7 +35,7 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
 
   private loadExcludedUrlsRegex() {
     const excludedUrls: string[] = this.keycloak.getBearerExcludedUrls();
-    this.excludedUrlsRegex = excludedUrls.map(urlPattern => new RegExp(urlPattern, 'gi')) || [];
+    this.excludedUrlsRegex = excludedUrls.map(urlPattern => new RegExp(urlPattern, 'i')) || [];
   }
 
   /**
