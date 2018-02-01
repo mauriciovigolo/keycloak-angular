@@ -12,9 +12,10 @@ import {
   HttpEvent,
   HttpHeaders
 } from '@angular/common/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { KeycloakService } from '../services';
+import 'rxjs/add/operator/mergeMap';
 
 /**
  * This interceptor includes the bearer by default in all HttpClient requests.
