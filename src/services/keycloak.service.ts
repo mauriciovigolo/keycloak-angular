@@ -9,7 +9,9 @@ import * as Keycloak from 'keycloak-js';
 import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { KeycloakConfig, KeycloakOptions } from '../interfaces';
-import { Observer, Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
+import 'rxjs/add/observable/create';
 
 /**
  * Service to expose existent methods from the Keycloak JS adapter, adding new
