@@ -1,5 +1,7 @@
 # Keycloak Angular
 
+[![Build Status](https://travis-ci.org/mauriciovigolo/keycloak-angular.svg?branch=master)](https://travis-ci.org/mauriciovigolo/keycloak-angular)
+
 [Keycloak-js](https://github.com/keycloak/keycloak-js-bower) port for Angular > v4.3 applications.
 
 ---
