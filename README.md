@@ -1,8 +1,11 @@
 # Keycloak Angular
 
 [![Build Status](https://travis-ci.org/mauriciovigolo/keycloak-angular.svg?branch=master)](https://travis-ci.org/mauriciovigolo/keycloak-angular)
+
+<!-- 
 [![Dependencies](https://david-dm.org/mauriciovigolo/keycloak-angular/status.svg)](https://david-dm.org/mauriciovigolo/keycloak-angular)
 [![DepDependencies](https://david-dm.org/mauriciovigolo/keycloak-angular/dev-status.svg)](https://david-dm.org/mauriciovigolo/keycloak-angular?type=dev)
+-->
 
 [Keycloak-js](https://github.com/keycloak/keycloak-js-bower) port for Angular > v4.3 applications.
 
