@@ -11,7 +11,6 @@ import { HttpHeaders } from '@angular/common/http';
 import { KeycloakConfig, KeycloakOptions } from '../interfaces';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
-import 'rxjs/add/observable/create';
 
 /**
  * Service to expose existent methods from the Keycloak JS adapter, adding new
