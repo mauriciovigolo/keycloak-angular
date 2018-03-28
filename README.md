@@ -1,6 +1,8 @@
 # Keycloak Angular
 
-[![Build Status](https://travis-ci.org/mauriciovigolo/keycloak-angular.svg?branch=master)](https://travis-ci.org/mauriciovigolo/keycloak-angular)
+[![Build Status](https://travis-ci.org/mauriciovigolo/keycloak-angular.svg?branch=master)]
+
+<script async defer src="https://slackin-iijwrzzihr.now.sh/slackin.js"></script>
 
 <!-- 
 [![Dependencies](https://david-dm.org/mauriciovigolo/keycloak-angular/status.svg)](https://david-dm.org/mauriciovigolo/keycloak-angular)
@@ -8,6 +10,8 @@
 -->
 
 [Keycloak-js](https://github.com/keycloak/keycloak-js-bower) port for Angular > v4.3 applications.
+
+<div style="text-align:center"><img src ="./docs/images/keycloak-angular.png" style="width:150px" /></div>
 
 ---
 
@@ -201,7 +205,7 @@ document.
 
 ## License
 
-Copyright (C) 2017 Mauricio Gemelli Vigolo and contributors.
+Copyright (C) 2018 Mauricio Gemelli Vigolo and contributors.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
