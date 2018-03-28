@@ -1,8 +1,9 @@
 # Keycloak Angular
 
-[![Build Status](https://travis-ci.org/mauriciovigolo/keycloak-angular.svg?branch=master)]
-
-<script async defer src="https://slackin-iijwrzzihr.now.sh/slackin.js"></script>
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Slack](https://slackin-iijwrzzihr.now.sh/badge.svg)](https://slackin-iijwrzzihr.now.sh)
+[![npm version](https://badge.fury.io/js/keycloak-angular.svg)](https://badge.fury.io/js/keycloak-angular)
+[![Build Status](https://travis-ci.org/mauriciovigolo/keycloak-angular.svg?branch=master)](https://travis-ci.org/mauriciovigolo/keycloak-angular)
 
 <!-- 
 [![Dependencies](https://david-dm.org/mauriciovigolo/keycloak-angular/status.svg)](https://david-dm.org/mauriciovigolo/keycloak-angular)
@@ -11,7 +12,7 @@
 
 [Keycloak-js](https://github.com/keycloak/keycloak-js-bower) port for Angular > v4.3 applications.
 
-<div style="text-align:center"><img src ="./docs/images/keycloak-angular.png" style="width:150px" /></div>
+![alt text](https://github.com/mauriciovigolo/keycloak-angular/blob/master/docs/images/keycloak-angular.png 'Keycloak Angular')
 
 ---
 
