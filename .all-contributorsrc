@@ -1,0 +1,12 @@
+{
+  "projectName": "keycloak-angular",
+  "projectOwner": "mauriciovigolo",
+  "repoType": "github",
+  "repoHost": "https://github.com/mauriciovigolo/keycloak-angular",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 50,
+  "commit": false,
+  "contributors": []
+}
