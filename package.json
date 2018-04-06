@@ -9,13 +9,10 @@
     "clean": "npx shx rm -rf ./build",
     "lint": "npx tslint --force --format verbose \"lib/**/*.ts\"",
     "test": "npx karma start",
-    "copy-files":
-      "npx shx mkdir -p ./build/keycloak-angular && npx shx cp -r {package.json,README.md,./src} ./build/keycloak-angular",
-    "remove-unwanted-files":
-      "npx shx rm -rf {./build/**/*.ts,./build/keycloak-angular/test,./build/keycloak-angular/*.spec*}",
+    "copy-files": "npx shx mkdir -p ./build/keycloak-angular && npx shx cp -r {package.json,README.md,./src} ./build/keycloak-angular",
+    "remove-unwanted-files": "npx shx rm -rf {./build/**/*.ts,./build/keycloak-angular/test,./build/keycloak-angular/*.spec*}",
     "compile": "npx ngc -p ./tsconfig.json",
-    "build":
-      "npm run clean && npm run copy-files && npm run remove-unwanted-files && npm run compile"
+    "build": "npm run clean && npm run copy-files && npm run remove-unwanted-files && npm run compile"
   },
   "repository": {
     "type": "git",
@@ -67,7 +64,6 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "karma-typescript": "^3.0.12",
-    "mock-server": "^1.3.3",
     "protractor": "~5.1.2",
     "rxjs": "^5.0.1",
     "shx": "^0.2.2",
