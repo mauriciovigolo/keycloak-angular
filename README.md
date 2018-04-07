@@ -196,7 +196,7 @@ There is also the possibility to exclude a list of URLs that should not have the
 
 ## Contributing
 
-If you want to contribute to the project, please check out the [contributing](CONTRIBUTING.md)
+If you want to contribute to the project, please check out the [contributing](docs/CONTRIBUTING.md)
 document.
 
 ## License
