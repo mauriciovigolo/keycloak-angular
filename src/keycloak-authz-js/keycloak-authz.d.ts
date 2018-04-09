@@ -18,7 +18,7 @@
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-import * as Keycloak from 'keycloak';
+import * as Keycloak from 'keycloak-js';
 
 export as namespace KeycloakAuthorization;
 
@@ -35,6 +35,14 @@ declare namespace KeycloakAuthorization {
 		then(onGrant: (rpt: string) => void, onDeny: () => void, onError: () => void): void;
 	}
 
+	interface KeycloakAuthorizationRequest {
+		permissions?:any,
+		ticket?:any,
+		submitRequest?:any,
+		metadata?:any,
+		incrementalAuthorization?:any
+	}
+
 	interface KeycloakAuthorizationInstance {
 		rpt: any;
 		config: { rpt_endpoint: string };
@@ -49,7 +57,7 @@ declare namespace KeycloakAuthorization {
 		 * necessary information to ask a Keycloak server for authorization data using both UMA and Entitlement protocol,
 		 * depending on how the policy enforcer at the resource server was configured.
 		 */
-		authorize(wwwAuthenticateHeader: string): KeycloakAuthorizationPromise;
+		authorize(wwwAuthenticateHeader: KeycloakAuthorizationRequest): KeycloakAuthorizationPromise;
 
 		/**
 		 * Obtains all entitlements from a Keycloak server based on a given resourceServerId.
