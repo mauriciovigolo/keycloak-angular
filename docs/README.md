@@ -88,8 +88,8 @@ export class AppModule {}
 
 #### initializer Function
 
-This function can be named and placed in the way you think is most appropriate. In the
-underneath example it was placed in a separate file `app-init.ts` and the function was called
+This function can be named and placed in the way you think is most appropriate. The
+underneath example was put in a separate file `app-init.ts` and the function called
 `initializer`.
 
 ```js
@@ -114,10 +114,10 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
 Besides configuring the keycloak lib in your application it is also necessary to setup the
 access - scope for the **account** client.
 
-In this documentation we assume that you already installed and configured your Keycloak
+In this documentation we suppose that you already installed and configured your Keycloak
 instance, as well created the client app.
 
-**Hint:** If you need to create an environment for testing purposes, try out the [Keycloak demo](http://www.keycloak.org/downloads.html) or the official [keycloak docker image](https://hub.docker.com/r/jboss/keycloak/).
+**Hint:** If you need to create an environment for testing purposes, try out the [Keycloak demo](http://www.keycloak.org/downloads.html).
 
 #### Client configuration
 
