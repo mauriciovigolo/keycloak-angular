@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/mauriciovigolo/keycloak-angular#readme",
   "dependencies": {
-    "keycloak-js": "~3.4.3"
+    "keycloak-js": "^4.0.0-beta.1"
   },
   "devDependencies": {
     "@angular/common": "^4.4.6",
