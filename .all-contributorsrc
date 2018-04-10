@@ -2,11 +2,53 @@
   "projectName": "keycloak-angular",
   "projectOwner": "mauriciovigolo",
   "repoType": "github",
-  "repoHost": "https://github.com/mauriciovigolo/keycloak-angular",
+  "repoHost": "https://github.com",
   "files": [
     "README.md"
   ],
   "imageSize": 50,
   "commit": false,
-  "contributors": []
+  "contributors": [
+    {
+      "login": "mauriciovigolo",
+      "name": "Mauricio Gemelli Vigolo",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/676270?v=4",
+      "profile": "https://github.com/mauriciovigolo",
+      "contributions": [
+        "question",
+        "bug",
+        "code",
+        "doc",
+        "example",
+        "ideas",
+        "review",
+        "test"
+      ]
+    },
+    {
+      "login": "frederikprijck",
+      "name": "Frederik Prijck",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/2146903?v=4",
+      "profile": "http://www.frederikprijck.net",
+      "contributions": [
+        "question",
+        "code",
+        "doc",
+        "ideas"
+      ]
+    },
+    {
+      "login": "aelkz",
+      "name": "Raphael Alex Silva Abreu",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/14264577?v=4",
+      "profile": "https://linkedin.com/in/raphaelalex",
+      "contributions": [
+        "question",
+        "code",
+        "doc",
+        "example",
+        "ideas"
+      ]
+    }
+  ]
 }

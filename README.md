@@ -1,6 +1,6 @@
 # Keycloak Angular
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-0-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Slack](https://slackin-iijwrzzihr.now.sh/badge.svg)](https://slackin-iijwrzzihr.now.sh)
 [![npm version](https://badge.fury.io/js/keycloak-angular.svg)](https://badge.fury.io/js/keycloak-angular)
@@ -200,8 +200,9 @@ There is also the possibility to exclude a list of URLs that should not have the
 ## Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-
 <!-- prettier-ignore -->
+| [<img src="https://avatars3.githubusercontent.com/u/676270?v=4" width="50px;"/><br /><sub><b>Mauricio Gemelli Vigolo</b></sub>](https://github.com/mauriciovigolo)<br />[💬](#question-mauriciovigolo "Answering Questions") [🐛](https://github.com/mauriciovigolo/keycloak-angular/issues?q=author%3Amauriciovigolo "Bug reports") [💻](https://github.com/mauriciovigolo/keycloak-angular/commits?author=mauriciovigolo "Code") [📖](https://github.com/mauriciovigolo/keycloak-angular/commits?author=mauriciovigolo "Documentation") [💡](#example-mauriciovigolo "Examples") [🤔](#ideas-mauriciovigolo "Ideas, Planning, & Feedback") [👀](#review-mauriciovigolo "Reviewed Pull Requests") [⚠️](https://github.com/mauriciovigolo/keycloak-angular/commits?author=mauriciovigolo "Tests") | [<img src="https://avatars0.githubusercontent.com/u/2146903?v=4" width="50px;"/><br /><sub><b>Frederik Prijck</b></sub>](http://www.frederikprijck.net)<br />[💬](#question-frederikprijck "Answering Questions") [💻](https://github.com/mauriciovigolo/keycloak-angular/commits?author=frederikprijck "Code") [📖](https://github.com/mauriciovigolo/keycloak-angular/commits?author=frederikprijck "Documentation") [🤔](#ideas-frederikprijck "Ideas, Planning, & Feedback") | [<img src="https://avatars3.githubusercontent.com/u/14264577?v=4" width="50px;"/><br /><sub><b>Raphael Alex Silva Abreu</b></sub>](https://linkedin.com/in/raphaelalex)<br />[💬](#question-aelkz "Answering Questions") [💻](https://github.com/mauriciovigolo/keycloak-angular/commits?author=aelkz "Code") [📖](https://github.com/mauriciovigolo/keycloak-angular/commits?author=aelkz "Documentation") [💡](#example-aelkz "Examples") [🤔](#ideas-aelkz "Ideas, Planning, & Feedback") |
+| :---: | :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 If you want to contribute to the project, please check out the [contributing](docs/CONTRIBUTING.md)
