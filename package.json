@@ -10,7 +10,7 @@
     "copy-files":
       "npx shx mkdir -p ./build/keycloak-angular && npx shx cp -r {package.json,README.md,./src} ./build/keycloak-angular",
     "remove-unwanted-files":
-      "npx shx rm -rf {./build/**/*.ts,./build/keycloak-angular/test,./build/keycloak-angular/*.spec*}",
+    "npx shx rm -rf {./build/**/!(keycloak-authz.d).ts,./build/keycloak-angular/test,./build/keycloak-angular/*.spec*}",
     "compile": "npx ngc -p ./tsconfig.json",
     "build":
       "npm run clean && npm run copy-files && npm run remove-unwanted-files && npm run compile"
