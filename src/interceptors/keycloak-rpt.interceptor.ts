@@ -94,7 +94,7 @@ export class KeycloakRptInterceptor implements HttpInterceptor {
       const kcReq = req.clone({ headers: headersWithRPTorAccessToken });
       return next.handle(kcReq).catch((error, caught) => {
         // if error is with code 401 (Authorization error) and the www-authenticate is present try to get valid RPT
-        if (this.isAuthError(error) && this.hasResponseWWWAuthenthicateHeader(error)) {
+        if (this.isAuthError(error) && this.hasResponseWWWAuthenthicateHeader(error) && this.keycloak.getResourceServerAuthorizationType() == 'uma') {
           //make sure that the access token is fresh, a valid access token is needed to obtain an RPT
           let updateTokenObservable = Observable.fromPromise(this.keycloak.updateToken(10));
           return updateTokenObservable.switchMap(wasRefreshed => {
@@ -113,7 +113,7 @@ export class KeycloakRptInterceptor implements HttpInterceptor {
               }
             }
             // if failed to extract the ticket string
-            if (ticket == null && this.keycloak.getResourceServerAuthorizationType() == 'uma') {
+            if (ticket == null) {
               return Observable.throw(error);
             }
 
