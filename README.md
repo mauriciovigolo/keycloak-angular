@@ -222,7 +222,7 @@ There is also the possibility to exclude a list of URLs that should not have the
 } catch (error) {}
 ```
 
-## HttpClient RPT Interceptor with Entitlement API
+#### Entitlement API
 
 It is also possible to use the RPT interceptor with the Resource server which do not have UMA activated. Then the RPT Interceptor uses entitlement API to obtain RPT.
 
@@ -250,7 +250,7 @@ For example:
 } catch (error) {}
 ```
 
-## HttpClient RPT Interceptor with Authorization Request Template
+#### Authorization Request Template
 
 It is possible to specify additional parameters for all authorization requests as described in https://www.keycloak.org/docs/latest/authorization_services/index.html#authorization-request.
 
