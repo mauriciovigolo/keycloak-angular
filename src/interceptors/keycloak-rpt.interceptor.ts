@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright Mauricio Gemelli Vigolo and contributors.
+ * Copyright Swisscom (Schweiz) AG, Mauricio Gemelli Vigolo and contributors.
  *
  * Use of this source code is governed by a MIT-style license that can be
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
@@ -54,7 +54,6 @@ export class KeycloakRptInterceptor implements HttpInterceptor {
    * @param next
    */
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('KeycloakRptInterceptor');
 
     // If keycloak service is not initialized yet, or if authorization is not enabled or exclude URLs are not set
     if (
@@ -62,7 +61,6 @@ export class KeycloakRptInterceptor implements HttpInterceptor {
       !this.keycloak.isEnabledAuthorization ||
       !this.keycloak.getRptExcludedUrls()
     ) {
-      console.log('KeycloakRptInterceptor skip 1');
       return next.handle(req);
     }
 
@@ -74,7 +72,6 @@ export class KeycloakRptInterceptor implements HttpInterceptor {
 
     const shallPass: boolean = !!this.excludedUrlsRegex.find(regex => regex.test(urlRequest));
     if (shallPass) {
-      console.log('KeycloakRptInterceptor skip 2');
       return next.handle(req);
     }
 
