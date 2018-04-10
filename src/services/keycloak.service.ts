@@ -80,6 +80,13 @@ export class KeycloakService {
         .success(async authenticated => {
           if (this._isEnabledAuthorization) {
             this.authzInstance = KeycloakAuthorization(this.instance);
+            this.authorizationRequestTemplate = options.authorizationRequestTemplate || {};
+            this.resourceServerAuthorizationType = options.resourceServerAuthorizationType || "uma";
+            this.resourceServerAuthorizationType=this.resourceServerAuthorizationType.toLowerCase();
+            if(this.resourceServerAuthorizationType!=="uma" && this.resourceServerAuthorizationType!=="entitlement"){
+              options.resourceServerAuthorizationType="uma";
+            }
+            this.resourceServerID=options.resourceServerID || "";
           }
           if (authenticated) {
             await this.loadUserProfile();
@@ -426,4 +433,26 @@ export class KeycloakService {
   get isEnabledAuthorization(): boolean {
     return this._isEnabledAuthorization;
   }
+  /**
+   * Returns the excluded URLs that should not be considered by
+   * the RPT http interceptor which automatically adds the authorization header in the Http Request.
+   */
+  getAuthorizationRequestTemplate(): {
+    permissions?: any;
+    ticket?: any;
+    submitRequest?: any;
+    metadata?: any;
+    incrementalAuthorization?: any;
+  } {
+    return this.authorizationRequestTemplate;
+  }
+
+  getResourceServerAuthorizationType(): string{
+    return this.resourceServerAuthorizationType;
+  };
+  
+  getResourceServerID(): string{
+    return this.resourceServerID;
+  };
+
 }

@@ -42,4 +42,26 @@ export interface KeycloakOptions {
    * Default is false.
    */
   enableAuthorization?: boolean;
+  /**
+   * Object with following optional keys: permissions, ticket, submitRequest, metadata, incrementalAuthorization.
+   * Server as a template for an Authroization Request consumed by functions
+   * KeycloakAuthorizationInstance.authorize() and KeycloakAuthorizationInstance.entitlement().
+   */
+  authorizationRequestTemplate?: {
+    permissions?: any;
+    ticket?: any;
+    submitRequest?: any;
+    metadata?: any;
+    incrementalAuthorization?: any;
+  };
+  /**
+   * String "uma" or "entitlement" specifies, which function of the two functions
+   * KeycloakAuthorizationInstance.authorize() or KeycloakAuthorizationInstance.entitlement()
+   * will be used to obtain RPT. When not set, UMA is used.
+   */
+  resourceServerAuthorizationType?: string;
+  /**
+   * Resource server ID, only needed when resourceServerAuthorizationType is set to "entitlement";
+   */
+  resourceServerID?: string;
 }

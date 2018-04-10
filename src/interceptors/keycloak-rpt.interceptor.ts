@@ -96,10 +96,8 @@ export class KeycloakRptInterceptor implements HttpInterceptor {
     return headersWithRPTorAccessToken$.switchMap(headersWithRPTorAccessToken => {
       const kcReq = req.clone({ headers: headersWithRPTorAccessToken });
       return next.handle(kcReq).catch((error, caught) => {
-        // if error is with code 401 (Authorization error) and the www-authenticate is present
-        // or when entitlement API is to be used try to get valid RPT
-        if (this.isAuthError(error) && this.hasResponseWWWAuthenthicateHeader(error)
-        ) {
+        // if error is with code 401 (Authorization error) and the www-authenticate is present try to get valid RPT
+        if (this.isAuthError(error) && this.hasResponseWWWAuthenthicateHeader(error)) {
           //make sure that the access token is fresh, a valid access token is needed to obtain an RPT
           let updateTokenObservable = Observable.fromPromise(this.keycloak.updateToken(10));
           return updateTokenObservable.switchMap(wasRefreshed => {
@@ -118,7 +116,7 @@ export class KeycloakRptInterceptor implements HttpInterceptor {
               }
             }
             // if failed to extract the ticket string
-            if (ticket == null) {
+            if (ticket == null && this.keycloak.getResourceServerAuthorizationType() == 'uma') {
               return Observable.throw(error);
             }
 
@@ -127,7 +125,6 @@ export class KeycloakRptInterceptor implements HttpInterceptor {
               ...this.keycloak.getKeycloakAuthorizationInstance,
               ticket
             };
-
             return this.getNewRPT(authorizationRequest)
               .catch(e => {
                 return Observable.throw(error);
@@ -138,6 +135,19 @@ export class KeycloakRptInterceptor implements HttpInterceptor {
                 return next.handle(kcReq);
               });
           });
+          // when entitlement API is to be used try to get valid RPT
+        } else if (this.keycloak.getResourceServerAuthorizationType() == 'entitlement') {
+          //construct authorization request
+          let authorizationRequest: KeycloakAuthorization.KeycloakAuthorizationRequest = this.keycloak.getAuthorizationRequestTemplate;
+          return this.getNewRPT(authorizationRequest)
+            .catch(e => {
+              return Observable.throw(error);
+            })
+            .switchMap(rpt => {
+              let headersWithRpt: HttpHeaders = this.keycloak.addRPTToHeader(req.headers);
+              const kcReq = req.clone({ headers: headersWithRpt });
+              return next.handle(kcReq);
+            });
         } else {
           return Observable.throw(error);
         }
@@ -158,6 +168,21 @@ export class KeycloakRptInterceptor implements HttpInterceptor {
 
     return Observable.create(async (observer: Observer<any>) => {
       try {
+        if (this.keycloak.getResourceServerAuthorizationType() == 'entitlement') {
+          authz.entitlement(this.keycloak.getResourceServerID(), authorizationRequest).then(
+            rpt => {
+              observer.next(rpt);
+              observer.complete();
+            },
+            () => {
+              observer.error('Authorization request was denied by the server.');
+            },
+            () => {
+              observer.error('Could not obtain authorization data from server.');
+            }
+          );
+        } else {
+          if (this.keycloak.getResourceServerAuthorizationType() == 'uma') {
             authz.authorize(authorizationRequest).then(
               rpt => {
                 observer.next(rpt);
@@ -169,7 +194,9 @@ export class KeycloakRptInterceptor implements HttpInterceptor {
               () => {
                 observer.error('Could not obtain authorization data from server.');
               }
-            );        
+            );
+          }
+        }
       } catch (error) {
         observer.error(error);
       }
