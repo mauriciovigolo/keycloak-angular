@@ -6,7 +6,7 @@
   "files": [
     "README.md"
   ],
-  "imageSize": 50,
+  "imageSize": 100,
   "commit": false,
   "contributors": [
     {
@@ -15,14 +15,7 @@
       "avatar_url": "https://avatars3.githubusercontent.com/u/676270?v=4",
       "profile": "https://github.com/mauriciovigolo",
       "contributions": [
-        "question",
-        "bug",
-        "code",
-        "doc",
-        "example",
-        "ideas",
-        "review",
-        "test"
+        
       ]
     },
     {
@@ -31,10 +24,7 @@
       "avatar_url": "https://avatars0.githubusercontent.com/u/2146903?v=4",
       "profile": "http://www.frederikprijck.net",
       "contributions": [
-        "question",
-        "code",
-        "doc",
-        "ideas"
+
       ]
     },
     {
@@ -43,11 +33,7 @@
       "avatar_url": "https://avatars3.githubusercontent.com/u/14264577?v=4",
       "profile": "https://linkedin.com/in/raphaelalex",
       "contributions": [
-        "question",
-        "code",
-        "doc",
-        "example",
-        "ideas"
+
       ]
     }
   ]
