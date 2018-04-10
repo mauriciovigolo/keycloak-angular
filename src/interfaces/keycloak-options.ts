@@ -31,4 +31,15 @@ export interface KeycloakOptions {
    * token to the request.
    */
   bearerExcludedUrls?: string[];
+  /**
+   * String Array to exclude the urls that should not have the Authorization Header automatically
+   * added. This library makes use of Angular Http Interceptor, to automatically add the RPT
+   * token to the request. Here you should exclude urls which do not go to your resource server.
+   */
+  rptExcludedUrls?: string[];
+  /**
+   * If true, the KeycloakAuthorization is initialized and KeycloakRptInterceptor is activated.
+   * Default is false.
+   */
+  enableAuthorization?: boolean;
 }

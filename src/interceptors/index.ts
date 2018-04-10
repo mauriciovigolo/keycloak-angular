@@ -6,3 +6,4 @@
  * found in the LICENSE file at https://github.org/mauriciovigolo/keycloak-angular/LICENSE
  */
 export * from './keycloak-bearer.interceptor';
+export * from './keycloak-rpt.interceptor';

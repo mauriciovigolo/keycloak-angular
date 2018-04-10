@@ -7,7 +7,7 @@
  */
 import { NgModule } from '@angular/core';
 import { KeycloakService } from './services';
-import { KeycloakBearerInterceptor } from './interceptors';
+import { KeycloakBearerInterceptor, KeycloakRptInterceptor } from './interceptors';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 /**
@@ -21,6 +21,11 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: KeycloakBearerInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: KeycloakRptInterceptor,
       multi: true
     }
   ]
