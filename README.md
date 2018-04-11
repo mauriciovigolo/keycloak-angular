@@ -196,7 +196,7 @@ There is also the possibility to exclude a list of URLs that should not have the
 
 ## HttpClient RPT Interceptor
 
-It is possbile to activate RPT interceptor which adds RPT (requesting party token) to all HttpClient requests. Set `enableAuthorization` to true to enable the RPT Interceptor. The RPT will be added into Authorization header in the format of: Authorization: Bearer **_RPT_**. In this case the default can be deactivated by setting `bearerExcludedUrls` to exclude all paths.
+It is possbile to activate RPT interceptor which adds RPT (requesting party token) to all HttpClient requests. Set `enableAuthorization` to true to enable the RPT Interceptor. The RPT will be added into Authorization header in the format of: Authorization: Bearer **_RPT_**. In this case the bearer token interceptor can be deactivated by setting `bearerExcludedUrls` to exclude all paths (see example below).
 
 By default the RPT Interceptor uses the UMA (v2) API to support resource servers with UMA enabled policy enforcer. RPT Interceptor works with UMA 2 shipped with Keycloak 4.0.0 Beta1.
 
