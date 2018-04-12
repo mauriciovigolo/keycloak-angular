@@ -1,6 +1,6 @@
 # Keycloak Angular
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Slack](https://slackin-iijwrzzihr.now.sh/badge.svg)](https://slackin-iijwrzzihr.now.sh)
 [![npm version](https://badge.fury.io/js/keycloak-angular.svg)](https://badge.fury.io/js/keycloak-angular)
@@ -21,7 +21,7 @@
   * [Keycloak](#keycloak)
 * [AuthGuard](#authguard)
 * [HttpClient Interceptor](#httpclient-interceptor)
-* [Contributing](#contributing)
+* [Contributors](#contributors)
 * [License](#license)
 
 ---
@@ -202,8 +202,8 @@ There is also the possibility to exclude a list of URLs that should not have the
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 
 <!-- prettier-ignore -->
-| [<img src="https://avatars3.githubusercontent.com/u/676270?v=4" width="100px;"/><br /><sub><b>Mauricio Gemelli Vigolo</b></sub>](https://github.com/mauriciovigolo) | [<img src="https://avatars0.githubusercontent.com/u/2146903?v=4" width="100px;"/><br /><sub><b>Frederik Prijck</b></sub>](https://github.com/frederikprijck) | [<img src="https://avatars3.githubusercontent.com/u/14264577?v=4" width="100px;"/><br /><sub><b>Raphael Alex Silva Abreu</b></sub>](https://github.com/aelkz)|
-| :---: | :---: | :---: |
+| [<img src="https://avatars0.githubusercontent.com/u/2146903?v=4" width="100px;"/><br /><sub><b>Frederik Prijck</b></sub>](https://github.com/frederikprijck)<br /> | [<img src="https://avatars1.githubusercontent.com/u/980278?v=4" width="100px;"/><br /><sub><b>jmparra</b></sub>](https://github.com/jmparra)<br /> | [<img src="https://avatars2.githubusercontent.com/u/6547340?v=4" width="100px;"/><br /><sub><b>Marcel Német</b></sub>](https://github.com/marcelnem)<br /> | [<img src="https://avatars3.githubusercontent.com/u/676270?v=4" width="100px;"/><br /><sub><b>Mauricio Gemelli Vigolo</b></sub>](https://github.com/mauriciovigolo)<br /> | [<img src="https://avatars3.githubusercontent.com/u/14264577?v=4" width="100px;"/><br /><sub><b>Raphael Alex Silva Abreu</b></sub>](https://github.com/aelkz)<br /> |
+| :---: | :---: | :---: | :---: | :---: |
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
@@ -212,4 +212,6 @@ document.
 
 ## License
 
-MIT
+**keycloak-angular** is licensed under the **[MIT](LICENSE)**.
+
+[keycloak-js](https://github.com/keycloak/keycloak-js-bower) is licensed under the **Apache 2.0**.

@@ -3346,7 +3346,7 @@ karma@~1.7.0:
     tmp "0.0.31"
     useragent "^2.1.12"
 
-keycloak-angular@^1.2.4:
+keycloak-angular@^1.2.5:
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/keycloak-angular/-/keycloak-angular-1.2.5.tgz#d9c2fa817fd21003d6a85ba695d3b07034520190"
   dependencies:
