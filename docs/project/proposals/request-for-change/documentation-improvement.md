@@ -16,11 +16,11 @@ The project needs a better documentation, including the API documentation, struc
 * Created in: 04/09/2018
 * Github user: [mauriciovigolo](https://github.com/mauriciovigolo)
 
-### Versions
+### History
 
-|    Date    | Version |                        User                         | Details                          |
-| :--------: | :-----: | :-------------------------------------------------: | -------------------------------- |
-| 04/09/2018 |  1.0.0  | [mauriciovigolo](https://github.com/mauriciovigolo) | Initial version of this document |
+|    Date    |                        User                         | Details                          |
+| :--------: | :-------------------------------------------------: | -------------------------------- |
+| 04/09/2018 | [mauriciovigolo](https://github.com/mauriciovigolo) | Initial version of this document |
 
 ## Reason to add
 
@@ -64,17 +64,16 @@ The new readme will have the following topics:
 
 ### Project Folder
 
-A project folder will be created inside the docs. It will shelter the proposals and the roadmap.
+A project folder will be created inside the docs. It will shelter the proposals and the project roadmap.
 
 The proposals folder will have the following structure:
 
-* request-for-change:
-* to-be-evaluated:
-* in-progress:
-* done:
-* to-be-evaluated:
+* request-for-change: folder to place the proposal for a new feature or library enhancement.
+* to-be-evaluated: after requesting the team will analyse the RFC and check if it is worth to be included.
+* in-progress: after evaluation the proposal will be developed. In this phase it will be in the in-progress folder.
+* done: after developed and incorporated to the library, the document will be placed in this folder. Then the documentation will be updated in accordance to this doc and will be available for future access.
 
-<TBD> // End this documentation and the content explanation for which folder.
+**Why it is important to document the proposals?** Because it is a way to better think about a new feature, get the community opinion and if approved it will help to built the library documentation.
 
 ### API Documentation
 
