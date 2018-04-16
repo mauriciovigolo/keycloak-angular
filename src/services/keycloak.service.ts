@@ -5,12 +5,15 @@
  * Use of this source code is governed by a MIT-style license that can be
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
  */
-import * as Keycloak from 'keycloak-js';
 import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
-import { KeycloakConfig, KeycloakOptions } from '../interfaces';
+
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
+
+import * as Keycloak from 'keycloak-js';
+
+import { KeycloakConfig, KeycloakOptions } from '../interfaces';
 
 /**
  * Service to expose existent methods from the Keycloak JS adapter, adding new
@@ -24,6 +27,7 @@ export class KeycloakService {
   private instance: Keycloak.KeycloakInstance;
   private userProfile: Keycloak.KeycloakProfile;
   private bearerExcludedUrls: string[];
+  private bearerPrefix: string;
 
   /**
    * Keycloak initialization. It should be called to initialize the adapter.
@@ -54,11 +58,20 @@ export class KeycloakService {
    * with OpenID Connect parameters added in URL fragment. This is generally safer and
    * recommended over query.
    * - flow: Set the OpenID Connect flow. Valid values are standard, implicit or hybrid.
+   *
+   * bearerExcludedUrls:
+   * String Array to exclude the urls that should not have the Authorization Header automatically
+   * added.
+   *
+   * bearerPrefix:
+   * This value will be included in the Authorization Http Header param.
+   *
    * @return {Promise<boolean>}
    */
   init(options: KeycloakOptions = {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.bearerExcludedUrls = options.bearerExcludedUrls || [];
+      this.bearerPrefix = options.bearerPrefix || 'bearer';
       this.instance = Keycloak(options.config);
       this.instance
         .init(options.initOptions!)
@@ -187,7 +200,8 @@ export class KeycloakService {
       }
     }
     if (allRoles && this.instance.realmAccess) {
-      roles = this.instance.realmAccess['roles'] || [];
+      let realmRoles = this.instance.realmAccess['roles'] || [];
+      roles.push(...realmRoles);
     }
     return roles;
   }
@@ -325,7 +339,7 @@ export class KeycloakService {
       }
       try {
         const token: string = await this.getToken();
-        headers = headers.set('Authorization', 'bearer ' + token);
+        headers = headers.set('Authorization', this.bearerPrefix + token);
         observer.next(headers);
         observer.complete();
       } catch (error) {
