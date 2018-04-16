@@ -1,4 +1,4 @@
-# Proposal: <feature-name>
+# Proposal: Create BDD Project Tests
 
 Brief description.
 

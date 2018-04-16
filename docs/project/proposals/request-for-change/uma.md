@@ -1,4 +1,4 @@
-# Proposal: <feature-name>
+# Proposal: User Management Authorization
 
 Brief description.
 

@@ -10,12 +10,12 @@ The project needs a better documentation, including the API documentation, struc
 * [History](#his)
 * [Reason to add](#rta)
 * [Implementation Details](#imd)
-* [README Modification](#rdm)
-* [Project Folder](#pjf)
-* [API Documentation](#api)
-* [Creation of Missing Documentation Files](#cmd)
-* [Generate Site with Docsify](#gsd)
-* [Github (.github) Config File](#ghc)
+  * [README Modification](#rdm)
+  * [Project Folder](#pjf)
+  * [API Documentation](#api)
+  * [Creation of Missing Documentation Files](#cmd)
+  * [Generate Site with Docsify](#gsd)
+  * [Github (.github) Config File](#ghc)
 
 ---
 
