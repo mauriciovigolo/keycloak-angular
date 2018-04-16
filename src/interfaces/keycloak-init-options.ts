@@ -50,7 +50,7 @@ export interface KeycloakInitOptions {
    * Set the interval to check login state (in seconds).
    * @default 5
    */
-  checkLoginIframeInterval?: boolean;
+  checkLoginIframeInterval?: number | any;
   /**
    * Set the OpenID Connect response mode to send to Keycloak upon login.
    * @default fragment After successful authentication Keycloak will redirect
