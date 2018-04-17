@@ -30,6 +30,18 @@ export class KeycloakService {
   private bearerPrefix: string;
 
   /**
+   * Sanitizes the bearer prefix, preparing it to be appended to
+   * the token.
+   *
+   * @param bearerPrefix - prefix to be appended to the authorization header as
+   * Authorization: <bearer-prefix> <token>.
+   */
+  private sanitizeBearerPrefix(bearerPrefix: string | undefined): string {
+    let prefix: string = (bearerPrefix || 'bearer').trim();
+    return prefix.concat(' ');
+  }
+
+  /**
    * Keycloak initialization. It should be called to initialize the adapter.
    * Options is a object with 2 main parameters: config and initOptions. The first one
    * will be used to create the Keycloak instance. The second one are options to initialize the
@@ -71,7 +83,7 @@ export class KeycloakService {
   init(options: KeycloakOptions = {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.bearerExcludedUrls = options.bearerExcludedUrls || [];
-      this.bearerPrefix = options.bearerPrefix || 'bearer';
+      this.bearerPrefix = this.sanitizeBearerPrefix(options.bearerPrefix);
       this.instance = Keycloak(options.config);
       this.instance
         .init(options.initOptions!)
