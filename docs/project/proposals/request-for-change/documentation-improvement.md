@@ -22,14 +22,14 @@ The project needs a better documentation, including the API documentation, struc
 ## <a name="prb"></a> Proposed By
 
 * Name: Mauricio Gemelli Vigolo
-* Created in: 04/09/2018
+* Created in: 2018-04-09
 * Github user: [mauriciovigolo](https://github.com/mauriciovigolo)
 
 ### <a name="his"></a> History
 
 |    Date    |                        User                         | Details                          |
 | :--------: | :-------------------------------------------------: | -------------------------------- |
-| 04/09/2018 | [mauriciovigolo](https://github.com/mauriciovigolo) | Initial version of this document |
+| 2018-04-09 | [mauriciovigolo](https://github.com/mauriciovigolo) | Initial version of this document |
 
 ## <a name="rta"></a> Reason to add
 
