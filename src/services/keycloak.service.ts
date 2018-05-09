@@ -28,6 +28,7 @@ export class KeycloakService {
   private userProfile: Keycloak.KeycloakProfile;
   private bearerExcludedUrls: string[];
   private bearerPrefix: string;
+  private authorizationHeaderName: string;
 
   /**
    * Sanitizes the bearer prefix, preparing it to be appended to
@@ -75,6 +76,9 @@ export class KeycloakService {
    * String Array to exclude the urls that should not have the Authorization Header automatically
    * added.
    *
+   * authorizationHeaderName:
+   * This value will be used as the Authorization Http Header name.
+   * 
    * bearerPrefix:
    * This value will be included in the Authorization Http Header param.
    *
@@ -83,6 +87,7 @@ export class KeycloakService {
   init(options: KeycloakOptions = {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.bearerExcludedUrls = options.bearerExcludedUrls || [];
+      this.authorizationHeaderName = options.authorizationHeaderName || 'Authorization';
       this.bearerPrefix = this.sanitizeBearerPrefix(options.bearerPrefix);
       this.instance = Keycloak(options.config);
       this.instance
@@ -351,7 +356,7 @@ export class KeycloakService {
       }
       try {
         const token: string = await this.getToken();
-        headers = headers.set('Authorization', this.bearerPrefix + token);
+        headers = headers.set(this.authorizationHeaderName, this.bearerPrefix + token);
         observer.next(headers);
         observer.complete();
       } catch (error) {
