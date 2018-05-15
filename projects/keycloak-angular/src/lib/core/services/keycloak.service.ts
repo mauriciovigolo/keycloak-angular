@@ -8,7 +8,9 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 
-import Keycloak from 'keycloak-js';
+// Workaround for rollup library behaviour, as pointed out on issue #1267.
+import * as Keycloak_ from 'keycloak-js';
+export const Keycloak = Keycloak_;
 
 import { Observable, Observer } from 'rxjs';
 
