@@ -7,11 +7,20 @@
  */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { CORE_SERVICES } from './services';
+import { KeycloakBearerInterceptor } from './interceptors';
 
 @NgModule({
   imports: [CommonModule],
-  providers: [CORE_SERVICES]
+  providers: [
+    CORE_SERVICES,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: KeycloakBearerInterceptor,
+      multi: true
+    }
+  ]
 })
 export class CoreModule {}

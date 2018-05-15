@@ -28,19 +28,27 @@ export class KeycloakService {
   /**
    * Keycloak-js instance.
    */
-  private instance: Keycloak.KeycloakInstance;
+  private _instance: Keycloak.KeycloakInstance;
   /**
    * User profile as KeycloakProfile interface.
    */
-  private userProfile: Keycloak.KeycloakProfile;
+  private _userProfile: Keycloak.KeycloakProfile;
   /**
-   * The excluded urls patterns that must skip the KeycloakBearerInterceptor.
+   * Flag to indicate if the bearer will not be added to the authorization header.
    */
-  private bearerExcludedUrls: string[];
+  private _disableBearerInterceptor: boolean;
   /**
    * The bearer prefix that will be appended to the Authorization Header.
    */
-  private bearerPrefix: string;
+  private _bearerPrefix: string;
+  /**
+   * Value that will be used as the Authorization Http Header name.
+   */
+  private _authorizationHeaderName: string;
+  /**
+   * The excluded urls patterns that must skip the KeycloakBearerInterceptor.
+   */
+  private _bearerExcludedUrls: string[];
 
   /**
    * Sanitizes the bearer prefix, preparing it to be appended to
@@ -89,9 +97,15 @@ export class KeycloakService {
    * recommended over query.
    * - flow: Set the OpenID Connect flow. Valid values are standard, implicit or hybrid.
    *
+   * disableBearerInterceptor:
+   * Flag to indicate if the bearer will not be added to the authorization header.
+   *
    * bearerExcludedUrls:
    * String Array to exclude the urls that should not have the Authorization Header automatically
    * added.
+   *
+   * authorizationHeaderName:
+   * This value will be used as the Authorization Http Header name.
    *
    * bearerPrefix:
    * This value will be included in the Authorization Http Header param.
@@ -101,10 +115,12 @@ export class KeycloakService {
    */
   init(options: KeycloakOptions = {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.bearerExcludedUrls = options.bearerExcludedUrls || [];
-      this.bearerPrefix = this.sanitizeBearerPrefix(options.bearerPrefix);
-      this.instance = Keycloak(options.config);
-      this.instance
+      this._bearerExcludedUrls = options.bearerExcludedUrls || [];
+      this._disableBearerInterceptor = options.disableBearerInterceptor || false;
+      this._authorizationHeaderName = options.authorizationHeaderName || 'Authorization';
+      this._bearerPrefix = this.sanitizeBearerPrefix(options.bearerPrefix);
+      this._instance = Keycloak(options.config);
+      this._instance
         .init(options.initOptions!)
         .success(async authenticated => {
           if (authenticated) {
@@ -141,7 +157,7 @@ export class KeycloakService {
    */
   login(options: Keycloak.KeycloakLoginOptions = {}): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.instance
+      this._instance
         .login(options)
         .success(async () => {
           await this.loadUserProfile();
@@ -167,10 +183,10 @@ export class KeycloakService {
         redirectUri
       };
 
-      this.instance
+      this._instance
         .logout(options)
         .success(() => {
-          this.userProfile = undefined!;
+          this._userProfile = undefined!;
           resolve();
         })
         .error(error => {
@@ -191,7 +207,7 @@ export class KeycloakService {
    */
   register(options: Keycloak.KeycloakLoginOptions = { action: 'register' }): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.instance
+      this._instance
         .register(options)
         .success(() => {
           resolve();
@@ -213,9 +229,9 @@ export class KeycloakService {
    */
   isUserInRole(role: string): boolean {
     let hasRole: boolean;
-    hasRole = this.instance.hasResourceRole(role);
+    hasRole = this._instance.hasResourceRole(role);
     if (!hasRole) {
-      hasRole = this.instance.hasRealmRole(role);
+      hasRole = this._instance.hasRealmRole(role);
     }
     return hasRole;
   }
@@ -232,17 +248,17 @@ export class KeycloakService {
    */
   getUserRoles(allRoles: boolean = true): string[] {
     let roles: string[] = [];
-    if (this.instance.resourceAccess) {
-      for (const key in this.instance.resourceAccess) {
-        if (this.instance.resourceAccess.hasOwnProperty(key)) {
-          const resourceAccess: any = this.instance.resourceAccess[key];
+    if (this._instance.resourceAccess) {
+      for (const key in this._instance.resourceAccess) {
+        if (this._instance.resourceAccess.hasOwnProperty(key)) {
+          const resourceAccess: any = this._instance.resourceAccess[key];
           const clientRoles = resourceAccess['roles'] || [];
           roles = roles.concat(clientRoles);
         }
       }
     }
-    if (allRoles && this.instance.realmAccess) {
-      let realmRoles = this.instance.realmAccess['roles'] || [];
+    if (allRoles && this._instance.realmAccess) {
+      let realmRoles = this._instance.realmAccess['roles'] || [];
       roles.push(...realmRoles);
     }
     return roles;
@@ -275,7 +291,7 @@ export class KeycloakService {
    * Boolean indicating if the token is expired.
    */
   isTokenExpired(minValidity: number = 0): boolean {
-    return this.instance.isTokenExpired(minValidity);
+    return this._instance.isTokenExpired(minValidity);
   }
 
   /**
@@ -291,12 +307,12 @@ export class KeycloakService {
    */
   updateToken(minValidity: number = 5): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
-      if (!this.instance) {
+      if (!this._instance) {
         reject(false);
         return;
       }
 
-      this.instance
+      this._instance
         .updateToken(minValidity)
         .success(refreshed => {
           resolve(refreshed);
@@ -319,15 +335,15 @@ export class KeycloakService {
    */
   loadUserProfile(forceReload: boolean = false): Promise<Keycloak.KeycloakProfile> {
     return new Promise(async (resolve, reject) => {
-      if (this.userProfile && !forceReload) {
-        return resolve(this.userProfile);
+      if (this._userProfile && !forceReload) {
+        return resolve(this._userProfile);
       }
 
-      this.instance
+      this._instance
         .loadUserProfile()
         .success(result => {
-          this.userProfile = result as Keycloak.KeycloakProfile;
-          resolve(this.userProfile);
+          this._userProfile = result as Keycloak.KeycloakProfile;
+          resolve(this._userProfile);
         })
         .error(err => {
           reject('The user profile could not be loaded.');
@@ -346,7 +362,7 @@ export class KeycloakService {
     return new Promise(async (resolve, reject) => {
       try {
         await this.updateToken(10);
-        resolve(this.instance.token);
+        resolve(this._instance.token);
       } catch (error) {
         this.login();
       }
@@ -360,11 +376,11 @@ export class KeycloakService {
    * The logged username.
    */
   getUsername(): string {
-    if (!this.userProfile) {
+    if (!this._userProfile) {
       throw new Error('User not logged in');
     }
 
-    return this.userProfile.username!;
+    return this._userProfile.username!;
   }
 
   /**
@@ -373,7 +389,7 @@ export class KeycloakService {
    * Invoking this results in onAuthLogout callback listener being invoked.
    */
   clearToken(): void {
-    this.instance.clearToken();
+    this._instance.clearToken();
   }
 
   /**
@@ -394,7 +410,7 @@ export class KeycloakService {
       }
       try {
         const token: string = await this.getToken();
-        headers = headers.set('Authorization', this.bearerPrefix + token);
+        headers = headers.set(this._authorizationHeaderName, this._bearerPrefix + token);
         observer.next(headers);
         observer.complete();
       } catch (error) {
@@ -411,7 +427,7 @@ export class KeycloakService {
    * The KeycloakInstance from keycloak-js.
    */
   getKeycloakInstance(): Keycloak.KeycloakInstance {
-    return this.instance;
+    return this._instance;
   }
 
   /**
@@ -421,7 +437,17 @@ export class KeycloakService {
    * @returns
    * The excluded urls that must not be intercepted by the KeycloakBearerInterceptor.
    */
-  getBearerExcludedUrls(): string[] {
-    return this.bearerExcludedUrls;
+  get bearerExcludedUrls(): string[] {
+    return this._bearerExcludedUrls;
+  }
+
+  /**
+   * Flag to indicate if the bearer will not be added to the authorization header.
+   *
+   * @returns
+   * Returns if the bearer interceptor was set to be disabled.
+   */
+  get disableBearerInterceptor(): boolean {
+    return this._disableBearerInterceptor;
   }
 }

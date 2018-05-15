@@ -26,11 +26,29 @@ export interface KeycloakOptions {
    */
   initOptions?: KeycloakInitOptions;
   /**
+   * By default all requests made by Angular HttpClient will be intercepted in order to
+   * add the bearer in the Authorization Http Header. However, if this is a not desired
+   * feature, the disabledBearerInterceptor must be true.
+   *
+   * Briefly, if disabledBearerInterceptor === true, the bearer will not be added
+   * to the authorization header.
+   *
+   * The default value is false.
+   */
+  disableBearerInterceptor?: boolean;
+  /**
    * String Array to exclude the urls that should not have the Authorization Header automatically
    * added. This library makes use of Angular Http Interceptor, to automatically add the Bearer
    * token to the request.
    */
   bearerExcludedUrls?: string[];
+  /**
+   * This value will be used as the Authorization Http Header name. The default value is
+   * **Authorization**. If the backend expects requests to have a token in a different header, you
+   * should change this value, i.e: **JWT-Authorization**. This will result in a Http Header
+   * Authorization as "JWT-Authorization: bearer <token>".
+   */
+  authorizationHeaderName?: string;
   /**
    * This value will be included in the Authorization Http Header param. The default value is
    * **bearer**, which will result in a Http Header Authorization as "Authorization: bearer <token>".
