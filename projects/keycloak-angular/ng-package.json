@@ -8,5 +8,6 @@
       "keycloak-js": "Keycloak",
       "rxjs": "rxjs"
     }
-  }
+  },
+  "whitelistedNonPeerDependencies": ["keycloak-js"]
 }
