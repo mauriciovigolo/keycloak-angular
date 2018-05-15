@@ -38,16 +38,16 @@ To solve possible breaking changes in major releases of [keycloak-js](https://ww
 
 Considering the situation described on [Reason to add](#rta) topic and on the paragraph above, the project since the next releases: 4.x.x, 5.x.x and 6.x.x, will follow this versioning mechanism:
 
-| keycloak-angular | Angular | Keycloak | SSO-RH |
-| :--------------: | :-----: | :------: | :----: |
-|     4.x.x-k4     |    4    |    4     |   -    |
-|     4.x.x-k3     |    4    |    3     |   7    |
-|     5.x.x-k4     |    5    |    4     |   -    |
-|     5.x.x-k3     |    5    |    3     |   7    |
-|     6.x.x-k4     |    6    |    4     |   -    |
-|     6.x.x-k3     |    6    |    3     |   7    |
+| keycloak-angular | Angular |           Keycloak            | SSO-RH |
+| :--------------: | :-----: | :---------------------------: | :----: |
+|      4.x.x       |    4    | (keycloak latest version) / 4 |   -    |
+|     4.x.x-k3     |    4    |               3               |   7    |
+|      5.x.x       |    5    | (keycloak latest version) / 4 |   -    |
+|     5.x.x-k3     |    5    |               3               |   7    |
+|      6.x.x       |    6    | (keycloak latest version) / 4 |   -    |
+|     6.x.x-k3     |    6    |               3               |   7    |
 
 ### Summary
 
-* keycloak-angular X.X.X-k3: will be compactible with **keycloak 3** and **SSO-RH 7**
-* keycloak-angular X.X.X-k4: will be compactible with **keycloak 4** and the **future release of SSO-RH based on keycloak 4**.
+* keycloak-angular X.X.X: will be compatible with the **latested version of keycloak**, at the moment of this writing is **keycloak 4** or the **future release of SSO-RH based on keycloak 4**.
+* keycloak-angular X.X.X-k3: will be compatible with **keycloak 3** and **SSO-RH 7**.
