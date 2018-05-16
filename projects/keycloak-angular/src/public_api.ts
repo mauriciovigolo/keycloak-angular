@@ -8,3 +8,4 @@
 export * from './lib/core/interceptors';
 export * from './lib/core/interfaces';
 export * from './lib/core/services';
+export * from './lib/keycloak-angular.module';
