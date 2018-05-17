@@ -1,13 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+
 import { Observable } from 'rxjs';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.css']
 })
-export class AppComponent {
-  isHandset: Observable<BreakpointState> = this.breakpointObserver.observe(Breakpoints.Handset);
-  constructor(private breakpointObserver: BreakpointObserver) {}
+export class AppComponent implements OnInit {
+  keycloakEvent: string;
+
+  constructor(private keycloakService: KeycloakService) {}
+
+  ngOnInit(): void {}
+
+  onLogin(): void {
+    this.keycloakService.login();
+  }
 }

@@ -1,8 +1,38 @@
-.sidenav-container {
-  height: 100%;
+header {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
-.sidenav {
-  width: 200px;
-  box-shadow: 3px 0 6px rgba(0,0,0,.24);
+.login-warning {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  background: #fffbdd;
+  padding: 10px 16px;
+  border-bottom: 2px solid #000;
+}
+
+.login-warning a {
+  margin: 0 5px;
+}
+
+.docs-nav-bar-header {
+  background: #e7e6e6;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 8px 16px;
+}
+
+.flex-spacer {
+  flex-grow: 1;
+}
+
+.home.mat-icon-button {
+  background: url('/assets/logo-32.png') center no-repeat;
+  height: 40px;
+  width: 40px;
 }

@@ -6,9 +6,9 @@ import { KeycloakConfig } from 'keycloak-angular';
 
 // Add here your keycloak setup infos
 let keycloakConfig: KeycloakConfig = {
-  url: 'KEYCLOAK-INSTANCE-URL',
-  realm: 'REALM-NAME',
-  clientId: 'CLIENT-ID-NAME'
+  url: 'http://localhost:8080/auth',
+  realm: 'master',
+  clientId: 'keycloak-events'
 };
 
 export const environment = {
