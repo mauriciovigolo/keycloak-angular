@@ -8,13 +8,13 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 
-// Workaround for rollup library behaviour, as pointed out on issue #1267.
+// Workaround for rollup library behaviour, as pointed out on issue #1267 (https://github.com/rollup/rollup/issues/1267).
 import * as Keycloak_ from 'keycloak-js';
 export const Keycloak = Keycloak_;
 
-import { Observable, Observer } from 'rxjs';
+import { Observable, Observer, Subject } from 'rxjs';
 
-import { KeycloakOptions } from '../interfaces';
+import { KeycloakOptions, KeycloakEvent, KeycloakEventType } from '../interfaces';
 
 /**
  * Service to expose existent methods from the Keycloak JS adapter, adding new
@@ -23,9 +23,7 @@ import { KeycloakOptions } from '../interfaces';
  * This class should be injected in the application bootstrap, so the same instance will be used
  * along the web application.
  */
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class KeycloakService {
   /**
    * Keycloak-js instance.
@@ -51,6 +49,14 @@ export class KeycloakService {
    * The excluded urls patterns that must skip the KeycloakBearerInterceptor.
    */
   private _bearerExcludedUrls: string[];
+  /**
+   * Observer for the keycloak events
+   */
+  private _keycloakEvents$: Subject<KeycloakEvent>;
+
+  constructor() {
+    this._keycloakEvents$ = new Subject<KeycloakEvent>();
+  }
 
   /**
    * Sanitizes the bearer prefix, preparing it to be appended to
@@ -67,6 +73,46 @@ export class KeycloakService {
   private sanitizeBearerPrefix(bearerPrefix: string | undefined): string {
     let prefix: string = (bearerPrefix || 'bearer').trim();
     return prefix.concat(' ');
+  }
+
+  /**
+   * Binds the keycloak-js events to the keycloakEvents Subject
+   * which is a good way to monitor for changes, if needed.
+   *
+   * The keycloakEvents returns the keycloak-js event type and any
+   * argument if the source function provides any.
+   */
+  private bindsKeycloakEvents(): void {
+    if (!this._instance) {
+      console.warn(
+        'Keycloak Angular events could not be registered as the keycloak instance is undefined.'
+      );
+      return;
+    }
+
+    this._instance.onAuthError = errorData => {
+      this._keycloakEvents$.next({ args: errorData, type: KeycloakEventType.OnAuthError });
+    };
+
+    this._instance.onAuthLogout = () => {
+      this._keycloakEvents$.next({ type: KeycloakEventType.OnAuthLogout });
+    };
+
+    this._instance.onAuthRefreshError = () => {
+      this._keycloakEvents$.next({ type: KeycloakEventType.OnAuthLogout });
+    };
+
+    this._instance.onAuthSuccess = () => {
+      this._keycloakEvents$.next({ type: KeycloakEventType.OnAuthSuccess });
+    };
+
+    this._instance.onTokenExpired = () => {
+      this._keycloakEvents$.next({ type: KeycloakEventType.OnTokenExpired });
+    };
+
+    this._instance.onReady = authenticated => {
+      this._keycloakEvents$.next({ args: authenticated, type: KeycloakEventType.OnReady });
+    };
   }
 
   /**
@@ -122,6 +168,7 @@ export class KeycloakService {
       this._authorizationHeaderName = options.authorizationHeaderName || 'Authorization';
       this._bearerPrefix = this.sanitizeBearerPrefix(options.bearerPrefix);
       this._instance = Keycloak(options.config);
+      this.bindsKeycloakEvents();
       this._instance
         .init(options.initOptions!)
         .success(async authenticated => {
@@ -451,5 +498,28 @@ export class KeycloakService {
    */
   get disableBearerInterceptor(): boolean {
     return this._disableBearerInterceptor;
+  }
+
+  /**
+   * Keycloak subject to monitor the events triggered by keycloak-js.
+   * The following events as available (as described at keycloak docs -
+   * https://www.keycloak.org/docs/latest/securing_apps/index.html#callback-events):
+   * - OnAuthError
+   * - OnAuthLogout
+   * - OnAuthRefreshError
+   * - OnAuthRefreshSuccess
+   * - OnAuthSuccess
+   * - OnReady
+   * - OnTokenExpire
+   * In each occurrence of any of these, this subject will return the event type,
+   * described at {@link KeycloakEventType} enum and the function args from the keycloak-js
+   * if provided any.
+   *
+   * @returns
+   * A subject with the {@link KeycloakEvent} which describes the event type and attaches the
+   * function args.
+   */
+  get keycloakEvents$(): Subject<KeycloakEvent> {
+    return this._keycloakEvents$;
   }
 }

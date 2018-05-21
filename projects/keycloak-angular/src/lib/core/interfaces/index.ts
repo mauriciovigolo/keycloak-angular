@@ -8,3 +8,4 @@
 export * from './keycloak-config';
 export * from './keycloak-options';
 export * from './keycloak-init-options';
+export * from './keycloak-event';
