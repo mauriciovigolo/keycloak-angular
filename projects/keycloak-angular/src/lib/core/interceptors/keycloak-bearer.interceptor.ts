@@ -25,9 +25,7 @@ import { KeycloakService } from '../services';
  * If you need to exclude some URLs from adding the bearer, please, take a look
  * at the {@link KeycloakOptions} bearerExcludedUrls property.
  */
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class KeycloakBearerInterceptor implements HttpInterceptor {
   private excludedUrlsRegex: RegExp[];
 
