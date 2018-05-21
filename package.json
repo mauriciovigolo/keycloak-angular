@@ -5,12 +5,11 @@
   "scripts": {
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "copy-files":
-      "npx shx cp -r {./projects/keycloak-angular/package.json,README.md} ./dist/keycloak-angular",
+    "copy-files": "npx shx cp -r README.md ./dist/keycloak-angular",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:keycloak-angular": "ng build keycloak-angular",
+    "build:keycloak-angular": "ng build keycloak-angular && npm run copy-files",
     "test": "ng test",
     "lint": "ng lint"
   },
