@@ -1,11 +1,12 @@
 {
   "name": "keycloak-angular",
-  "version": "6.0.0",
+  "version": "4.0.0-beta.2",
   "description": "Easy Keycloak setup for Angular applications",
   "scripts": {
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "copy-files": "npx shx cp -r {./projects/keycloak-angular/package.json,README.md} ./dist/keycloak-angular",
+    "copy-files":
+      "npx shx cp -r {./projects/keycloak-angular/package.json,README.md} ./dist/keycloak-angular",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -19,7 +20,8 @@
   },
   "author": {
     "name": "Mauricio Gemelli Vigolo",
-    "email": "@mauriciovigolo"
+    "email": "@mauriciovigolo",
+    "url": "https://github.com/mauriciovigolo"
   },
   "license": "MIT",
   "bugs": {
