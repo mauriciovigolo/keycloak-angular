@@ -14,7 +14,11 @@ export class AppComponent implements OnInit {
 
   constructor(private keycloakService: KeycloakService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.keycloakService.keycloakEvents$.subscribe(keycloakEvent => {
+      // Add event handler
+    });
+  }
 
   onLogin(): void {
     this.keycloakService.login();
