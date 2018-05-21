@@ -1,0 +1,13 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/keycloak-angular",
+  "deleteDestPath": true,
+  "lib": {
+    "entryFile": "src/public_api.ts",
+    "umdModuleIds": {
+      "keycloak-js": "Keycloak",
+      "rxjs": "rxjs"
+    }
+  },
+  "whitelistedNonPeerDependencies": ["keycloak-js"]
+}

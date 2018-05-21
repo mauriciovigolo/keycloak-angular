@@ -1,0 +1,36 @@
+{
+  "name": "keycloak-angular",
+  "version": "4.0.0-beta.2",
+  "description": "Easy Keycloak setup for Angular applications",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mauriciovigolo/keycloak-angular.git"
+  },
+  "author": {
+    "name": "Mauricio Gemelli Vigolo",
+    "email": "@mauriciovigolo",
+    "url": "https://github.com/mauriciovigolo"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mauriciovigolo/keycloak-angular/issues"
+  },
+  "homepage": "https://github.com/mauriciovigolo/keycloak-angular#readme",
+  "keywords": [
+    "angular",
+    "angular 6",
+    "authentication",
+    "authorization",
+    "oauth2",
+    "keycloak",
+    "keycloak-js"
+  ],
+  "dependencies": {
+    "keycloak-js": "^4.0.0-beta.2"
+  },
+  "peerDependencies": {
+    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
+    "rxjs": "^6.0.0"
+  }
+}

@@ -1,10 +1,12 @@
 # Keycloak Angular
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Slack](https://slackin-iijwrzzihr.now.sh/badge.svg)](https://slackin-iijwrzzihr.now.sh)
-[![npm version](https://badge.fury.io/js/keycloak-angular.svg)](https://badge.fury.io/js/keycloak-angular)
 [![Build Status](https://travis-ci.org/mauriciovigolo/keycloak-angular.svg?branch=master)](https://travis-ci.org/mauriciovigolo/keycloak-angular)
+[![Known Vulnerabilities](https://snyk.io/test/github/mauriciovigolo/keycloak-angular/badge.svg)](https://snyk.io/test/github/mauriciovigolo/keycloak-angular)
+[![npm version](https://badge.fury.io/js/keycloak-angular.svg)](https://badge.fury.io/js/keycloak-angular)
+![npm](https://img.shields.io/npm/dm/keycloak-angular.svg)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors)
+[![Slack](https://slackin-iijwrzzihr.now.sh/badge.svg)](https://slackin-iijwrzzihr.now.sh)
 [![Dependencies](https://david-dm.org/mauriciovigolo/keycloak-angular/status.svg)](https://david-dm.org/mauriciovigolo/keycloak-angular)
 [![DepDependencies](https://david-dm.org/mauriciovigolo/keycloak-angular/dev-status.svg)](https://david-dm.org/mauriciovigolo/keycloak-angular?type=dev)
 
@@ -35,26 +37,42 @@ This library helps you to use [keycloak-js](https://github.com/keycloak/keycloak
   Angular applications.
 * Generic **AuthGuard implementation**, so you can customize your own AuthGuard logic inheriting the authentication logic and the roles load.
 * A **HttpClient interceptor** that adds the authorization header to all HttpClient requests.
-  It is also possible to exclude routes from having the authorization header.
+  It is also possible to disable this interceptor or exclude routes from having the authorization header.
 * This documentation also assists you to configure the keycloak in the Angular applications and with
   the client setup in the admin console of your keycloak installation.
 
 ## Install
 
-**Warning**: This library will work only with versions higher or equal than 4.3.0 of Angular. The reason for this is that we are using Interceptor from `@angular/common/http` package.
+### Choosing the appropriate version of keycloak-angular
+
+This library depends on angular and keycloak versions so as it might exist breaking changes in some of them there are
+different build versions supporting these combinations, so be aware to choose the correct version for your project.
+
+| keycloak-angular | Angular | Keycloak | SSO-RH |
+| :--------------: | :-----: | :------: | :----: |
+|      1.4.x       | 4 and 5 |    3     |   7    |
+|      2.x.x       | 4 and 5 |    4     |   -    |
+|      3.x.x       |    6    |    3     |   7    |
+|      4.x.x       |    6    |    4     |   -    |
+
+**Warning**: This library will work only with versions higher or equal than 4.3.0 of Angular. The reason for this is that keycloak-angular uses the Interceptor from `@angular/common/http` package and this feature was available from this version on.
+
+### Steps to install using NPM or YARN
+
+> Please, again, be aware to choose the correct version, as stated above. Installing this package without a version will make it compatible with the **latest** angular and keycloak versions.
 
 In your angular application directory:
 
 With npm:
 
 ```sh
-npm install --save keycloak-angular
+npm install --save keycloak-angular@<choosen-version-from-table-above>
 ```
 
 With yarn:
 
 ```sh
-yarn add keycloak-angular
+yarn add keycloak-angular@<choosen-version-from-table-above>
 ```
 
 ## Setup
