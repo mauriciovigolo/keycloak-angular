@@ -28,14 +28,14 @@ export interface KeycloakOptions {
   /**
    * By default all requests made by Angular HttpClient will be intercepted in order to
    * add the bearer in the Authorization Http Header. However, if this is a not desired
-   * feature, the disabledBearerInterceptor must be true.
+   * feature, the enableBearerInterceptor must be false.
    *
-   * Briefly, if disabledBearerInterceptor === true, the bearer will not be added
+   * Briefly, if enableBearerInterceptor === false, the bearer will not be added
    * to the authorization header.
    *
-   * The default value is false.
+   * The default value is true.
    */
-  disableBearerInterceptor?: boolean;
+  enableBearerInterceptor?: boolean;
   /**
    * String Array to exclude the urls that should not have the Authorization Header automatically
    * added. This library makes use of Angular Http Interceptor, to automatically add the Bearer
