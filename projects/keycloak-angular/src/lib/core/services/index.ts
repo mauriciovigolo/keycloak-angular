@@ -10,4 +10,4 @@ import { KeycloakService } from './keycloak.service';
 export const CORE_SERVICES = [KeycloakService];
 
 export * from './keycloak.service';
-export * from './keycloak-auth-guard.service';
+export * from './keycloak-auth-guard';
