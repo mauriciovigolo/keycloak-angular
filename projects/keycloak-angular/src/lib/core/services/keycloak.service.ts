@@ -36,7 +36,7 @@ export class KeycloakService {
   /**
    * Flag to indicate if the bearer will not be added to the authorization header.
    */
-  private _disableBearerInterceptor: boolean;
+  private _enableBearerInterceptor: boolean;
   /**
    * The bearer prefix that will be appended to the Authorization Header.
    */
@@ -145,8 +145,8 @@ export class KeycloakService {
    * recommended over query.
    * - flow: Set the OpenID Connect flow. Valid values are standard, implicit or hybrid.
    *
-   * disableBearerInterceptor:
-   * Flag to indicate if the bearer will not be added to the authorization header.
+   * enableBearerInterceptor:
+   * Flag to indicate if the bearer will added to the authorization header.
    *
    * bearerExcludedUrls:
    * String Array to exclude the urls that should not have the Authorization Header automatically
@@ -164,7 +164,7 @@ export class KeycloakService {
   init(options: KeycloakOptions = {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this._bearerExcludedUrls = options.bearerExcludedUrls || [];
-      this._disableBearerInterceptor = options.disableBearerInterceptor || false;
+      this._enableBearerInterceptor = options.enableBearerInterceptor || true;
       this._authorizationHeaderName = options.authorizationHeaderName || 'Authorization';
       this._bearerPrefix = this.sanitizeBearerPrefix(options.bearerPrefix);
       this._instance = Keycloak(options.config);
@@ -491,13 +491,13 @@ export class KeycloakService {
   }
 
   /**
-   * Flag to indicate if the bearer will not be added to the authorization header.
+   * Flag to indicate if the bearer will be added to the authorization header.
    *
    * @returns
    * Returns if the bearer interceptor was set to be disabled.
    */
-  get disableBearerInterceptor(): boolean {
-    return this._disableBearerInterceptor;
+  get enableBearerInterceptor(): boolean {
+    return this._enableBearerInterceptor;
   }
 
   /**

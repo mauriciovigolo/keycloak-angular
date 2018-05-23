@@ -50,7 +50,7 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
    */
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // If keycloak service is not initialized yet, or the interceptor should not be execute
-    if (!this.keycloak || !this.keycloak.disableBearerInterceptor) {
+    if (!this.keycloak || !this.keycloak.enableBearerInterceptor) {
       return next.handle(req);
     }
 
