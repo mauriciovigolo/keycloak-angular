@@ -5,16 +5,21 @@
  * Use of this source code is governed by a MIT-style license that can be
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
  */
+
 import { Injectable } from '@angular/core';
+
 import { HttpHeaders } from '@angular/common/http';
 
 // Workaround for rollup library behaviour, as pointed out on issue #1267 (https://github.com/rollup/rollup/issues/1267).
 import * as Keycloak_ from 'keycloak-js';
 export const Keycloak = Keycloak_;
 
-import { Observable, Observer, Subject } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
+import { Subject } from 'rxjs/Subject';
 
-import { KeycloakOptions, KeycloakEvent, KeycloakEventType } from '../interfaces';
+import { KeycloakOptions } from '../interfaces/keycloak-options';
+import { KeycloakEvent, KeycloakEventType } from '../interfaces/keycloak-event';
 
 /**
  * Service to expose existent methods from the Keycloak JS adapter, adding new

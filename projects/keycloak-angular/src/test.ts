@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Mauricio Gemelli Vigolo and contributors.
+ *
+ * Use of this source code is governed by a MIT-style license that can be
+ * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
+ */
+
 // This file is required by karma.conf.js and loads recursively all the .spec and framework files
 
 import 'core-js/es7/reflect';
@@ -12,10 +20,7 @@ import {
 declare const require: any;
 
 // First, initialize the Angular testing environment.
-getTestBed().initTestEnvironment(
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting()
-);
+getTestBed().initTestEnvironment(BrowserDynamicTestingModule, platformBrowserDynamicTesting());
 // Then we find all the tests.
 const context = require.context('./', true, /\.spec\.ts$/);
 // And load the modules.

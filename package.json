@@ -5,11 +5,10 @@
   "scripts": {
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "copy-files": "npx shx cp -r README.md ./dist/keycloak-angular",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:keycloak-angular": "ng build keycloak-angular && npm run copy-files",
+    "build:keycloak-angular": "ng build keycloak-angular",
     "test": "ng test",
     "lint": "ng lint"
   },
@@ -71,7 +70,7 @@
     "tsickle": ">=0.25.5",
     "tslib": "^1.7.1",
     "tslint": "~5.9.1",
-    "typescript": "~2.7.2",
+    "typescript": "~2.4.2",
     "zone.js": "^0.8.26"
   }
 }
