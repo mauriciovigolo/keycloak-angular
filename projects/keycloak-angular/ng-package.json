@@ -5,8 +5,7 @@
   "lib": {
     "entryFile": "src/public_api.ts",
     "umdModuleIds": {
-      "keycloak-js": "Keycloak",
-      "rxjs": "rxjs"
+      "keycloak-js": "Keycloak"
     }
   },
   "whitelistedNonPeerDependencies": ["keycloak-js"]

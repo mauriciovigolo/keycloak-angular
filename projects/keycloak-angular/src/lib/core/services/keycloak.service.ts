@@ -5,7 +5,9 @@
  * Use of this source code is governed by a MIT-style license that can be
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
  */
+
 import { Injectable } from '@angular/core';
+
 import { HttpHeaders } from '@angular/common/http';
 
 // Workaround for rollup library behaviour, as pointed out on issue #1267 (https://github.com/rollup/rollup/issues/1267).
@@ -14,7 +16,8 @@ export const Keycloak = Keycloak_;
 
 import { Observable, Observer, Subject } from 'rxjs';
 
-import { KeycloakOptions, KeycloakEvent, KeycloakEventType } from '../interfaces';
+import { KeycloakOptions } from '../interfaces/keycloak-options';
+import { KeycloakEvent, KeycloakEventType } from '../interfaces/keycloak-event';
 
 /**
  * Service to expose existent methods from the Keycloak JS adapter, adding new
@@ -36,7 +39,7 @@ export class KeycloakService {
   /**
    * Flag to indicate if the bearer will not be added to the authorization header.
    */
-  private _disableBearerInterceptor: boolean;
+  private _enableBearerInterceptor: boolean;
   /**
    * The bearer prefix that will be appended to the Authorization Header.
    */
@@ -145,8 +148,8 @@ export class KeycloakService {
    * recommended over query.
    * - flow: Set the OpenID Connect flow. Valid values are standard, implicit or hybrid.
    *
-   * disableBearerInterceptor:
-   * Flag to indicate if the bearer will not be added to the authorization header.
+   * enableBearerInterceptor:
+   * Flag to indicate if the bearer will added to the authorization header.
    *
    * bearerExcludedUrls:
    * String Array to exclude the urls that should not have the Authorization Header automatically
@@ -164,7 +167,7 @@ export class KeycloakService {
   init(options: KeycloakOptions = {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this._bearerExcludedUrls = options.bearerExcludedUrls || [];
-      this._disableBearerInterceptor = options.disableBearerInterceptor || false;
+      this._enableBearerInterceptor = options.enableBearerInterceptor || true;
       this._authorizationHeaderName = options.authorizationHeaderName || 'Authorization';
       this._bearerPrefix = this.sanitizeBearerPrefix(options.bearerPrefix);
       this._instance = Keycloak(options.config);
@@ -491,13 +494,13 @@ export class KeycloakService {
   }
 
   /**
-   * Flag to indicate if the bearer will not be added to the authorization header.
+   * Flag to indicate if the bearer will be added to the authorization header.
    *
    * @returns
    * Returns if the bearer interceptor was set to be disabled.
    */
-  get disableBearerInterceptor(): boolean {
-    return this._disableBearerInterceptor;
+  get enableBearerInterceptor(): boolean {
+    return this._enableBearerInterceptor;
   }
 
   /**

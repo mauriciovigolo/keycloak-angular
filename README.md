@@ -206,6 +206,7 @@ There is also the possibility to exclude a list of URLs that should not have the
       onLoad: 'login-required',
       checkLoginIframe: false
     },
+    enableBearerInterceptor: true,
     bearerExcludedUrls: [
       '/assets',
       '/clients/public'

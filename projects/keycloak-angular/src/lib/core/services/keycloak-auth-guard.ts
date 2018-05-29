@@ -5,7 +5,9 @@
  * Use of this source code is governed by a MIT-style license that can be
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
  */
+
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+
 import { KeycloakService } from './keycloak.service';
 
 /**
@@ -24,7 +26,7 @@ export abstract class KeycloakAuthGuard implements CanActivate {
    */
   protected roles: string[];
 
-  constructor(protected router: Router, protected keycloakAngular: KeycloakService) { }
+  constructor(protected router: Router, protected keycloakAngular: KeycloakService) {}
 
   /**
    * CanActivate checks if the user is logged in and get the full list of roles (REALM + CLIENT)
