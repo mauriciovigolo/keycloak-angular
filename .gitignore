@@ -7,3 +7,6 @@ coverage
 
 *.log
 .DS_Store
+
+package-lock*
+yarn.lock*
