@@ -14,9 +14,7 @@ import { HttpHeaders } from '@angular/common/http';
 import * as Keycloak_ from 'keycloak-js';
 export const Keycloak = Keycloak_;
 
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Observer, Subject } from 'rxjs';
 
 import { KeycloakOptions } from '../interfaces/keycloak-options';
 import { KeycloakEvent, KeycloakEventType } from '../interfaces/keycloak-event';

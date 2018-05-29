@@ -15,8 +15,8 @@ import {
   HttpHeaders
 } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { mergeMap } from 'rxjs/operators/mergeMap';
+import { Observable } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 import { KeycloakService } from '../services/keycloak.service';
 
