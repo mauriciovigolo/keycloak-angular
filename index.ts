@@ -14,6 +14,7 @@ export {
   KeycloakResponseType
 } from './src/interfaces/keycloak-init-options';
 export { KeycloakOptions } from './src/interfaces/keycloak-options';
+export { KeycloakEvent, KeycloakEventType } from './src/interfaces/keycloak-event';
 export { KeycloakService } from './src/services/keycloak.service';
 export { KeycloakAuthGuard } from './src/services/keycloak-auth-guard.service';
 export { Credentials, KeycloakConfig } from './src/interfaces/keycloak-config';
