@@ -70,7 +70,7 @@
     "tsickle": ">=0.25.5",
     "tslib": "^1.7.1",
     "tslint": "~5.9.1",
-    "typescript": "~2.4.2",
+    "typescript": "~2.7.0",
     "zone.js": "^0.8.26"
   }
 }
