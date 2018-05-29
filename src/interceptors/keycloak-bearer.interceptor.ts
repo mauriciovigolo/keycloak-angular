@@ -5,6 +5,8 @@
  * Use of this source code is governed by a MIT-style license that can be
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
  */
+
+import { Injectable } from '@angular/core';
 import {
   HttpInterceptor,
   HttpRequest,
@@ -12,10 +14,11 @@ import {
   HttpEvent,
   HttpHeaders
 } from '@angular/common/http';
+
 import { Observable } from 'rxjs/Observable';
-import { Injectable } from '@angular/core';
-import { KeycloakService } from '../services';
-import 'rxjs/add/operator/mergeMap';
+import { mergeMap } from 'rxjs/operators/mergeMap';
+
+import { KeycloakService } from '../services/keycloak.service';
 
 /**
  * This interceptor includes the bearer by default in all HttpClient requests.
@@ -35,7 +38,7 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
   constructor(private keycloak: KeycloakService) {}
 
   private loadExcludedUrlsRegex() {
-    const excludedUrls: string[] = this.keycloak.getBearerExcludedUrls();
+    const excludedUrls: string[] = this.keycloak.bearerExcludedUrls;
     this.excludedUrlsRegex = excludedUrls.map(urlPattern => new RegExp(urlPattern, 'i')) || [];
   }
 
@@ -47,8 +50,8 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
    * @param next
    */
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // If keycloak service is not initialized yet
-    if (!this.keycloak || !this.keycloak.getBearerExcludedUrls()) {
+    // If keycloak service is not initialized yet, or the interceptor should not be execute
+    if (!this.keycloak || !this.keycloak.enableBearerInterceptor) {
       return next.handle(req);
     }
 
@@ -62,9 +65,11 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    return this.keycloak.addTokenToHeader(req.headers).mergeMap(headersWithBearer => {
-      const kcReq = req.clone({ headers: headersWithBearer });
-      return next.handle(kcReq);
-    });
+    return this.keycloak.addTokenToHeader(req.headers).pipe(
+      mergeMap((headersWithBearer: HttpHeaders | undefined) => {
+        const kcReq = req.clone({ headers: headersWithBearer });
+        return next.handle(kcReq);
+      })
+    );
   }
 }
