@@ -7,16 +7,13 @@
  */
 
 import { Injectable } from '@angular/core';
-
 import { HttpHeaders } from '@angular/common/http';
-
-// Workaround for rollup library behaviour, as pointed out on issue #1267 (https://github.com/rollup/rollup/issues/1267).
-import * as Keycloak_ from 'keycloak-js';
-export const Keycloak = Keycloak_;
 
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { Subject } from 'rxjs/Subject';
+
+import * as Keycloak from 'keycloak-js';
 
 import { KeycloakOptions } from '../interfaces/keycloak-options';
 import { KeycloakEvent, KeycloakEventType } from '../interfaces/keycloak-event';
@@ -168,8 +165,11 @@ export class KeycloakService {
    */
   init(options: KeycloakOptions = {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
+      this._enableBearerInterceptor = options.enableBearerInterceptor;
+      if (this._enableBearerInterceptor === undefined || this._enableBearerInterceptor === null) {
+        this._enableBearerInterceptor = true;
+      }
       this._bearerExcludedUrls = options.bearerExcludedUrls || [];
-      this._enableBearerInterceptor = options.enableBearerInterceptor || true;
       this._authorizationHeaderName = options.authorizationHeaderName || 'Authorization';
       this._bearerPrefix = this.sanitizeBearerPrefix(options.bearerPrefix);
       this._instance = Keycloak(options.config);
@@ -210,7 +210,7 @@ export class KeycloakService {
    * A void Promise if the login is successful and after the user profile loading.
    */
   login(options: Keycloak.KeycloakLoginOptions = {}): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       this._instance
         .login(options)
         .success(async () => {
@@ -232,10 +232,8 @@ export class KeycloakService {
    * A void Promise if the logout was successful, cleaning also the userProfile.
    */
   logout(redirectUri?: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const options: any = {
-        redirectUri
-      };
+    return new Promise<void>((resolve, reject) => {
+      const options: any = { redirectUri };
 
       this._instance
         .logout(options)
@@ -260,7 +258,7 @@ export class KeycloakService {
    * A void Promise if the register flow was successful.
    */
   register(options: Keycloak.KeycloakLoginOptions = { action: 'register' }): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       this._instance
         .register(options)
         .success(() => {

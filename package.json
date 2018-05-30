@@ -1,31 +1,26 @@
 {
   "name": "keycloak-angular",
-  "version": "2.0.0",
+  "version": "1.4.0",
   "description": "Easy Keycloak setup for Angular applications",
+  "main": "index.ts",
   "scripts": {
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate",
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "build:keycloak-angular": "ng build keycloak-angular",
-    "test": "ng test",
-    "lint": "ng lint"
+    "clean": "npx shx rm -rf ./build",
+    "lint": "npx tslint --force --format verbose \"lib/**/*.ts\"",
+    "test": "npx karma start",
+    "copy-files":
+      "npx shx mkdir -p ./build/keycloak-angular && npx shx cp -r {package.json,README.md,./src} ./build/keycloak-angular",
+    "remove-unwanted-files":
+      "npx shx rm -rf {./build/**/*.ts,./build/keycloak-angular/test,./build/keycloak-angular/*.spec*}",
+    "compile": "npx ngc -p ./tsconfig.json",
+    "build":
+      "npm run clean && npm run copy-files && npm run remove-unwanted-files && npm run compile"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/mauriciovigolo/keycloak-angular.git"
   },
-  "author": {
-    "name": "Mauricio Gemelli Vigolo",
-    "email": "@mauriciovigolo",
-    "url": "https://github.com/mauriciovigolo"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/mauriciovigolo/keycloak-angular/issues"
-  },
-  "homepage": "https://github.com/mauriciovigolo/keycloak-angular#readme",
   "keywords": [
     "angular",
     "angular 4",
@@ -36,41 +31,56 @@
     "keycloak",
     "keycloak-js"
   ],
+  "author": {
+    "name": "Mauricio Gemelli Vigolo",
+    "email": "@mauriciovigolo",
+    "url": "https://github.com/mauriciovigolo"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mauriciovigolo/keycloak-angular/issues"
+  },
+  "homepage": "https://github.com/mauriciovigolo/keycloak-angular#readme",
+  "dependencies": {
+    "keycloak-js": "~3.4.3"
+  },
+  "peerDependencies": {
+    "@angular/common": ">=4.3 <6",
+    "@angular/core": ">=4.3 <6",
+    "rxjs": ">=5 <6"
+  },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.6.0",
-    "@angular-devkit/build-ng-packagr": "~0.6.0",
-    "@angular/cli": "~6.0.0",
-    "@angular/common": "^5.0.0",
-    "@angular/compiler": "^5.0.0",
-    "@angular/compiler-cli": "^5.0.0",
-    "@angular/core": "^5.0.0",
-    "@angular/http": "^5.0.0",
-    "@angular/language-service": "^5.0.0",
-    "@angular/platform-browser": "^5.0.0",
-    "@angular/platform-browser-dynamic": "^5.0.0",
-    "@angular/router": "^5.0.0",
-    "@types/jasmine": "~2.8.6",
-    "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~8.9.4",
-    "codelyzer": "~4.2.1",
-    "core-js": "^2.5.4",
-    "jasmine-core": "~2.99.1",
-    "jasmine-spec-reporter": "~4.2.1",
-    "karma": "~1.7.1",
-    "karma-chrome-launcher": "~2.2.0",
-    "karma-coverage-istanbul-reporter": "~1.4.2",
-    "karma-jasmine": "~1.1.1",
+    "@angular/common": "^4.4.6",
+    "@angular/compiler": "^4.4.6",
+    "@angular/compiler-cli": "^4.4.6",
+    "@angular/core": "^4.4.6",
+    "@angular/http": "^4.4.6",
+    "@angular/language-service": "^4.4.6",
+    "@angular/platform-browser": "^4.4.6",
+    "@angular/platform-browser-dynamic": "^4.4.6",
+    "@angular/router": "^4.4.6",
+    "@types/jasmine": "~2.5.53",
+    "@types/jasminewd2": "~2.0.2",
+    "@types/node": "~6.0.60",
+    "all-contributors-cli": "^4.11.1",
+    "codelyzer": "^4.0.1",
+    "core-js": "^2.4.1",
+    "jasmine-core": "~2.6.2",
+    "jasmine-spec-reporter": "~4.1.0",
+    "karma": "~1.7.0",
+    "karma-chrome-launcher": "~2.1.1",
+    "karma-cli": "~1.0.1",
+    "karma-coverage-istanbul-reporter": "^1.2.1",
+    "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "keycloak-js": "^4.0.0-beta.2",
-    "ng-packagr": "^3.0.0-rc.2",
-    "protractor": "~5.3.0",
-    "rxjs": "^5.0.0",
+    "karma-typescript": "^3.0.12",
+    "protractor": "~5.1.2",
+    "rxjs": "^5.0.1",
     "shx": "^0.2.2",
-    "ts-node": "~5.0.1",
-    "tsickle": ">=0.25.5",
-    "tslib": "^1.7.1",
-    "tslint": "~5.9.1",
-    "typescript": "~2.4.2",
-    "zone.js": "^0.8.26"
+    "ts-node": "~3.2.0",
+    "tslint": "~5.7.0",
+    "tslint-config-airbnb": "^5.2.1",
+    "typescript": "~2.3.4",
+    "zone.js": "^0.8.4"
   }
 }

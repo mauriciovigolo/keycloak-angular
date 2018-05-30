@@ -7,14 +7,17 @@
  */
 
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { KeycloakService } from './services/keycloak.service';
 import { KeycloakBearerInterceptor } from './interceptors/keycloak-bearer.interceptor';
 
+/**
+ * The Keycloak Angular Module.
+ *
+ * Provides the KeycloakService and the bearer interceptor.
+ */
 @NgModule({
-  imports: [CommonModule],
   providers: [
     KeycloakService,
     {
@@ -24,4 +27,4 @@ import { KeycloakBearerInterceptor } from './interceptors/keycloak-bearer.interc
     }
   ]
 })
-export class CoreModule {}
+export class KeycloakAngularModule {}

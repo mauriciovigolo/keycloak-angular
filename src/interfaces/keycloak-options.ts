@@ -56,7 +56,8 @@ export interface KeycloakOptions {
    * If any other value is needed by the backend in the authorization header, you should change this
    * value, i.e: **Bearer**.
    *
-   * Warning: this value must be in compliance with the keycloak server instance and the adapter.
+   * Warning: this value must be in compliance with the keycloak server instance and the adapter
+   * used.
    */
   bearerPrefix?: string;
 }

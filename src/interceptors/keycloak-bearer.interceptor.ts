@@ -66,7 +66,7 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
     }
 
     return this.keycloak.addTokenToHeader(req.headers).pipe(
-      mergeMap(headersWithBearer => {
+      mergeMap((headersWithBearer: HttpHeaders | undefined) => {
         const kcReq = req.clone({ headers: headersWithBearer });
         return next.handle(kcReq);
       })
