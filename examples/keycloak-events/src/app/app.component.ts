@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 
 import { Observable } from 'rxjs';
-import { KeycloakService } from 'keycloak-angular';
+import { KeycloakService, KeycloakEvent } from 'keycloak-angular';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   constructor(private keycloakService: KeycloakService) {}
 
   ngOnInit(): void {
-    this.keycloakService.keycloakEvents$.subscribe(keycloakEvent => {
+    this.keycloakService.keycloakEvents$.subscribe((keycloakEvent: KeycloakEvent) => {
       // Add event handler
     });
   }
