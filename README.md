@@ -51,7 +51,7 @@ different build versions supporting these combinations, so be aware to choose th
 | keycloak-angular | Angular | Keycloak | SSO-RH |
 | :--------------: | :-----: | :------: | :----: |
 |      1.3.x       | 4 and 5 |    3     |   7    |
-|      2.x.x       |    5    |    4     |   -    |
+|      2.x.x       | 4 and 5 |    4     |   -    |
 |      3.x.x       |    6    |    3     |   7    |
 |      4.x.x       |    6    |    4     |   -    |
 

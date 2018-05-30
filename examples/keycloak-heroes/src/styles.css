@@ -1,0 +1,24 @@
+.header {
+  background-color: #171a21 !important;
+}
+
+.header .title a {
+  color: #fff;
+}
+
+.header .title a:hover,
+.header-nav:hover {
+  color: #5595d3;
+  text-decoration: none;
+}
+
+.header .branding .logo {
+  background: url('./assets/keycloak-angular-dota.png') no-repeat center center;
+  width: 34px;
+  height: 34px;
+  margin-right: 10px;
+}
+
+.main-container .content-container .content-area {
+  padding: 0 1rem 1rem 1rem !important;
+}
