@@ -166,8 +166,11 @@ export class KeycloakService {
    */
   init(options: KeycloakOptions = {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
+      this._enableBearerInterceptor = options.enableBearerInterceptor;
+      if (this._enableBearerInterceptor === undefined || this._enableBearerInterceptor === null) {
+        this._enableBearerInterceptor = true;
+      }
       this._bearerExcludedUrls = options.bearerExcludedUrls || [];
-      this._enableBearerInterceptor = options.enableBearerInterceptor || true;
       this._authorizationHeaderName = options.authorizationHeaderName || 'Authorization';
       this._bearerPrefix = this.sanitizeBearerPrefix(options.bearerPrefix);
       this._instance = Keycloak(options.config);
