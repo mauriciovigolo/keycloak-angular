@@ -5,6 +5,7 @@
  * Use of this source code is governed by a MIT-style license that can be
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
  */
+
 import { Injectable } from '@angular/core';
 import {
   HttpInterceptor,
@@ -17,7 +18,7 @@ import {
 import { Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
-import { KeycloakService } from '../services';
+import { KeycloakService } from '../services/keycloak.service';
 
 /**
  * This interceptor includes the bearer by default in all HttpClient requests.
