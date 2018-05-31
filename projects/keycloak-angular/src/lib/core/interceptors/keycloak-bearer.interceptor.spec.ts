@@ -9,11 +9,20 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { KeycloakBearerInterceptor } from './keycloak-bearer.interceptor';
+import { KeycloakService } from '../services/keycloak.service';
 
 describe('KeycloakBearerInterceptor', () => {
+  let keycloakServiceSpy: jasmine.SpyObj<KeycloakService>;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [KeycloakBearerInterceptor]
+      providers: [
+        KeycloakBearerInterceptor,
+        {
+          provide: KeycloakService,
+          useValue: keycloakServiceSpy
+        }
+      ]
     });
   });
 
