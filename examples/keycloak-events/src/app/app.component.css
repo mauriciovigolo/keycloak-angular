@@ -1,9 +1,4 @@
 header {
-  position: fixed;
-  z-index: 2;
-  top: 0;
-  left: 0;
-  right: 0;
 }
 
 .login-warning {
@@ -35,4 +30,24 @@ header {
   background: url('/assets/logo-32.png') center no-repeat;
   height: 40px;
   width: 40px;
+}
+
+.content {
+  margin: 8px 8px 0 8px;
+}
+
+.events-panel {
+  max-width: 400px;
+  margin: auto;
+}
+
+.header-image {
+  background-position: center;
+  background-size: cover;
+}
+
+@media only screen and (max-width: 600px) {
+  .events-panel {
+    width: 100%;
+  }
 }

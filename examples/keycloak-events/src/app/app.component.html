@@ -11,3 +11,18 @@
     <button class="" mat-button *ngIf="true" (click)="onLogin()">Login</button>
   </nav>
 </header>
+
+<div class="content">
+  <div class="events-panel">
+    <mat-card>
+      <mat-card-header>
+        <div mat-card-avatar class="header-image" [style.background-image]="eventImg"></div>
+        <mat-card-title>Events Monitor</mat-card-title>
+        <mat-card-subtitle>{{eventStatus}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        Event!
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
