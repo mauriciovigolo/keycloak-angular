@@ -6,9 +6,9 @@ import { KeycloakConfig } from 'keycloak-angular';
 
 // Add here your keycloak setup infos
 let keycloakConfig: KeycloakConfig = {
-  url: 'http://vitorino.sanepar.com.br:8180/auth',
-  realm: 'sanepar-dev',
-  clientId: 'sci-webapp'
+  url: 'KEYCLOAK-INSTANCE-URL',
+  realm: 'REALM-NAME',
+  clientId: 'CLIENT-ID-NAME'
 };
 
 export const environment = {
