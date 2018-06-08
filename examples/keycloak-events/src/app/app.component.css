@@ -42,8 +42,12 @@ header {
 }
 
 .header-image {
+  background-size: 35px;
+  background-repeat: no-repeat;
   background-position: center;
-  background-size: cover;
+  width: 45px;
+  height: 45px;
+  background-color: rgb(202, 225, 247);
 }
 
 @media only screen and (max-width: 600px) {

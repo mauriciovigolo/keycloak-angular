@@ -8,6 +8,8 @@ import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
 import { AppComponent } from './app.component';
 import { initializer } from './app-initilizer';
+import { CoreModule } from './core/core.module';
+import { EventStackService } from './core/services/event-stack.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,14 +20,15 @@ import { initializer } from './app-initilizer';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    KeycloakAngularModule
+    KeycloakAngularModule,
+    CoreModule
   ],
   providers: [
     {
       provide: APP_INITIALIZER,
       useFactory: initializer,
       multi: true,
-      deps: [KeycloakService]
+      deps: [KeycloakService, EventStackService]
     }
   ],
   bootstrap: [AppComponent]
