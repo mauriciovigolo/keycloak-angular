@@ -7,7 +7,8 @@ import { EventStackService } from './core/services/event-stack.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.css']
+  styleUrls: ['app.component.css'],
+  providers: [EventStackService]
 })
 export class AppComponent implements OnInit {
   private readonly _usualEventMessage: string = 'Waiting for events from keycloak-js';
@@ -65,7 +66,7 @@ export class AppComponent implements OnInit {
         break;
     }
 
-    this._eventStackService.markEventItemAsRead(_id);
+    this._eventStackService.purgeEventItem(_id);
   }
 
   ngOnInit(): void {
