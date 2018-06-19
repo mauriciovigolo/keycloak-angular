@@ -8,25 +8,13 @@
   <meta name="description" content="Easy Keycloak setup for Angular applications">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+  <link rel="stylesheet" href="styles/styles.css">
 </head>
 
 <body>
-  <nav>
-
-  </nav>
   <div id="app"></div>
-  <script>
-    window.$docsify = {
-      name: 'keycloak-angular',
-      coverpage: ['/', '/pt-br/'],
-      loadNavbar: true,
-      notFoundPage: true,
-      repo: 'ssh://git@github.com/mauriciovigolo/keycloak-angular'
-    }
-    if (typeof navigator.serviceWorker !== 'undefined') {
-      navigator.serviceWorker.register('sw.js')
-    }    
-  </script>
+  <script src="config.js"></script>
+  <script src="pt/config.js"></script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
 </body>
 

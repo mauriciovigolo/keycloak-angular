@@ -1,6 +1,6 @@
 {
   "name": "keycloak-angular",
-  "version": "4.0.0-beta.4",
+  "version": "4.0.0",
   "description": "Easy Keycloak setup for Angular applications",
   "scripts": {
     "contributors:add": "all-contributors add",
@@ -10,7 +10,8 @@
     "build": "ng build",
     "build:keycloak-angular": "ng build keycloak-angular",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "doc:serve": "npx docsify serve ./docs --port 3001"
   },
   "repository": {
     "type": "git",
@@ -54,6 +55,7 @@
     "@types/node": "~10.1.4",
     "codelyzer": "~4.3.0",
     "core-js": "^2.5.4",
+    "docsify": "^4.6.10",
     "jasmine-core": "~3.1.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~2.0.2",
