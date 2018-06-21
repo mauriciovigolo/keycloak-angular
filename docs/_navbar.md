@@ -1,3 +1,3 @@
-- Translations
+- Languages
   - [🇬🇧 English](/)
-  - [🇧🇷 Português](/pt-br/)
+  - [🇧🇷 Português](/pt/)
