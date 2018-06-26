@@ -41,6 +41,11 @@ export class KeycloakService {
    */
   private _enableBearerInterceptor: boolean;
   /**
+   * When the implicit flow is choosen there must exist a silentRefresh, as there is
+   * no refresh token.
+   */
+  private _silentRefresh: boolean;
+  /**
    * Indicates that the user profile should be loaded at the keycloak initialization,
    * just after the login.
    */
@@ -193,6 +198,7 @@ export class KeycloakService {
       this._bearerExcludedUrls = options.bearerExcludedUrls || [];
       this._authorizationHeaderName = options.authorizationHeaderName || 'Authorization';
       this._bearerPrefix = this.sanitizeBearerPrefix(options.bearerPrefix);
+      this._silentRefresh = options.initOptions.flow === 'implicit';
       this._instance = Keycloak(options.config);
       this.bindsKeycloakEvents();
       this._instance
@@ -384,8 +390,19 @@ export class KeycloakService {
    */
   updateToken(minValidity: number = 5): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
+      // TODO: this is a workaround until the silent refresh (issue #43)
+      // is not implemented, avoiding the redirect loop.
+      if (this._silentRefresh) {
+        if (this.isTokenExpired()) {
+          reject('Failed to refresh the token, or the session is expired');
+        } else {
+          resolve(true);
+        }
+        return;
+      }
+
       if (!this._instance) {
-        reject(false);
+        reject();
         return;
       }
 
