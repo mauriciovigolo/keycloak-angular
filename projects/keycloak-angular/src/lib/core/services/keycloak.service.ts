@@ -41,6 +41,11 @@ export class KeycloakService {
    */
   private _enableBearerInterceptor: boolean;
   /**
+   * Indicates that the user profile should be loaded at the keycloak initialization,
+   * just after the login.
+   */
+  private _loadUserProfileAtStartUp: boolean;
+  /**
    * The bearer prefix that will be appended to the Authorization Header.
    */
   private _bearerPrefix: string;
@@ -76,6 +81,19 @@ export class KeycloakService {
   private sanitizeBearerPrefix(bearerPrefix: string | undefined): string {
     let prefix: string = (bearerPrefix || 'bearer').trim();
     return prefix.concat(' ');
+  }
+
+  /**
+   * Sets default value to true if it is undefined or null.
+   *
+   * @param value - boolean value to be checked
+   */
+  private ifUndefinedIsTrue(value: boolean): boolean {
+    let returnValue: boolean = value;
+    if (returnValue === undefined || returnValue === null) {
+      returnValue = true;
+    }
+    return returnValue;
   }
 
   /**
@@ -151,6 +169,10 @@ export class KeycloakService {
    * enableBearerInterceptor:
    * Flag to indicate if the bearer will added to the authorization header.
    *
+   * loadUserProfileInStartUp:
+   * Indicates that the user profile should be loaded at the keycloak initialization,
+   * just after the login.
+   *
    * bearerExcludedUrls:
    * String Array to exclude the urls that should not have the Authorization Header automatically
    * added.
@@ -166,10 +188,8 @@ export class KeycloakService {
    */
   init(options: KeycloakOptions = {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this._enableBearerInterceptor = options.enableBearerInterceptor;
-      if (this._enableBearerInterceptor === undefined || this._enableBearerInterceptor === null) {
-        this._enableBearerInterceptor = true;
-      }
+      this._enableBearerInterceptor = this.ifUndefinedIsTrue(options.enableBearerInterceptor);
+      this._loadUserProfileAtStartUp = this.ifUndefinedIsTrue(options.loadUserProfileAtStartUp);
       this._bearerExcludedUrls = options.bearerExcludedUrls || [];
       this._authorizationHeaderName = options.authorizationHeaderName || 'Authorization';
       this._bearerPrefix = this.sanitizeBearerPrefix(options.bearerPrefix);
@@ -178,7 +198,7 @@ export class KeycloakService {
       this._instance
         .init(options.initOptions!)
         .success(async authenticated => {
-          if (authenticated) {
+          if (authenticated && this._loadUserProfileAtStartUp) {
             await this.loadUserProfile();
           }
           resolve(authenticated);
@@ -215,7 +235,9 @@ export class KeycloakService {
       this._instance
         .login(options)
         .success(async () => {
-          await this.loadUserProfile();
+          if (this._loadUserProfileAtStartUp) {
+            await this.loadUserProfile();
+          }
           resolve();
         })
         .error(error => {
@@ -432,7 +454,7 @@ export class KeycloakService {
    */
   getUsername(): string {
     if (!this._userProfile) {
-      throw new Error('User not logged in');
+      throw new Error('User not logged in or user profile was not loaded.');
     }
 
     return this._userProfile.username!;
