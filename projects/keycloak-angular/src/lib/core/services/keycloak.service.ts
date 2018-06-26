@@ -198,7 +198,7 @@ export class KeycloakService {
       this._bearerExcludedUrls = options.bearerExcludedUrls || [];
       this._authorizationHeaderName = options.authorizationHeaderName || 'Authorization';
       this._bearerPrefix = this.sanitizeBearerPrefix(options.bearerPrefix);
-      this._silentRefresh = options.initOptions.flow === 'implicit';
+      this._silentRefresh = options.initOptions ? options.initOptions.flow === 'implicit' : false;
       this._instance = Keycloak(options.config);
       this.bindsKeycloakEvents();
       this._instance
@@ -430,7 +430,13 @@ export class KeycloakService {
   loadUserProfile(forceReload: boolean = false): Promise<Keycloak.KeycloakProfile> {
     return new Promise(async (resolve, reject) => {
       if (this._userProfile && !forceReload) {
-        return resolve(this._userProfile);
+        resolve(this._userProfile);
+        return;
+      }
+
+      if (!(await this.isLoggedIn())) {
+        reject('The user profile was not loaded as the user is not logged in.');
+        return;
       }
 
       this._instance
