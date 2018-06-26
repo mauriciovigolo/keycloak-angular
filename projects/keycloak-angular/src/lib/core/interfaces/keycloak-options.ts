@@ -38,6 +38,15 @@ export interface KeycloakOptions {
    */
   enableBearerInterceptor?: boolean;
   /**
+   * Forces the execution of loadUserProfile after the keycloak initialization considering that the
+   * user logged in.
+   * This option is recommended if is desirable to have the user details at the beginning,
+   * so after the login, the loadUserProfile function will be called and it's value cached.
+   *
+   * The default value is true.
+   */
+  loadUserProfileAtStartUp?: boolean;
+  /**
    * String Array to exclude the urls that should not have the Authorization Header automatically
    * added. This library makes use of Angular Http Interceptor, to automatically add the Bearer
    * token to the request.

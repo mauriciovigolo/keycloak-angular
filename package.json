@@ -1,6 +1,6 @@
 {
   "name": "keycloak-angular",
-  "version": "3.0.1",
+  "version": "3.0.0",
   "description": "Easy Keycloak setup for Angular applications",
   "scripts": {
     "contributors:add": "all-contributors add",
@@ -10,7 +10,8 @@
     "build": "ng build",
     "build:keycloak-angular": "ng build keycloak-angular",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "doc:serve": "npx docsify serve ./docs --port 3001"
   },
   "repository": {
     "type": "git",
@@ -51,26 +52,27 @@
     "@angular/router": "^6.0.0",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~8.9.4",
-    "codelyzer": "~4.2.1",
+    "@types/node": "~10.1.4",
+    "codelyzer": "~4.3.0",
     "core-js": "^2.5.4",
-    "jasmine-core": "~2.99.1",
+    "docsify": "^4.6.10",
+    "jasmine-core": "~3.1.0",
     "jasmine-spec-reporter": "~4.2.1",
-    "karma": "~1.7.1",
+    "karma": "~2.0.2",
     "karma-chrome-launcher": "~2.2.0",
-    "karma-coverage-istanbul-reporter": "~1.4.2",
+    "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~1.1.1",
-    "karma-jasmine-html-reporter": "^0.2.2",
-    "keycloak-js": "^3.4.3",
+    "karma-jasmine-html-reporter": "^1.1.0",
+    "keycloak-js": "^3.4.3,
     "ng-packagr": "^3.0.0",
     "protractor": "~5.3.0",
     "rxjs": "^6.0.0",
     "shx": "^0.2.2",
-    "ts-node": "~5.0.1",
+    "ts-node": "~6.0.5",
     "tsickle": ">=0.25.5",
     "tslib": "^1.7.1",
-    "tslint": "~5.9.1",
-    "typescript": "~2.7.0",
+    "tslint": "~5.10.0",
+    "typescript": "~2.7.2",
     "zone.js": "^0.8.26"
   }
 }

@@ -1,0 +1,3 @@
+- Languages
+  - [🇬🇧 English](/)
+  - [🇧🇷 Português](/pt/)

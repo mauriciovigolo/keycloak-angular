@@ -29,7 +29,7 @@
     "@clr/ui": "^0.11.19",
     "@webcomponents/custom-elements": "^1.0.0",
     "core-js": "^2.5.4",
-    "keycloak-angular": "^3.0.1",
+    "keycloak-angular": "^3.0.2",
     "rxjs": "^6.0.0",
     "rxjs-compat": "^6.2.0",
     "zone.js": "^0.8.26"

@@ -13,7 +13,7 @@ let keycloakConfig: KeycloakConfig = {
 
 export const environment = {
   production: false,
-  apis: { countries: 'https://restcountries.eu/rest/v2/' },
+  apis: { amiiboApi: 'http://www.amiiboapi.com/api/' },
   keycloak: keycloakConfig
 };
 

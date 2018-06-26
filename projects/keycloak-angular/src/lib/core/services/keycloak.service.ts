@@ -41,6 +41,16 @@ export class KeycloakService {
    */
   private _enableBearerInterceptor: boolean;
   /**
+   * When the implicit flow is choosen there must exist a silentRefresh, as there is
+   * no refresh token.
+   */
+  private _silentRefresh: boolean;
+  /**
+   * Indicates that the user profile should be loaded at the keycloak initialization,
+   * just after the login.
+   */
+  private _loadUserProfileAtStartUp: boolean;
+  /**
    * The bearer prefix that will be appended to the Authorization Header.
    */
   private _bearerPrefix: string;
@@ -79,6 +89,19 @@ export class KeycloakService {
   }
 
   /**
+   * Sets default value to true if it is undefined or null.
+   *
+   * @param value - boolean value to be checked
+   */
+  private ifUndefinedIsTrue(value: boolean): boolean {
+    let returnValue: boolean = value;
+    if (returnValue === undefined || returnValue === null) {
+      returnValue = true;
+    }
+    return returnValue;
+  }
+
+  /**
    * Binds the keycloak-js events to the keycloakEvents Subject
    * which is a good way to monitor for changes, if needed.
    *
@@ -102,7 +125,7 @@ export class KeycloakService {
     };
 
     this._instance.onAuthRefreshError = () => {
-      this._keycloakEvents$.next({ type: KeycloakEventType.OnAuthLogout });
+      this._keycloakEvents$.next({ type: KeycloakEventType.OnAuthRefreshError });
     };
 
     this._instance.onAuthSuccess = () => {
@@ -151,6 +174,10 @@ export class KeycloakService {
    * enableBearerInterceptor:
    * Flag to indicate if the bearer will added to the authorization header.
    *
+   * loadUserProfileInStartUp:
+   * Indicates that the user profile should be loaded at the keycloak initialization,
+   * just after the login.
+   *
    * bearerExcludedUrls:
    * String Array to exclude the urls that should not have the Authorization Header automatically
    * added.
@@ -166,19 +193,18 @@ export class KeycloakService {
    */
   init(options: KeycloakOptions = {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this._enableBearerInterceptor = options.enableBearerInterceptor;
-      if (this._enableBearerInterceptor === undefined || this._enableBearerInterceptor === null) {
-        this._enableBearerInterceptor = true;
-      }
+      this._enableBearerInterceptor = this.ifUndefinedIsTrue(options.enableBearerInterceptor);
+      this._loadUserProfileAtStartUp = this.ifUndefinedIsTrue(options.loadUserProfileAtStartUp);
       this._bearerExcludedUrls = options.bearerExcludedUrls || [];
       this._authorizationHeaderName = options.authorizationHeaderName || 'Authorization';
       this._bearerPrefix = this.sanitizeBearerPrefix(options.bearerPrefix);
+      this._silentRefresh = options.initOptions ? options.initOptions.flow === 'implicit' : false;
       this._instance = Keycloak(options.config);
       this.bindsKeycloakEvents();
       this._instance
         .init(options.initOptions!)
         .success(async authenticated => {
-          if (authenticated) {
+          if (authenticated && this._loadUserProfileAtStartUp) {
             await this.loadUserProfile();
           }
           resolve(authenticated);
@@ -215,7 +241,9 @@ export class KeycloakService {
       this._instance
         .login(options)
         .success(async () => {
-          await this.loadUserProfile();
+          if (this._loadUserProfileAtStartUp) {
+            await this.loadUserProfile();
+          }
           resolve();
         })
         .error(error => {
@@ -362,8 +390,19 @@ export class KeycloakService {
    */
   updateToken(minValidity: number = 5): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
+      // TODO: this is a workaround until the silent refresh (issue #43)
+      // is not implemented, avoiding the redirect loop.
+      if (this._silentRefresh) {
+        if (this.isTokenExpired()) {
+          reject('Failed to refresh the token, or the session is expired');
+        } else {
+          resolve(true);
+        }
+        return;
+      }
+
       if (!this._instance) {
-        reject(false);
+        reject();
         return;
       }
 
@@ -391,7 +430,13 @@ export class KeycloakService {
   loadUserProfile(forceReload: boolean = false): Promise<Keycloak.KeycloakProfile> {
     return new Promise(async (resolve, reject) => {
       if (this._userProfile && !forceReload) {
-        return resolve(this._userProfile);
+        resolve(this._userProfile);
+        return;
+      }
+
+      if (!(await this.isLoggedIn())) {
+        reject('The user profile was not loaded as the user is not logged in.');
+        return;
       }
 
       this._instance
@@ -432,7 +477,7 @@ export class KeycloakService {
    */
   getUsername(): string {
     if (!this._userProfile) {
-      throw new Error('User not logged in');
+      throw new Error('User not logged in or user profile was not loaded.');
     }
 
     return this._userProfile.username!;

@@ -2,12 +2,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { LayoutModule } from '@angular/cdk/layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule, MatButtonModule, MatIconModule, MatListModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatCardModule } from '@angular/material';
 
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
 import { AppComponent } from './app.component';
 import { initializer } from './app-initilizer';
+import { CoreModule } from './core/core.module';
+import { EventStackService } from './core/services/event-stack.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,18 +17,18 @@ import { initializer } from './app-initilizer';
     BrowserModule,
     BrowserAnimationsModule,
     LayoutModule,
-    MatToolbarModule,
     MatButtonModule,
     MatIconModule,
-    MatListModule,
-    KeycloakAngularModule
+    MatCardModule,
+    KeycloakAngularModule,
+    CoreModule
   ],
   providers: [
     {
       provide: APP_INITIALIZER,
       useFactory: initializer,
       multi: true,
-      deps: [KeycloakService]
+      deps: [KeycloakService, EventStackService]
     }
   ],
   bootstrap: [AppComponent]

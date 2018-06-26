@@ -1,6 +1,6 @@
 {
   "name": "keycloak-angular",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Easy Keycloak setup for Angular applications",
   "repository": {
     "type": "git",
@@ -18,12 +18,15 @@
   "homepage": "https://github.com/mauriciovigolo/keycloak-angular#readme",
   "keywords": [
     "angular",
+    "angular 4",
+    "angular 5",
     "angular 6",
+    "keycloak",
+    "keycloak-js",
     "authentication",
     "authorization",
     "oauth2",
-    "keycloak",
-    "keycloak-js"
+    "oidc"
   ],
   "dependencies": {
     "keycloak-js": "^3.4.3"
