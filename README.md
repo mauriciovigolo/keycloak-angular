@@ -8,24 +8,21 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors)
 [![Slack](https://slackin-iijwrzzihr.now.sh/badge.svg)](https://slackin-iijwrzzihr.now.sh)
 [![Dependencies](https://david-dm.org/mauriciovigolo/keycloak-angular/status.svg)](https://david-dm.org/mauriciovigolo/keycloak-angular?path=projects/keycloak-angular)
-[![PeerDependencies](https://david-dm.org/mauriciovigolo/keycloak-angular/peer-status.svg)](https://david-dm.org/mauriciovigolo/keycloak-angular?type=peer&path=projects/keycloak-angular)
 [![DevDependencies](https://david-dm.org/mauriciovigolo/keycloak-angular/dev-status.svg)](https://david-dm.org/mauriciovigolo/keycloak-angular?type=dev)
 
-[Keycloak-js](https://github.com/keycloak/keycloak-js-bower) port for Angular > v4.3 applications.
-
-![alt text](https://github.com/mauriciovigolo/keycloak-angular/blob/master/docs/images/keycloak-angular.png 'Keycloak Angular')
+> Easy Keycloak setup for Angular applications.
 
 ---
 
-* [About](#about)
-* [Install](#install)
-* [Setup](#setup)
-  * [Angular](#angular)
-  * [Keycloak](#keycloak)
-* [AuthGuard](#authguard)
-* [HttpClient Interceptor](#httpclient-interceptor)
-* [Contributors](#contributors)
-* [License](#license)
+- [About](#about)
+- [Install](#install)
+- [Setup](#setup)
+  - [Angular](#angular)
+  - [Keycloak](#keycloak)
+- [AuthGuard](#authguard)
+- [HttpClient Interceptor](#httpclient-interceptor)
+- [Contributors](#contributors)
+- [License](#license)
 
 ---
 
@@ -33,13 +30,13 @@
 
 This library helps you to use [keycloak-js](https://github.com/keycloak/keycloak-js-bower) in Angular > v4.3 applications providing the following features:
 
-* A **Keycloak Service** which wraps the keycloak-js methods to be used in Angular, giving extra
+- A **Keycloak Service** which wraps the keycloak-js methods to be used in Angular, giving extra
   functionalities to the original functions and adding new methods to make it easier to be consumed by
   Angular applications.
-* Generic **AuthGuard implementation**, so you can customize your own AuthGuard logic inheriting the authentication logic and the roles load.
-* A **HttpClient interceptor** that adds the authorization header to all HttpClient requests.
+- Generic **AuthGuard implementation**, so you can customize your own AuthGuard logic inheriting the authentication logic and the roles load.
+- A **HttpClient interceptor** that adds the authorization header to all HttpClient requests.
   It is also possible to disable this interceptor or exclude routes from having the authorization header.
-* This documentation also assists you to configure the keycloak in the Angular applications and with
+- This documentation also assists you to configure the keycloak in the Angular applications and with
   the client setup in the admin console of your keycloak installation.
 
 ## Install
@@ -103,7 +100,7 @@ import { initializer } from './utils/app-init';
 export class AppModule {}
 ```
 
-* **Notice** that the KeycloakAngularModule was imported by the AppModule. For this reason you don't need to insert the KeycloakService in the AppModule providers array.
+- **Notice** that the KeycloakAngularModule was imported by the AppModule. For this reason you don't need to insert the KeycloakService in the AppModule providers array.
 
 #### initializer Function
 
