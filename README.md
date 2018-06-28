@@ -214,6 +214,102 @@ There is also the possibility to exclude a list of URLs that should not have the
 } catch (error) {}
 ```
 
+## HttpClient RPT Interceptor
+
+It is possbile to activate RPT interceptor which adds RPT (requesting party token) to all HttpClient requests. Set `enableRPTInterceptor` to true to enable the RPT Interceptor. The RPT will be added into Authorization header in the format of: Authorization: Bearer **_RPT_**. In this case the bearer token interceptor can be deactivated by setting `bearerExcludedUrls` to exclude all paths (see example below).
+
+By default the RPT Interceptor uses the UMA (v2) API to support resource servers with UMA enabled policy enforcer. RPT Interceptor works with UMA 2 shipped with Keycloak 4.0.0 Beta1.
+
+There is also the possibility to exclude a list of URLs that should not have the RPT added (it probably makes sense to only add RPT token to HTTP requests sent to resource server and to exclude requests going to keycloak server). For example:
+
+```js
+ try {
+  await keycloak.init({
+    config: {
+      url: 'http://localhost:8080/auth',
+      realm: 'your-realm',
+      clientId: 'client-id'
+    },
+    initOptions: {
+      onLoad: 'login-required',
+      checkLoginIframe: false
+    },
+    bearerExcludedUrls: ["/"],
+    enableRPTInterceptor: true,
+    rptExcludedUrls: ["/auth"]
+  });
+  resolve();
+} catch (error) {}
+```
+
+#### Entitlement API
+
+It is also possible to use the RPT interceptor with the Resource server which do not have UMA activated. Then the RPT Interceptor uses entitlement API to obtain RPT.
+
+For example:
+
+```js
+ try {
+  await keycloak.init({
+    config: {
+      url: 'http://localhost:8080/auth',
+      realm: 'your-realm',
+      clientId: 'client-id'
+    },
+    initOptions: {
+      onLoad: 'login-required',
+      checkLoginIframe: false
+    },
+    bearerExcludedUrls: ["/"],
+    enableRPTInterceptor: true,
+    rptExcludedUrls: ["/auth"],
+    resourceServerID: "resource-server-id",
+    resourceServerAuthorizationType: "entitlement"
+  });
+  resolve();
+} catch (error) {}
+```
+
+#### Authorization Request Template
+
+It is possible to specify additional parameters for all authorization requests as described in https://www.keycloak.org/docs/latest/authorization_services/index.html#authorization-request.
+
+Note that UMA and Entitlement APIs support different parameters.
+
+For example to reduce permissions in the RPT obtained from Entitlement API and to
+keep incrementing RPT (might be more useful when combined with UMA):
+
+```js
+ try {
+  await keycloak.init({
+    config: {
+      url: 'http://localhost:8080/auth',
+      realm: 'your-realm',
+      clientId: 'client-id'
+    },
+    initOptions: {
+      onLoad: 'login-required',
+      checkLoginIframe: false
+    },
+    bearerExcludedUrls: ["/"],
+    enableRPTInterceptor: true,
+    rptExcludedUrls: ["/auth"],
+    resourceServerID: "resource-server-id",
+    resourceServerAuthorizationType: "entitlement",
+    authorizationRequestTemplate: {
+      permissions: [
+        {
+          id: 'Some Resource',
+          scopes: ['view', 'edit']
+        }
+      ],
+      incrementalAuthorization:true
+  }
+  });
+  resolve();
+} catch (error) {}
+```
+
 ## Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
