@@ -8,6 +8,7 @@
 
 import { KeycloakInitOptions } from './keycloak-init-options';
 import { KeycloakConfig } from './keycloak-config';
+import { AuthorizationRequest } from 'keycloak-js/dist/keycloak-authz';
 
 /**
  * keycloak-angular initialization options.
@@ -68,4 +69,32 @@ export interface KeycloakOptions {
    * Warning: this value must be in compliance with the keycloak server instance and the adapter.
    */
   bearerPrefix?: string;
+  /**
+   * String Array to exclude the urls that should not have the RPT Authorization Header automatically
+   * added. This library makes use of Angular Http Interceptor, to automatically add the RPT
+   * token to the request. Here you should exclude urls which do not go to your resource server.
+   *
+   */
+  rptExcludedUrls?: string[];
+  /**
+   * If true, the KeycloakAuthorization is initialized and KeycloakRptInterceptor is activated.
+   * Default is false.
+   */
+  enableRPTInterceptor?: boolean;
+  /**
+   * Serves as a template for an Authroization Request consumed by functions
+   * KeycloakAuthorizationInstance.authorize() and KeycloakAuthorizationInstance.entitlement().
+   * see KeycloakAuthorization.AuthorizationRequest documentation for the format.
+   */
+  authorizationRequestTemplate?: AuthorizationRequest;
+  /**
+   * String "uma" or "entitlement" specifies, which function of the two functions
+   * KeycloakAuthorizationInstance.authorize() or KeycloakAuthorizationInstance.entitlement()
+   * will be used to obtain RPT. When not set, UMA is used.
+   */
+  resourceServerAuthorizationType?: string;
+  /**
+   * Resource server ID, only needed when resourceServerAuthorizationType is set to "entitlement";
+   */
+  resourceServerID?: string;
 }
