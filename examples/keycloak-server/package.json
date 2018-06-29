@@ -1,0 +1,15 @@
+{
+  "name": "keycloak-server",
+  "version": "1.0.0",
+  "description": "Server Examples For Keycloak Angular",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mauricio Gemelli Vigolo",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3"
+  }
+}

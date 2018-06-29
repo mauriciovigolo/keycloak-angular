@@ -7,7 +7,7 @@
 /build
 
 # dependencies
-/node_modules
+node_modules
 package-lock*
 yarn.lock*
 
