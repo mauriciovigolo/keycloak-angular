@@ -112,16 +112,7 @@ underneath example it was placed in a separate file `app-init.ts` and the functi
 import { KeycloakService } from 'keycloak-angular';
 
 export function initializer(keycloak: KeycloakService): () => Promise<any> {
-  return (): Promise<any> => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        await keycloak.init();
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
+  return (): Promise<any> => keycloak.init();
 }
 ```
 
@@ -159,7 +150,7 @@ export class AppAuthGuard extends KeycloakAuthGuard {
   }
 
   isAccessAllowed(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       if (!this.authenticated) {
         this.keycloakAngular.login();
         return;
