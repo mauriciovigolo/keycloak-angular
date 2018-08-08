@@ -4,7 +4,9 @@
   "description": "Server Examples For Keycloak Angular",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npx nodemon",
+    "test": "npx jest",
+    "coverage": "npx jest --collectCoverageFrom=src/**.spec.js --coverage"
   },
   "author": "Mauricio Gemelli Vigolo",
   "license": "MIT",
@@ -15,5 +17,38 @@
     "sequelize": "^4.38.0",
     "sqlite3": "^4.0.2",
     "winston": "^3.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.4.2",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^23.4.2",
+    "nodemon": "^1.18.3",
+    "regenerator-runtime": "^0.12.1"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "api",
+      "index.js"
+    ],
+    "ext": "js",
+    "ignore": [
+      "*.spec.ts"
+    ],
+    "delay": "3"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json"
+    ],
+    "verbose": true,
+    "testEnvironment": "node",
+    "rootDir": "src",
+    "testRegex": ".spec.js$",
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "coverageDirectory": "./coverage"
   }
 }
