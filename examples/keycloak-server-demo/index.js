@@ -9,7 +9,7 @@
  */
 
 const express = require('express');
-const utils = require('./core/utils');
+const utils = require('./src/core/utils');
 
 const app = express();
 
