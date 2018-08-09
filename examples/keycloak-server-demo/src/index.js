@@ -9,8 +9,16 @@
  */
 
 const express = require('express');
-const utils = require('./src/core/utils');
+const utils = require('./core/utils');
+
+import { RouterConfig } from './core/config';
+
+// Init App
+utils.initDemoApp();
 
 const app = express();
+
+// Init Routers
+let routerConfig = new RouterConfig(app);
 
 app.listen(3000, utils.serverInitCallback);
