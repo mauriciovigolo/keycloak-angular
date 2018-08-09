@@ -2,11 +2,13 @@
   "name": "keycloak-server",
   "version": "1.0.0",
   "description": "Server Examples For Keycloak Angular",
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
-    "start": "npx nodemon",
-    "test": "npx jest",
-    "coverage": "npx jest --collectCoverageFrom=src/**.spec.js --coverage"
+    "start": "node_modules/.bin/nodemon src/index.js --exec babel-node --presets env",
+    "test": "node_modules/.bin/jest",
+    "coverage": "node_modules/.bin/jest --collectCoverageFrom=src/**.spec.js --coverage",
+    "build": "node_modules/.bin/babel lib -d dist --presets es2015,stage-2",
+    "serve": "node dist/index.js"
   },
   "author": "Mauricio Gemelli Vigolo",
   "license": "MIT",
@@ -19,6 +21,7 @@
     "winston": "^3.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-jest": "^23.4.2",
     "babel-preset-env": "^1.7.0",
