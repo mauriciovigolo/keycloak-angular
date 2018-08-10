@@ -3,7 +3,7 @@
 import { Sequelize } from 'sequelize';
 
 import { GenericConfig } from './generic.config';
-import { logger } from './log.config';
+import logger from './log.config';
 
 export class DatabaseConfig extends GenericConfig {
   constructor() {
