@@ -31,8 +31,7 @@
   },
   "nodemonConfig": {
     "watch": [
-      "api",
-      "index.js"
+      "src"
     ],
     "ext": "js",
     "ignore": [
