@@ -43,4 +43,4 @@ class DatabaseConfig extends GenericConfig {
 }
 
 const databaseConfig = new DatabaseConfig();
-module.exports = databaseConfig.db;
+module.exports = databaseConfig;
