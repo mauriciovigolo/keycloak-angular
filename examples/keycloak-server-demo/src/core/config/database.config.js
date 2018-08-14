@@ -1,11 +1,11 @@
 'use-strict';
 
-import { Sequelize } from 'sequelize';
+import Sequelize from 'sequelize';
 
 import { GenericConfig } from './generic.config';
 import logger from './log.config';
 
-export class DatabaseConfig extends GenericConfig {
+class DatabaseConfig extends GenericConfig {
   constructor() {
     super();
 
@@ -25,7 +25,10 @@ export class DatabaseConfig extends GenericConfig {
   }
 
   async _initialize() {
-    const sequelize = new Sequelize({ dialect: 'sqlite', storage: ':memory:' });
+    const sequelize = new Sequelize({
+      dialect: 'sqlite',
+      storage: ':memory:'
+    });
 
     await this._loadModels(sequelize);
     this._db.sequelize = sequelize;
@@ -38,3 +41,6 @@ export class DatabaseConfig extends GenericConfig {
     return this._db;
   }
 }
+
+const databaseConfig = new DatabaseConfig();
+module.exports = databaseConfig.db;

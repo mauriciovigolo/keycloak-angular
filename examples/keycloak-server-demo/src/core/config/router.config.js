@@ -12,7 +12,15 @@ export class RouterConfig extends GenericConfig {
     this._initialize();
   }
 
-  _loadRouter(file) {}
+  _loadRouter(file) {
+    const { router, path } = require(file);
+    if (router) {
+      this.app.use(path, router);
+
+      this._routers.loadedRouters += 1;
+      this._routers.routers.push({ router, path });
+    }
+  }
 
   async _load() {
     try {
@@ -29,7 +37,7 @@ export class RouterConfig extends GenericConfig {
     this.emit('routers-initialized', this._routers);
 
     logger.info(
-      `Router initialization is complete. Total of loaded routers: ${this._routers.loadedRoutes}`
+      `Router initialization is complete. Total of loaded routers: ${this._routers.loadedRouters}`
     );
   }
 
