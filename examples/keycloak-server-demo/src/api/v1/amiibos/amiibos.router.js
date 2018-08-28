@@ -10,5 +10,5 @@ router.get('', async (req, res) => {
 
 module.exports = {
   router,
-  path: '/v1/products'
+  path: '/v1/amiibos'
 };
