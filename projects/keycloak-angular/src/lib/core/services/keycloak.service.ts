@@ -124,6 +124,10 @@ export class KeycloakService {
       this._keycloakEvents$.next({ type: KeycloakEventType.OnAuthLogout });
     };
 
+    this._instance.onAuthRefreshSuccess = () => {
+      this._keycloakEvents$.next({ type: KeycloakEventType.OnAuthRefreshSuccess });
+    };
+
     this._instance.onAuthRefreshError = () => {
       this._keycloakEvents$.next({ type: KeycloakEventType.OnAuthRefreshError });
     };
