@@ -93,7 +93,7 @@ export class KeycloakService {
    *
    * @param value - boolean value to be checked
    */
-  private ifUndefinedIsTrue(value: boolean): boolean {
+  private ifUndefinedSetTrue(value: boolean): boolean {
     let returnValue: boolean = value;
     if (returnValue === undefined || returnValue === null) {
       returnValue = true;
@@ -109,13 +109,6 @@ export class KeycloakService {
    * argument if the source function provides any.
    */
   private bindsKeycloakEvents(): void {
-    if (!this._instance) {
-      console.warn(
-        'Keycloak Angular events could not be registered as the keycloak instance is undefined.'
-      );
-      return;
-    }
-
     this._instance.onAuthError = errorData => {
       this._keycloakEvents$.next({ args: errorData, type: KeycloakEventType.OnAuthError });
     };
@@ -197,8 +190,8 @@ export class KeycloakService {
    */
   init(options: KeycloakOptions = {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this._enableBearerInterceptor = this.ifUndefinedIsTrue(options.enableBearerInterceptor);
-      this._loadUserProfileAtStartUp = this.ifUndefinedIsTrue(options.loadUserProfileAtStartUp);
+      this._enableBearerInterceptor = this.ifUndefinedSetTrue(options.enableBearerInterceptor);
+      this._loadUserProfileAtStartUp = this.ifUndefinedSetTrue(options.loadUserProfileAtStartUp);
       this._bearerExcludedUrls = options.bearerExcludedUrls || [];
       this._authorizationHeaderName = options.authorizationHeaderName || 'Authorization';
       this._bearerPrefix = this.sanitizeBearerPrefix(options.bearerPrefix);
@@ -206,7 +199,7 @@ export class KeycloakService {
       this._instance = Keycloak(options.config);
       this.bindsKeycloakEvents();
       this._instance
-        .init(options.initOptions!)
+        .init(options.initOptions)
         .success(async authenticated => {
           if (authenticated && this._loadUserProfileAtStartUp) {
             await this.loadUserProfile();
@@ -273,7 +266,7 @@ export class KeycloakService {
       this._instance
         .logout(options)
         .success(() => {
-          this._userProfile = undefined!;
+          this._userProfile = undefined;
           resolve();
         })
         .error(error => {
@@ -300,7 +293,7 @@ export class KeycloakService {
           resolve();
         })
         .error(() => {
-          reject('An error happened during the register execution');
+          reject('An error happened during the register execution.');
         });
     });
   }
@@ -358,8 +351,13 @@ export class KeycloakService {
    * A boolean that indicates if the user is logged in.
    */
   isLoggedIn(): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async resolve => {
       try {
+        if (!this._instance.authenticated) {
+          resolve(false);
+          return;
+        }
+        // re-check if the token is not expired
         await this.updateToken(20);
         resolve(true);
       } catch (error) {
@@ -406,7 +404,7 @@ export class KeycloakService {
       }
 
       if (!this._instance) {
-        reject();
+        reject('Keycloak Angular library is not initialized.');
         return;
       }
 
@@ -415,7 +413,7 @@ export class KeycloakService {
         .success(refreshed => {
           resolve(refreshed);
         })
-        .error(error => {
+        .error(err => {
           reject('Failed to refresh the token, or the session is expired');
         });
     });
@@ -438,7 +436,7 @@ export class KeycloakService {
         return;
       }
 
-      if (!(await this.isLoggedIn())) {
+      if (!this._instance.authenticated) {
         reject('The user profile was not loaded as the user is not logged in.');
         return;
       }
