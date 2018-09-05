@@ -1,6 +1,6 @@
 {
   "name": "keycloak-angular",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Easy Keycloak setup for Angular applications",
   "repository": {
     "type": "git",
@@ -29,7 +29,7 @@
     "oidc"
   ],
   "dependencies": {
-    "keycloak-js": "^4.0.0"
+    "keycloak-js": "^4.3.0"
   },
   "peerDependencies": {
     "@angular/common": "^6.0.0",
