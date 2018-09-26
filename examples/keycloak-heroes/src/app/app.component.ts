@@ -13,7 +13,9 @@ export class AppComponent implements OnInit {
   constructor(private keycloakService: KeycloakService) {}
 
   async ngOnInit() {
-    this.userDetails = await this.keycloakService.loadUserProfile();
+    if (await this.keycloakService.isLoggedIn()) {
+      this.userDetails = await this.keycloakService.loadUserProfile();
+    }
   }
 
   async doLogout() {
