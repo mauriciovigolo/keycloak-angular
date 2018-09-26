@@ -136,6 +136,27 @@ export class KeycloakService {
   }
 
   /**
+   * Handles the class values initialization.
+   *
+   * @param options
+   */
+  private initServiceValues({
+    enableBearerInterceptor = true,
+    loadUserProfileAtStartUp = true,
+    bearerExcludedUrls = [],
+    authorizationHeaderName = 'Authorization',
+    bearerPrefix = 'bearer',
+    initOptions
+  }: KeycloakOptions): void {
+    this._enableBearerInterceptor = enableBearerInterceptor;
+    this._loadUserProfileAtStartUp = loadUserProfileAtStartUp;
+    this._bearerExcludedUrls = bearerExcludedUrls;
+    this._authorizationHeaderName = authorizationHeaderName;
+    this._bearerPrefix = this.sanitizeBearerPrefix(bearerPrefix);
+    this._silentRefresh = initOptions ? initOptions.flow === 'implicit' : false;
+  }
+
+  /**
    * Keycloak initialization. It should be called to initialize the adapter.
    * Options is a object with 2 main parameters: config and initOptions. The first one
    * will be used to create the Keycloak instance. The second one are options to initialize the
@@ -185,24 +206,11 @@ export class KeycloakService {
    * @returns
    * A Promise with a boolean indicating if the initialization was successful.
    */
-  init({
-    enableBearerInterceptor = true,
-    loadUserProfileAtStartUp = true,
-    bearerExcludedUrls = [],
-    authorizationHeaderName = 'Authorization',
-    bearerPrefix = 'bearer',
-    initOptions,
-    config
-  }: KeycloakOptions): Promise<boolean> {
+  init(options: KeycloakOptions = {}): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this._enableBearerInterceptor = enableBearerInterceptor;
-      this._loadUserProfileAtStartUp = loadUserProfileAtStartUp;
-      this._bearerExcludedUrls = bearerExcludedUrls;
-      this._authorizationHeaderName = authorizationHeaderName;
-      this._bearerPrefix = this.sanitizeBearerPrefix(bearerPrefix);
-      this._silentRefresh = initOptions
-        ? initOptions.flow === 'implicit'
-        : false;
+      this.initServiceValues(options);
+      const { config, initOptions } = options;
+
       this._instance = Keycloak(config);
       this.bindsKeycloakEvents();
       this._instance
@@ -213,10 +221,15 @@ export class KeycloakService {
           }
           resolve(authenticated);
         })
-        .error(({ error, error_description }) => {
-          reject(
-            `An error happened during Keycloak initialization.\nAdapter error details:\nError: ${error}\nDescription: ${error_description}`
-          );
+        .error(kcError => {
+          let msg = 'An error happened during Keycloak initialization.';
+          if (kcError) {
+            let { error, error_description } = kcError;
+            msg = msg.concat(
+              `\nAdapter error details:\nError: ${error}\nDescription: ${error_description}`
+            );
+          }
+          reject(msg);
         });
     });
   }
