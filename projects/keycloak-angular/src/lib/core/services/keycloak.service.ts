@@ -72,36 +72,6 @@ export class KeycloakService {
   }
 
   /**
-   * Sanitizes the bearer prefix, preparing it to be appended to
-   * the token.
-   *
-   * @param bearerPrefix
-   * Prefix to be appended to the authorization header as
-   * Authorization: <bearer-prefix> <token>.
-   * @returns
-   * The bearer prefix sanitized, meaning that it will follow the bearerPrefix
-   * param as described in the library initilization or the default value bearer,
-   * with a space append in the end for the token concatenation.
-   */
-  private sanitizeBearerPrefix(bearerPrefix: string | undefined): string {
-    let prefix: string = (bearerPrefix || 'bearer').trim();
-    return prefix.concat(' ');
-  }
-
-  /**
-   * Sets default value to true if it is undefined or null.
-   *
-   * @param value - boolean value to be checked
-   */
-  private ifUndefinedSetTrue(value: boolean): boolean {
-    let returnValue: boolean = value;
-    if (returnValue === undefined || returnValue === null) {
-      returnValue = true;
-    }
-    return returnValue;
-  }
-
-  /**
    * Binds the keycloak-js events to the keycloakEvents Subject
    * which is a good way to monitor for changes, if needed.
    *
@@ -110,7 +80,10 @@ export class KeycloakService {
    */
   private bindsKeycloakEvents(): void {
     this._instance.onAuthError = errorData => {
-      this._keycloakEvents$.next({ args: errorData, type: KeycloakEventType.OnAuthError });
+      this._keycloakEvents$.next({
+        args: errorData,
+        type: KeycloakEventType.OnAuthError
+      });
     };
 
     this._instance.onAuthLogout = () => {
@@ -118,11 +91,15 @@ export class KeycloakService {
     };
 
     this._instance.onAuthRefreshSuccess = () => {
-      this._keycloakEvents$.next({ type: KeycloakEventType.OnAuthRefreshSuccess });
+      this._keycloakEvents$.next({
+        type: KeycloakEventType.OnAuthRefreshSuccess
+      });
     };
 
     this._instance.onAuthRefreshError = () => {
-      this._keycloakEvents$.next({ type: KeycloakEventType.OnAuthRefreshError });
+      this._keycloakEvents$.next({
+        type: KeycloakEventType.OnAuthRefreshError
+      });
     };
 
     this._instance.onAuthSuccess = () => {
@@ -134,8 +111,28 @@ export class KeycloakService {
     };
 
     this._instance.onReady = authenticated => {
-      this._keycloakEvents$.next({ args: authenticated, type: KeycloakEventType.OnReady });
+      this._keycloakEvents$.next({
+        args: authenticated,
+        type: KeycloakEventType.OnReady
+      });
     };
+  }
+
+  /**
+   * Sanitizes the bearer prefix, preparing it to be appended to
+   * the token.
+   *
+   * @param bearerPrefix
+   * Prefix to be appended to the authorization header as
+   * Authorization: <bearer-prefix> <token>.
+   * @returns
+   * The bearer prefix sanitized, meaning that it will follow the bearerPrefix
+   * param as described in the library initilization or the default value bearer,
+   * with a space append in the end for the token concatenation.
+   */
+  private sanitizeBearerPrefix(bearerPrefix: string): string {
+    let prefix: string = bearerPrefix.trim();
+    return prefix.concat(' ');
   }
 
   /**
@@ -188,26 +185,38 @@ export class KeycloakService {
    * @returns
    * A Promise with a boolean indicating if the initialization was successful.
    */
-  init(options: KeycloakOptions = {}): Promise<boolean> {
+  init({
+    enableBearerInterceptor = true,
+    loadUserProfileAtStartUp = true,
+    bearerExcludedUrls = [],
+    authorizationHeaderName = 'Authorization',
+    bearerPrefix = 'bearer',
+    initOptions,
+    config
+  }: KeycloakOptions): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this._enableBearerInterceptor = this.ifUndefinedSetTrue(options.enableBearerInterceptor);
-      this._loadUserProfileAtStartUp = this.ifUndefinedSetTrue(options.loadUserProfileAtStartUp);
-      this._bearerExcludedUrls = options.bearerExcludedUrls || [];
-      this._authorizationHeaderName = options.authorizationHeaderName || 'Authorization';
-      this._bearerPrefix = this.sanitizeBearerPrefix(options.bearerPrefix);
-      this._silentRefresh = options.initOptions ? options.initOptions.flow === 'implicit' : false;
-      this._instance = Keycloak(options.config);
+      this._enableBearerInterceptor = enableBearerInterceptor;
+      this._loadUserProfileAtStartUp = loadUserProfileAtStartUp;
+      this._bearerExcludedUrls = bearerExcludedUrls;
+      this._authorizationHeaderName = authorizationHeaderName;
+      this._bearerPrefix = this.sanitizeBearerPrefix(bearerPrefix);
+      this._silentRefresh = initOptions
+        ? initOptions.flow === 'implicit'
+        : false;
+      this._instance = Keycloak(config);
       this.bindsKeycloakEvents();
       this._instance
-        .init(options.initOptions)
+        .init(initOptions)
         .success(async authenticated => {
           if (authenticated && this._loadUserProfileAtStartUp) {
             await this.loadUserProfile();
           }
           resolve(authenticated);
         })
-        .error(error => {
-          reject('An error happened during Keycloak initialization.');
+        .error(({ error, error_description }) => {
+          reject(
+            `An error happened during Keycloak initialization.\nAdapter error details:\nError: ${error}\nDescription: ${error_description}`
+          );
         });
     });
   }
@@ -243,9 +252,7 @@ export class KeycloakService {
           }
           resolve();
         })
-        .error(error => {
-          reject('An error happened during the login.');
-        });
+        .error(() => reject(`An error happened during the login.`));
     });
   }
 
@@ -269,9 +276,7 @@ export class KeycloakService {
           this._userProfile = undefined;
           resolve();
         })
-        .error(error => {
-          reject('An error happened during logout.');
-        });
+        .error(() => reject('An error happened during logout.'));
     });
   }
 
@@ -285,16 +290,18 @@ export class KeycloakService {
    * @returns
    * A void Promise if the register flow was successful.
    */
-  register(options: Keycloak.KeycloakLoginOptions = { action: 'register' }): Promise<void> {
+  register(
+    options: Keycloak.KeycloakLoginOptions = { action: 'register' }
+  ): Promise<void> {
     return new Promise((resolve, reject) => {
       this._instance
         .register(options)
         .success(() => {
           resolve();
         })
-        .error(() => {
-          reject('An error happened during the register execution.');
-        });
+        .error(() =>
+          reject('An error happened during the register execution.')
+        );
     });
   }
 
@@ -413,9 +420,9 @@ export class KeycloakService {
         .success(refreshed => {
           resolve(refreshed);
         })
-        .error(err => {
-          reject('Failed to refresh the token, or the session is expired');
-        });
+        .error(() =>
+          reject('Failed to refresh the token, or the session is expired')
+        );
     });
   }
 
@@ -429,7 +436,9 @@ export class KeycloakService {
    * @returns
    * A promise with the KeycloakProfile data loaded.
    */
-  loadUserProfile(forceReload: boolean = false): Promise<Keycloak.KeycloakProfile> {
+  loadUserProfile(
+    forceReload: boolean = false
+  ): Promise<Keycloak.KeycloakProfile> {
     return new Promise(async (resolve, reject) => {
       if (this._userProfile && !forceReload) {
         resolve(this._userProfile);
@@ -447,9 +456,7 @@ export class KeycloakService {
           this._userProfile = result as Keycloak.KeycloakProfile;
           resolve(this._userProfile);
         })
-        .error(err => {
-          reject('The user profile could not be loaded.');
-        });
+        .error(() => reject('The user profile could not be loaded.'));
     });
   }
 
@@ -512,7 +519,10 @@ export class KeycloakService {
       }
       try {
         const token: string = await this.getToken();
-        headers = headers.set(this._authorizationHeaderName, this._bearerPrefix + token);
+        headers = headers.set(
+          this._authorizationHeaderName,
+          this._bearerPrefix + token
+        );
         observer.next(headers);
         observer.complete();
       } catch (error) {
