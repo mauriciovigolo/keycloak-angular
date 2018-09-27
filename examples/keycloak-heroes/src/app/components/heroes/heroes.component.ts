@@ -9,7 +9,7 @@ import { HeroesService, Hero } from '../../services';
   styleUrls: ['./heroes.component.css']
 })
 export class HeroesComponent implements OnInit {
-  private heroes: Hero[];
+  heroes: Hero[];
 
   constructor(private heroesService: HeroesService) {}
 
@@ -19,6 +19,8 @@ export class HeroesComponent implements OnInit {
   }
 
   listHeroes(): void {
-    this.heroesService.list().subscribe((heroes: Hero[]) => (this.heroes = heroes), err => {});
+    this.heroesService
+      .list()
+      .subscribe((heroes: Hero[]) => (this.heroes = heroes), err => {});
   }
 }

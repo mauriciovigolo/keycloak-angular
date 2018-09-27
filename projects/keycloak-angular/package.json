@@ -1,6 +1,6 @@
 {
   "name": "keycloak-angular",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Easy Keycloak setup for Angular applications",
   "repository": {
     "type": "git",
