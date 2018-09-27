@@ -5,7 +5,14 @@
  * Use of this source code is governed by a MIT-style license that can be
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
  */
-import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+
+import {
+  CanActivate,
+  Router,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot
+} from '@angular/router';
+
 import { KeycloakService } from './keycloak.service';
 
 /**
@@ -24,11 +31,10 @@ export abstract class KeycloakAuthGuard implements CanActivate {
    */
   protected roles: string[];
 
-  /**
-   * @param router
-   * @param keycloakAngular
-   */
-  constructor(protected router: Router, protected keycloakAngular: KeycloakService) {}
+  constructor(
+    protected router: Router,
+    protected keycloakAngular: KeycloakService
+  ) {}
 
   /**
    * CanActivate checks if the user is logged in and get the full list of roles (REALM + CLIENT)
@@ -37,7 +43,10 @@ export abstract class KeycloakAuthGuard implements CanActivate {
    * @param route
    * @param state
    */
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
         this.authenticated = await this.keycloakAngular.isLoggedIn();
@@ -55,8 +64,8 @@ export abstract class KeycloakAuthGuard implements CanActivate {
    * Create your own customized authorization flow in this method. From here you already known
    * if the user is authenticated (this.authenticated) and the user roles (this.roles).
    *
-   * @param {ActivatedRouteSnapshot} route
-   * @param {RouterStateSnapshot} state
+   * @param route
+   * @param state
    */
   abstract isAccessAllowed(
     route: ActivatedRouteSnapshot,
