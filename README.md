@@ -52,6 +52,8 @@ different build versions supporting these combinations, so be aware to choose th
 |      2.x.x       | 4 and 5 |    4     |   -    |
 |      3.x.x       |    6    |    3     |   7    |
 |      4.x.x       |    6    |    4     |   -    |
+|      5.x.x       |    7    |    3     |   7    |
+|      6.x.x       |    7    |    4     |   -    |
 
 **Warning**: This library will work only with versions higher or equal than 4.3.0 of Angular. The reason for this is that keycloak-angular uses the Interceptor from `@angular/common/http` package and this feature was available from this version on.
 
@@ -184,7 +186,7 @@ By default all HttpClient requests will add the Authorization header in the form
 There is also the possibility to exclude a list of URLs that should not have the authorization header. The excluded list must be informed in the keycloak initialization. For example:
 
 ```js
- try {
+try {
   await keycloak.init({
     config: {
       url: 'http://localhost:8080/auth',
@@ -196,10 +198,7 @@ There is also the possibility to exclude a list of URLs that should not have the
       checkLoginIframe: false
     },
     enableBearerInterceptor: true,
-    bearerExcludedUrls: [
-      '/assets',
-      '/clients/public'
-    ],
+    bearerExcludedUrls: ['/assets', '/clients/public']
   });
   resolve();
 } catch (error) {}
