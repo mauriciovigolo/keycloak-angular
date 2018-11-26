@@ -1,6 +1,6 @@
 {
   "name": "keycloak-angular",
-  "version": "4.0.2",
+  "version": "4.1.0",
   "description": "Easy Keycloak setup for Angular applications",
   "scripts": {
     "contributors:add": "all-contributors add",
@@ -32,6 +32,7 @@
     "angular 4",
     "angular 5",
     "angular 6",
+    "angular 7",
     "authentication",
     "authorization",
     "keycloak",
@@ -63,7 +64,7 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~1.1.1",
     "karma-jasmine-html-reporter": "^1.1.0",
-    "keycloak-js": "^4.4.0",
+    "keycloak-js": "^4.6.0",
     "ng-packagr": "^4.1.1",
     "protractor": "~5.4.0",
     "rxjs": "^6.0.0",
