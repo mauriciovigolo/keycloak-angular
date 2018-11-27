@@ -15,7 +15,7 @@ import { initializer } from './utils/app-init';
   imports: [
     BrowserModule,
     HttpClientModule,
-    ClarityModule.forRoot(),
+    ClarityModule,
     KeycloakAngularModule,
     AppRoutingModule
   ],
