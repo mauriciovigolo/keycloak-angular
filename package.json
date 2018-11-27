@@ -1,6 +1,6 @@
 {
   "name": "keycloak-angular",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "Easy Keycloak setup for Angular applications",
   "main": "index.ts",
   "scripts": {
@@ -23,6 +23,7 @@
     "angular 4",
     "angular 5",
     "angular 6",
+    "angular 7",
     "authentication",
     "authorization",
     "keycloak",
@@ -39,7 +40,7 @@
   },
   "homepage": "https://github.com/mauriciovigolo/keycloak-angular#readme",
   "dependencies": {
-    "keycloak-js": "~4.5.0"
+    "keycloak-js": "^4.6.0"
   },
   "peerDependencies": {
     "@angular/common": ">=4.3 <6",
