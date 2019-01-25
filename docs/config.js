@@ -3,10 +3,11 @@ window.$docsify = {
   name: 'keycloak-angular',
   repo: 'ssh://git@github.com/mauriciovigolo/keycloak-angular',
   auto2top: true,
+  homepage: 'docs/en/README',
   alias: {},
   coverpage: {
-    '/': '_coverpage.md',
-    '/pt/': '_coverpage.md'
+    '/': 'docs/en/_coverpage.md',
+    '/pt/': 'docs/pt/_coverpage.md'
   },
   onlyCover: false,
   executeScript: true,
@@ -28,11 +29,11 @@ window.$docsify = {
   formatUpdated: '{MM}/{DD} {HH}:{mm}',
   plugins: [],
   notFoundPage: {
-    '/': '_404.md'
+    '/': 'docs/en/_404.md'
   }
 };
 
 // Service Worker Registration
-if (typeof navigator.serviceWorker !== 'undefined') {
-  navigator.serviceWorker.register('sw.js');
-}
+// if (typeof navigator.serviceWorker !== 'undefined') {
+//   navigator.serviceWorker.register('sw.js');
+// }

@@ -12,8 +12,10 @@ This library depends on angular and keycloak versions so as it might exist break
 |      2.x.x       | 4 and 5 |    4     |   -    |
 |      3.x.x       |    6    |    3     |   7    |
 |      4.x.x       |    6    |    4     |   -    |
+|      5.x.x       |    7    |    3     |   7    |
+|      6.x.x       |    7    |    4     |   -    |
 
-**Warning**: This library will work only with versions higher or equal than 4.3.0 of Angular. The reason for this is that keycloak-angular uses the Interceptor from `@angular/common/http` package and this feature was available from this version on.
+> ⚠️ Note: This library will work only with versions higher or equal than 4.3.0 of Angular. The reason for this is that keycloak-angular uses the Interceptor from `@angular/common/http` package and this feature was available from this version on.
 
 ### Steps to install using NPM or YARN
 
