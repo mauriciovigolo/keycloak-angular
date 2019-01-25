@@ -324,12 +324,14 @@ export class KeycloakService {
    *
    * @param role
    * role name
+   * @param resource
+   * resource name If not specified, `clientId` is used
    * @returns
    * A boolean meaning if the user has the specified Role.
    */
-  isUserInRole(role: string): boolean {
+  isUserInRole(role: string, resource?: string): boolean {
     let hasRole: boolean;
-    hasRole = this._instance.hasResourceRole(role);
+    hasRole = this._instance.hasResourceRole(role, resource);
     if (!hasRole) {
       hasRole = this._instance.hasRealmRole(role);
     }
