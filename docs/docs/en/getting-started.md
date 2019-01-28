@@ -1,5 +1,9 @@
 # Getting started
 
+## Topics
+
+- [](#)
+
 ## Instalation
 
 ### Choosing the appropriate version of keycloak-angular
@@ -41,7 +45,7 @@ yarn add keycloak-angular@<choosen-version-from-table-above>
 
 The KeycloakService should be initialized during the application loading, using the [APP_INITIALIZER](https://angular.io/api/core/APP_INITIALIZER) token.
 
-TODO: Add a link to a place in docs to explain the reason for this initialization.
+> **Why initializing the KeycloakService during the app startup?** Depending on your authentication flow the first thing you may want is to redirect the flow to the login page. Besides that KeycloakService offers methods to obtain the user profile, roles and authentication events, so it can be a dependency in others services.
 
 #### AppModule
 
@@ -64,7 +68,7 @@ import { initializer } from './utils/app-init';
 export class AppModule {}
 ```
 
-- **Notice** that the KeycloakAngularModule was imported by the AppModule. For this reason you don't need to insert the KeycloakService in the AppModule providers array.
+> ℹ️ - The KeycloakAngularModule was imported by the AppModule. For this reason you don't need to insert the KeycloakService in the AppModule providers array.
 
 #### initializer Function
 
@@ -74,15 +78,8 @@ This function can be named and placed in the way you think is most appropriate. 
 import { KeycloakService } from 'keycloak-angular';
 
 export function initializer(keycloak: KeycloakService): () => Promise<any> {
-  return (): Promise<any> => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        await keycloak.init();
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
+  return (): Promise<any> => keycloak.init();
 }
 ```
+
+> ⚠️ -

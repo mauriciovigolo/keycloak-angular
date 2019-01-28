@@ -15,7 +15,7 @@ The keycloak-js library is the official javascript adapter from Keycloak project
 - Greater community supporting issues on the adapter, so it tends to be a more mature and secure implementation.
 - Implemented by Keycloak community and Red Hat.
 
-> ⚠️ Note: The version of keycloak-js may always be overriden in your project. To do so, you will need to install the required package as: `npm i --save keycloak-js@<version>`. Be aware that you may face some issues related to this custom installed version, since keycloak-angular is tested with the keycloak-js version as described on the package.json file.
+> ⚠️ - The version of keycloak-js may always be overriden in your project. To do so, you will need to install the required package as: `npm i --save keycloak-js@<version>`. Be aware that you may face some issues related to this custom installed version, since keycloak-angular is tested with the keycloak-js version as described on the package.json file.
 
 ## Features
 
