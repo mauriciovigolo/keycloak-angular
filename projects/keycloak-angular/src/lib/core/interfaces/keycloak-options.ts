@@ -10,6 +10,41 @@ import { KeycloakInitOptions } from './keycloak-init-options';
 import { KeycloakConfig } from './keycloak-config';
 
 /**
+ * HTTP Methods
+ */
+export type HttpMethods =
+  | 'GET'
+  | 'POST'
+  | 'PUT'
+  | 'DELETE'
+  | 'OPTIONS'
+  | 'HEAD'
+  | 'PATCH';
+
+/**
+ * ExcludedUrl type may be used to specify the url and the HTTP method that
+ * should not be intercepted by the KeycloakBearerInterceptor.
+ *
+ * Example:
+ * const excludedUrl: ExcludedUrl[] = [
+ *  {
+ *    url: 'reports/public'
+ *    httpMethods: ['GET']
+ *  }
+ * ]
+ *
+ * In the example above for URL reports/public and HTTP Method GET the
+ * bearer will not be automatically added.
+ *
+ * If the url is informed but httpMethod is undefined, then the bearer
+ * will not be added for all HTTP Methods.
+ */
+export interface ExcludedUrl {
+  url: string;
+  httpMethods?: HttpMethods[];
+}
+
+/**
  * keycloak-angular initialization options.
  */
 export interface KeycloakOptions {
@@ -51,7 +86,7 @@ export interface KeycloakOptions {
    * added. This library makes use of Angular Http Interceptor, to automatically add the Bearer
    * token to the request.
    */
-  bearerExcludedUrls?: string[];
+  bearerExcludedUrls?: string[] | ExcludedUrl[];
   /**
    * This value will be used as the Authorization Http Header name. The default value is
    * **Authorization**. If the backend expects requests to have a token in a different header, you

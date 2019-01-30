@@ -11,12 +11,12 @@ import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 
 // Workaround for rollup library behaviour, as pointed out on issue #1267 (https://github.com/rollup/rollup/issues/1267).
-import * as Keycloak_ from 'keycloak-js';
-export const Keycloak = Keycloak_;
+import * as Keycloak from 'keycloak-js';
+// export const Keycloak = Keycloak_;
 
 import { Observable, Observer, Subject } from 'rxjs';
 
-import { KeycloakOptions } from '../interfaces/keycloak-options';
+import { KeycloakOptions, ExcludedUrl } from '../interfaces/keycloak-options';
 import { KeycloakEvent, KeycloakEventType } from '../interfaces/keycloak-event';
 
 /**
@@ -61,7 +61,7 @@ export class KeycloakService {
   /**
    * The excluded urls patterns that must skip the KeycloakBearerInterceptor.
    */
-  private _bearerExcludedUrls: string[];
+  private _bearerExcludedUrls: string[] | ExcludedUrl[];
   /**
    * Observer for the keycloak events
    */
@@ -119,23 +119,6 @@ export class KeycloakService {
   }
 
   /**
-   * Sanitizes the bearer prefix, preparing it to be appended to
-   * the token.
-   *
-   * @param bearerPrefix
-   * Prefix to be appended to the authorization header as
-   * Authorization: <bearer-prefix> <token>.
-   * @returns
-   * The bearer prefix sanitized, meaning that it will follow the bearerPrefix
-   * param as described in the library initilization or the default value bearer,
-   * with a space append in the end for the token concatenation.
-   */
-  private sanitizeBearerPrefix(bearerPrefix: string): string {
-    let prefix: string = bearerPrefix.trim();
-    return prefix.concat(' ');
-  }
-
-  /**
    * Handles the class values initialization.
    *
    * @param options
@@ -152,7 +135,7 @@ export class KeycloakService {
     this._loadUserProfileAtStartUp = loadUserProfileAtStartUp;
     this._bearerExcludedUrls = bearerExcludedUrls;
     this._authorizationHeaderName = authorizationHeaderName;
-    this._bearerPrefix = this.sanitizeBearerPrefix(bearerPrefix);
+    this._bearerPrefix = bearerPrefix.trim().concat(' ');
     this._silentRefresh = initOptions ? initOptions.flow === 'implicit' : false;
   }
 
@@ -372,20 +355,16 @@ export class KeycloakService {
    * @returns
    * A boolean that indicates if the user is logged in.
    */
-  isLoggedIn(): Promise<boolean> {
-    return new Promise(async resolve => {
-      try {
-        if (!this._instance.authenticated) {
-          resolve(false);
-          return;
-        }
-        // re-check if the token is not expired
-        await this.updateToken(20);
-        resolve(true);
-      } catch (error) {
-        resolve(false);
+  async isLoggedIn(): Promise<boolean> {
+    try {
+      if (!this._instance.authenticated) {
+        return false;
       }
-    });
+      await this.updateToken(20);
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 
   /**
@@ -564,7 +543,7 @@ export class KeycloakService {
    * @returns
    * The excluded urls that must not be intercepted by the KeycloakBearerInterceptor.
    */
-  get bearerExcludedUrls(): string[] {
+  get bearerExcludedUrls(): string[] | ExcludedUrl[] {
     return this._bearerExcludedUrls;
   }
 
