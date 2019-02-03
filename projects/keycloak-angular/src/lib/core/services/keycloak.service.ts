@@ -10,13 +10,14 @@ import { Injectable } from '@angular/core';
 
 import { HttpHeaders } from '@angular/common/http';
 
-// Workaround for rollup library behaviour, as pointed out on issue #1267 (https://github.com/rollup/rollup/issues/1267).
-import * as Keycloak from 'keycloak-js';
-// export const Keycloak = Keycloak_;
-
 import { Observable, Observer, Subject } from 'rxjs';
+import Keycloak from 'keycloak-js';
 
-import { KeycloakOptions, ExcludedUrl } from '../interfaces/keycloak-options';
+import {
+  KeycloakOptions,
+  ExcludedUrlRegex,
+  ExcludedUrl
+} from '../interfaces/keycloak-options';
 import { KeycloakEvent, KeycloakEventType } from '../interfaces/keycloak-event';
 
 /**
@@ -61,15 +62,13 @@ export class KeycloakService {
   /**
    * The excluded urls patterns that must skip the KeycloakBearerInterceptor.
    */
-  private _bearerExcludedUrls: string[] | ExcludedUrl[];
+  private _excludedUrls: ExcludedUrlRegex[];
   /**
    * Observer for the keycloak events
    */
-  private _keycloakEvents$: Subject<KeycloakEvent>;
-
-  constructor() {
-    this._keycloakEvents$ = new Subject<KeycloakEvent>();
-  }
+  private _keycloakEvents$: Subject<KeycloakEvent> = new Subject<
+    KeycloakEvent
+  >();
 
   /**
    * Binds the keycloak-js events to the keycloakEvents Subject
@@ -107,7 +106,9 @@ export class KeycloakService {
     };
 
     this._instance.onTokenExpired = () => {
-      this._keycloakEvents$.next({ type: KeycloakEventType.OnTokenExpired });
+      this._keycloakEvents$.next({
+        type: KeycloakEventType.OnTokenExpired
+      });
     };
 
     this._instance.onReady = authenticated => {
@@ -116,6 +117,32 @@ export class KeycloakService {
         type: KeycloakEventType.OnReady
       });
     };
+  }
+
+  /**
+   * Loads all bearerExcludedUrl content in a uniform type: ExcludedUrl,
+   * so it becomes easier to handle.
+   *
+   * @param bearerExcludedUrls array of strings or ExcludedUrl that includes
+   * the url and HttpMethod.
+   */
+  private loadExcludedUrls(
+    bearerExcludedUrls: string[] | ExcludedUrl[]
+  ): ExcludedUrlRegex[] {
+    const excludedUrls: ExcludedUrlRegex[] = [];
+    for (const item of bearerExcludedUrls) {
+      let excludedUrl: ExcludedUrlRegex;
+      if (typeof item === 'string') {
+        excludedUrl = { urlPattern: new RegExp(item, 'i'), httpMethods: [] };
+      } else {
+        excludedUrl = {
+          urlPattern: new RegExp(item.url, 'i'),
+          httpMethods: []
+        };
+      }
+      excludedUrls.push(excludedUrl);
+    }
+    return excludedUrls;
   }
 
   /**
@@ -133,9 +160,9 @@ export class KeycloakService {
   }: KeycloakOptions): void {
     this._enableBearerInterceptor = enableBearerInterceptor;
     this._loadUserProfileAtStartUp = loadUserProfileAtStartUp;
-    this._bearerExcludedUrls = bearerExcludedUrls;
     this._authorizationHeaderName = authorizationHeaderName;
     this._bearerPrefix = bearerPrefix.trim().concat(' ');
+    this._excludedUrls = this.loadExcludedUrls(bearerExcludedUrls);
     this._silentRefresh = initOptions ? initOptions.flow === 'implicit' : false;
   }
 
@@ -421,9 +448,9 @@ export class KeycloakService {
   }
 
   /**
-   * Loads the users profile.
-   * Returns promise to set functions to be invoked if the profile was loaded successfully, or if
-   * the profile could not be loaded.
+   * Loads the user profile.
+   * Returns promise to set functions to be invoked if the profile was loaded
+   * successfully, or if the profile could not be loaded.
    *
    * @param forceReload
    * If true will force the loadUserProfile even if its already loaded.
@@ -505,12 +532,10 @@ export class KeycloakService {
    * @returns
    * An observable with with the HTTP Authorization header and the current token.
    */
-  addTokenToHeader(headersArg?: HttpHeaders): Observable<HttpHeaders> {
+  addTokenToHeader(
+    headers: HttpHeaders = new HttpHeaders()
+  ): Observable<HttpHeaders> {
     return Observable.create(async (observer: Observer<any>) => {
-      let headers = headersArg;
-      if (!headers) {
-        headers = new HttpHeaders();
-      }
       try {
         const token: string = await this.getToken();
         headers = headers.set(
@@ -543,8 +568,8 @@ export class KeycloakService {
    * @returns
    * The excluded urls that must not be intercepted by the KeycloakBearerInterceptor.
    */
-  get bearerExcludedUrls(): string[] | ExcludedUrl[] {
-    return this._bearerExcludedUrls;
+  get excludedUrls(): ExcludedUrlRegex[] {
+    return this._excludedUrls;
   }
 
   /**

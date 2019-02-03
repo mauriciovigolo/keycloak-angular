@@ -45,6 +45,16 @@ export interface ExcludedUrl {
 }
 
 /**
+ * Similar to ExcludedUrl, contains the HTTP methods and a regex to
+ * include the url patterns.
+ * This interface is used internally by the KeycloakService.
+ */
+export interface ExcludedUrlRegex {
+  urlPattern: RegExp;
+  httpMethods?: HttpMethods[];
+}
+
+/**
  * keycloak-angular initialization options.
  */
 export interface KeycloakOptions {

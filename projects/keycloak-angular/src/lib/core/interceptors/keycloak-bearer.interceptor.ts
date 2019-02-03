@@ -11,14 +11,14 @@ import {
   HttpInterceptor,
   HttpRequest,
   HttpHandler,
-  HttpEvent,
-  HttpHeaders
+  HttpEvent
 } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { KeycloakService } from '../services/keycloak.service';
+import { ExcludedUrlRegex } from '../interfaces/keycloak-options';
 
 /**
  * This interceptor includes the bearer by default in all HttpClient requests.
@@ -28,18 +28,27 @@ import { KeycloakService } from '../services/keycloak.service';
  */
 @Injectable()
 export class KeycloakBearerInterceptor implements HttpInterceptor {
-  private excludedUrlsRegex: RegExp[];
-
-  /**
-   * KeycloakBearerInterceptor constructor.
-   *
-   * @param keycloak - Injected KeycloakService instance.
-   */
   constructor(private keycloak: KeycloakService) {}
 
-  private loadExcludedUrlsRegex() {
-    const excludedUrls: string[] = this.keycloak.bearerExcludedUrls;
-    this.excludedUrlsRegex = excludedUrls.map(urlPattern => new RegExp(urlPattern, 'i')) || [];
+  /**
+   * Checks if the url is excluded from having the Bearer Authorization
+   * header added.
+   *
+   * @param req http request from @angular http module.
+   * @param excludedUrlRegex contains the url pattern and the http methods,
+   * excluded from adding the bearer at the Http Request.
+   */
+  private isUrlExcluded(
+    { method, url }: HttpRequest<any>,
+    { urlPattern, httpMethods }: ExcludedUrlRegex
+  ): boolean {
+    let httpTest =
+      httpMethods.length === 0 ||
+      httpMethods.join().indexOf(method.toUpperCase()) > -1;
+
+    let urlTest = urlPattern.test(url);
+
+    return httpTest && urlTest;
   }
 
   /**
@@ -49,18 +58,17 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
    * @param req
    * @param next
    */
-  public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // If keycloak service is not initialized yet, or the interceptor should not be execute
-    if (!this.keycloak || !this.keycloak.enableBearerInterceptor) {
+  public intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    const { enableBearerInterceptor, excludedUrls } = this.keycloak;
+    if (!enableBearerInterceptor || excludedUrls.length === 0) {
       return next.handle(req);
     }
 
-    if (!this.excludedUrlsRegex) {
-      this.loadExcludedUrlsRegex();
-    }
-
-    const urlRequest = req.url;
-    const shallPass: boolean = !!this.excludedUrlsRegex.find(regex => regex.test(urlRequest));
+    const shallPass: boolean =
+      excludedUrls.findIndex(item => this.isUrlExcluded(req, item)) > -1;
     if (shallPass) {
       return next.handle(req);
     }
