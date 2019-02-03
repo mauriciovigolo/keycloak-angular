@@ -17,10 +17,26 @@ describe('KeycloakService', () => {
     });
   });
 
-  it(
-    'should be created',
-    inject([KeycloakService], (service: KeycloakService) => {
+  it('Should be created', inject(
+    [KeycloakService],
+    (service: KeycloakService) => {
       expect(service).toBeTruthy();
-    })
-  );
+    }
+  ));
+
+  describe('#loadExcludedUrls', () => {
+    it('Should create the ExcludedUrl objects if bearerExcludedUrls is a string array', inject(
+      [KeycloakService],
+      (service: KeycloakService) => {
+        const loadExcludedUrls = service['loadExcludedUrls'];
+        const result = loadExcludedUrls(['home', 'public']);
+        let { urlPattern, httpMethods } = result[0];
+
+        expect(result.length).toBe(2);
+        expect(urlPattern).toBeDefined();
+        expect(urlPattern.test('http://url/home')).toBeTruthy();
+        expect(httpMethods.length).toBe(0);
+      }
+    ));
+  });
 });
