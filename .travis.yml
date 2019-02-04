@@ -23,4 +23,5 @@ before_install:
   - npm i -g npm
 
 script:
+  - npm run test
   - npm run build
