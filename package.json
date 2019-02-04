@@ -8,6 +8,7 @@
     "clean": "node ./node_modules/shx/lib/cli rm -rf ./dist/",
     "build": "npm run clean && node ./node_modules/@angular/cli/bin/ng build keycloak-angular",
     "test": "node ./node_modules/@angular/cli/bin/ng test keycloak-angular",
+    "test:ci": "node ./node_modules/@angular/cli/bin/ng test keycloak-angular --watch=false",
     "lint": "node ./node_modules/@angular/cli/bin/ng lint",
     "doc:serve": "node ./node_modules/docsify-cli/bin/docsify serve ./docs --port 3001"
   },
