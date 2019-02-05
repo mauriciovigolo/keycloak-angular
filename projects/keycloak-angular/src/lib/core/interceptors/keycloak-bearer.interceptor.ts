@@ -63,7 +63,7 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const { enableBearerInterceptor, excludedUrls } = this.keycloak;
-    if (!enableBearerInterceptor || excludedUrls.length === 0) {
+    if (!enableBearerInterceptor) {
       return next.handle(req);
     }
 
