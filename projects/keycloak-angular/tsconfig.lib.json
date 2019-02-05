@@ -10,6 +10,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "removeComments": true,
     "importHelpers": true,
     "types": [],
     "lib": ["dom", "es2015"]
