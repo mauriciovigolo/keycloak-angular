@@ -96,7 +96,7 @@ export interface KeycloakOptions {
    * added. This library makes use of Angular Http Interceptor, to automatically add the Bearer
    * token to the request.
    */
-  bearerExcludedUrls?: string[] | ExcludedUrl[];
+  bearerExcludedUrls?: (string | ExcludedUrl)[];
   /**
    * This value will be used as the Authorization Http Header name. The default value is
    * **Authorization**. If the backend expects requests to have a token in a different header, you

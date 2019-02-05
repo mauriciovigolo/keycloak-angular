@@ -127,7 +127,7 @@ export class KeycloakService {
    * the url and HttpMethod.
    */
   private loadExcludedUrls(
-    bearerExcludedUrls: string[] | ExcludedUrl[]
+    bearerExcludedUrls: (string | ExcludedUrl)[]
   ): ExcludedUrlRegex[] {
     const excludedUrls: ExcludedUrlRegex[] = [];
     for (const item of bearerExcludedUrls) {
@@ -137,7 +137,7 @@ export class KeycloakService {
       } else {
         excludedUrl = {
           urlPattern: new RegExp(item.url, 'i'),
-          httpMethods: []
+          httpMethods: item.httpMethods
         };
       }
       excludedUrls.push(excludedUrl);
