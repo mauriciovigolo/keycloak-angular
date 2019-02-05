@@ -26,10 +26,10 @@ describe('KeycloakBearerInterceptor', () => {
     });
   });
 
-  it(
-    'should be created',
-    inject([KeycloakBearerInterceptor], (service: KeycloakBearerInterceptor) => {
+  it('Should be created', inject(
+    [KeycloakBearerInterceptor],
+    (service: KeycloakBearerInterceptor) => {
       expect(service).toBeTruthy();
-    })
-  );
+    }
+  ));
 });
