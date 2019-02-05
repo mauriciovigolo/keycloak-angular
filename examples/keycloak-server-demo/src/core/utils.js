@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
  */
 
-const logger = require('./config');
+import { logger } from './config';
 
 module.exports = (function() {
   const initDemoApp = () => {
@@ -20,7 +20,9 @@ module.exports = (function() {
 
   const serverInitCallback = () => {
     logger.info('Keycloak Server Example Initialized on Port 3000');
-    logger.info('For a complete list of API services, visit: http://localhost:3000/');
+    logger.info(
+      'For a complete list of API services, visit: http://localhost:3000/'
+    );
     logger.info('---------------');
   };
 

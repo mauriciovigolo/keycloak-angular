@@ -1,9 +1,15 @@
-'use-strict';
+/**
+ * @license
+ * Copyright Mauricio Gemelli Vigolo and contributors.
+ *
+ * Use of this source code is governed by a MIT-style license that can be
+ * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
+ */
 
 import Sequelize from 'sequelize';
 
 import { GenericConfig } from './generic.config';
-import logger from './log.config';
+import { logger } from './log.config';
 
 class DatabaseConfig extends GenericConfig {
   constructor() {
@@ -34,7 +40,11 @@ class DatabaseConfig extends GenericConfig {
     this._db.sequelize = sequelize;
 
     this.emit('db-initialized', this._db);
-    logger.info(`DB initialization is complete. Total of models loaded: ${this._db.loadedModels}`);
+    logger.info(
+      `DB initialization is complete. Total of models loaded: ${
+        this._db.loadedModels
+      }`
+    );
   }
 
   get db() {
