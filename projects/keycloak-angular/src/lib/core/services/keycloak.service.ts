@@ -18,8 +18,8 @@ export const Keycloak = Keycloak_;
 
 import {
   KeycloakOptions,
-  ExcludedUrlRegex,
-  ExcludedUrl
+  UrlMatcherRegEx,
+  UrlMatcher
 } from '../interfaces/keycloak-options';
 import { KeycloakEvent, KeycloakEventType } from '../interfaces/keycloak-event';
 
@@ -65,13 +65,23 @@ export class KeycloakService {
   /**
    * The excluded urls patterns that must skip the KeycloakBearerInterceptor.
    */
-  private _excludedUrls: ExcludedUrlRegex[];
+  private _excludedUrls: UrlMatcherRegEx[];
   /**
    * Observer for the keycloak events
    */
   private _keycloakEvents$: Subject<KeycloakEvent> = new Subject<
     KeycloakEvent
   >();
+  /**
+   * Flag to indicate bearer interceptor should whitelist explicitly URLs to add
+   * header to.
+   */
+  private _enableBearerWhiteListing: boolean;
+  /**
+   * The included urls patterns that the KeycloakBearerInterceptor must use if
+   * enableBearerWhiteListing is set.
+   */
+  private _includedUrls: UrlMatcherRegEx[];
 
   /**
    * Binds the keycloak-js events to the keycloakEvents Subject
@@ -123,18 +133,18 @@ export class KeycloakService {
   }
 
   /**
-   * Loads all bearerExcludedUrl content in a uniform type: ExcludedUrl,
+   * Loads all bearerExcludedUrl content in a uniform type: UrlMatcher,
    * so it becomes easier to handle.
    *
-   * @param bearerExcludedUrls array of strings or ExcludedUrl that includes
+   * @param bearerExcludedUrls array of strings or UrlMatcher that includes
    * the url and HttpMethod.
    */
   private loadExcludedUrls(
-    bearerExcludedUrls: (string | ExcludedUrl)[]
-  ): ExcludedUrlRegex[] {
-    const excludedUrls: ExcludedUrlRegex[] = [];
+    bearerExcludedUrls: (string | UrlMatcher)[]
+  ): UrlMatcherRegEx[] {
+    const excludedUrls: UrlMatcherRegEx[] = [];
     for (const item of bearerExcludedUrls) {
-      let excludedUrl: ExcludedUrlRegex;
+      let excludedUrl: UrlMatcherRegEx;
       if (typeof item === 'string') {
         excludedUrl = { urlPattern: new RegExp(item, 'i'), httpMethods: [] };
       } else {
@@ -159,13 +169,17 @@ export class KeycloakService {
     bearerExcludedUrls = [],
     authorizationHeaderName = 'Authorization',
     bearerPrefix = 'bearer',
-    initOptions
+    initOptions,
+    enableBearerWhiteListing = false,
+    bearerIncludedUrls = [],
   }: KeycloakOptions): void {
     this._enableBearerInterceptor = enableBearerInterceptor;
     this._loadUserProfileAtStartUp = loadUserProfileAtStartUp;
     this._authorizationHeaderName = authorizationHeaderName;
     this._bearerPrefix = bearerPrefix.trim().concat(' ');
     this._excludedUrls = this.loadExcludedUrls(bearerExcludedUrls);
+    this._enableBearerWhiteListing = enableBearerWhiteListing;
+    this._includedUrls = this.loadExcludedUrls(bearerIncludedUrls);
     this._silentRefresh = initOptions ? initOptions.flow === 'implicit' : false;
   }
 
@@ -571,7 +585,7 @@ export class KeycloakService {
    * @returns
    * The excluded urls that must not be intercepted by the KeycloakBearerInterceptor.
    */
-  get excludedUrls(): ExcludedUrlRegex[] {
+  get excludedUrls(): UrlMatcherRegEx[] {
     return this._excludedUrls;
   }
 
@@ -606,5 +620,27 @@ export class KeycloakService {
    */
   get keycloakEvents$(): Subject<KeycloakEvent> {
     return this._keycloakEvents$;
+  }
+
+  /**
+   * Flag to indicate bearer interceptor should whitelist explicitly URLs to add
+   * header to.
+   *
+   * @returns
+   * Returns if the bearer interceptor will use the explicitly white listed URLs.
+   */
+  get enableBearerWhiteListing(): boolean {
+    return this._enableBearerWhiteListing;
+  }
+
+  /**
+   * Returns the included URLs that should be considered by
+   * the http interceptor which automatically adds the authorization header in the Http Request.
+   *
+   * @returns
+   * The included urls that must be intercepted by the KeycloakBearerInterceptor.
+   */
+  get includedUrls(): UrlMatcherRegEx[] {
+    return this._includedUrls;
   }
 }

@@ -22,11 +22,11 @@ export type HttpMethods =
   | 'PATCH';
 
 /**
- * ExcludedUrl type may be used to specify the url and the HTTP method that
- * should not be intercepted by the KeycloakBearerInterceptor.
+ * UrlMatcher type may be used to specify the url and the HTTP method that
+ * should not be intercepted by the KeycloakBearerInterceptor or should be whitelisted.
  *
  * Example:
- * const excludedUrl: ExcludedUrl[] = [
+ * const excludedUrl: UrlMatcher[] = [
  *  {
  *    url: 'reports/public'
  *    httpMethods: ['GET']
@@ -39,17 +39,17 @@ export type HttpMethods =
  * If the url is informed but httpMethod is undefined, then the bearer
  * will not be added for all HTTP Methods.
  */
-export interface ExcludedUrl {
+export interface UrlMatcher {
   url: string;
   httpMethods?: HttpMethods[];
 }
 
 /**
- * Similar to ExcludedUrl, contains the HTTP methods and a regex to
+ * Similar to UrlMatcher, contains the HTTP methods and a regex to
  * include the url patterns.
  * This interface is used internally by the KeycloakService.
  */
-export interface ExcludedUrlRegex {
+export interface UrlMatcherRegEx {
   urlPattern: RegExp;
   httpMethods?: HttpMethods[];
 }
@@ -96,7 +96,7 @@ export interface KeycloakOptions {
    * added. This library makes use of Angular Http Interceptor, to automatically add the Bearer
    * token to the request.
    */
-  bearerExcludedUrls?: (string | ExcludedUrl)[];
+  bearerExcludedUrls?: (string | UrlMatcher)[];
   /**
    * This value will be used as the Authorization Http Header name. The default value is
    * **Authorization**. If the backend expects requests to have a token in a different header, you
@@ -113,4 +113,15 @@ export interface KeycloakOptions {
    * Warning: this value must be in compliance with the keycloak server instance and the adapter.
    */
   bearerPrefix?: string;
+  /**
+   * Forces the user to explicitly white list URLs KeycloakBearerInterceptor is allowed to add the
+   * Authorization Header to.
+   * If enabled, use the bearerIncludedUrls setting to white list.
+   */
+  enableBearerWhiteListing?: boolean;
+  /**
+   * String Array to white list urls that should have the Authorization Header automatically added.
+   * Only used if enableBearerWhiteListing is set.
+   */
+  bearerIncludedUrls?: (string | UrlMatcher)[];
 }

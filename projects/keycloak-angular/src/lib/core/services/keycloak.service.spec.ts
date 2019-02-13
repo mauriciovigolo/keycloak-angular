@@ -25,7 +25,7 @@ describe('KeycloakService', () => {
   ));
 
   describe('#loadExcludedUrls', () => {
-    it('Should create the ExcludedUrlRegex objects if the bearerExcludedUrls arg is a string array', inject(
+    it('Should create the UrlMatcherRegEx objects if the bearerExcludedUrls arg is a string array', inject(
       [KeycloakService],
       (service: KeycloakService) => {
         const loadExcludedUrls = service['loadExcludedUrls'];
@@ -39,7 +39,7 @@ describe('KeycloakService', () => {
       }
     ));
 
-    it('Should create the ExcludedUrlRegex objects if the bearerExcludedUrls arg is an mixed array of strings and ExcludedUrl objects', inject(
+    it('Should create the UrlMatcherRegEx objects if the bearerExcludedUrls arg is an mixed array of strings and UrlMatcher objects', inject(
       [KeycloakService],
       (service: KeycloakService) => {
         const loadExcludedUrls = service['loadExcludedUrls'];

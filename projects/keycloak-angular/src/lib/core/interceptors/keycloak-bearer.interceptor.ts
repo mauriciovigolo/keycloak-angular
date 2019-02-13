@@ -18,7 +18,7 @@ import { Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { KeycloakService } from '../services/keycloak.service';
-import { ExcludedUrlRegex } from '../interfaces/keycloak-options';
+import { UrlMatcherRegEx } from '../interfaces/keycloak-options';
 
 /**
  * This interceptor includes the bearer by default in all HttpClient requests.
@@ -28,7 +28,8 @@ import { ExcludedUrlRegex } from '../interfaces/keycloak-options';
  */
 @Injectable()
 export class KeycloakBearerInterceptor implements HttpInterceptor {
-  constructor(private keycloak: KeycloakService) {}
+  constructor(private keycloak: KeycloakService) {
+  }
 
   /**
    * Checks if the url is excluded from having the Bearer Authorization
@@ -38,9 +39,9 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
    * @param excludedUrlRegex contains the url pattern and the http methods,
    * excluded from adding the bearer at the Http Request.
    */
-  private isUrlExcluded(
-    { method, url }: HttpRequest<any>,
-    { urlPattern, httpMethods }: ExcludedUrlRegex
+  private urlMatches(
+    {method, url}: HttpRequest<any>,
+    {urlPattern, httpMethods}: UrlMatcherRegEx
   ): boolean {
     let httpTest =
       httpMethods.length === 0 ||
@@ -62,22 +63,29 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const { enableBearerInterceptor, excludedUrls } = this.keycloak;
+    const {enableBearerInterceptor, excludedUrls} = this.keycloak;
     if (!enableBearerInterceptor) {
       return next.handle(req);
     }
 
-    const shallPass: boolean =
-      excludedUrls.findIndex(item => this.isUrlExcluded(req, item)) > -1;
-    if (shallPass) {
+    if (this.shallPass(excludedUrls, req)) {
       return next.handle(req);
     }
 
     return this.keycloak.addTokenToHeader(req.headers).pipe(
       mergeMap(headersWithBearer => {
-        const kcReq = req.clone({ headers: headersWithBearer });
+        const kcReq = req.clone({headers: headersWithBearer});
         return next.handle(kcReq);
       })
     );
+  }
+
+  private shallPass(excludedUrls, req: HttpRequest<any>): boolean {
+
+    if (this.keycloak.enableBearerWhiteListing) {
+      return this.keycloak.includedUrls.findIndex(item => this.urlMatches(req, item)) > -1;
+    } else {
+      return excludedUrls.findIndex(item => this.urlMatches(req, item)) > -1;
+    }
   }
 }
