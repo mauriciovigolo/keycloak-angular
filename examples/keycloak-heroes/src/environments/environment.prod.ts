@@ -9,7 +9,10 @@ let keycloakConfig: KeycloakConfig = {
 
 export const environment = {
   production: true,
-  assets: { dotaImages: 'https://api.opendota.com/apps/dota2/images' },
-  apis: { dota: 'https://api.opendota.com/api' },
+  assets: {
+    dotaImages:
+      'https://cdn-keycloak-angular.herokuapp.com/assets/images/dota-heroes/'
+  },
+  apis: { dota: 'http://localhost:3000' },
   keycloak: keycloakConfig
 };
