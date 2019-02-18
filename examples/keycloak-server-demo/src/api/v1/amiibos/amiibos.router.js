@@ -8,11 +8,12 @@
 
 import express from 'express';
 
+import { amiibos } from './amiibos.data';
+
 const router = express.Router();
 
 router.get('', async (req, res) => {
-  let products = await productsService.list();
-  res.status(200).send(products);
+  res.status(200).send(amiibos);
 });
 
 module.exports = {

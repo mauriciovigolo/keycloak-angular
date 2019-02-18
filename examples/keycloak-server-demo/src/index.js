@@ -9,6 +9,8 @@
  */
 
 const express = require('express');
+const cors = require('cors');
+
 const utils = require('./core/utils');
 
 import { RouterConfig } from './core/config';
@@ -17,6 +19,9 @@ import { RouterConfig } from './core/config';
 utils.initDemoApp();
 
 const app = express();
+
+// Middleware
+app.use(cors());
 
 // Init Routers
 let routerConfig = new RouterConfig(app);
