@@ -83,7 +83,7 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
   private shallPass(excludedUrls, req: HttpRequest<any>): boolean {
 
     if (this.keycloak.enableBearerWhiteListing) {
-      return this.keycloak.includedUrls.findIndex(item => this.urlMatches(req, item)) > -1;
+      return this.keycloak.includedUrls.findIndex(item => this.urlMatches(req, item)) === -1;
     } else {
       return excludedUrls.findIndex(item => this.urlMatches(req, item)) > -1;
     }
