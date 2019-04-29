@@ -30,7 +30,7 @@
     "oidc"
   ],
   "dependencies": {
-    "keycloak-js": "^4.8.3"
+    "keycloak-js": "^6.0.1"
   },
   "peerDependencies": {
     "@angular/common": "^7.0.0",
