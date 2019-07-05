@@ -79,7 +79,8 @@ yarn add keycloak-angular@<choosen-version-from-table-above>
 
 ### Angular
 
-The KeycloakService should be initialized during the application loading, using the [APP_INITIALIZER](https://angular.io/api/core/APP_INITIALIZER) token.
+#### Using APP_INITIALIZER
+The KeycloakService can be initialized during the application loading, using the [APP_INITIALIZER](https://angular.io/api/core/APP_INITIALIZER) token.
 
 #### AppModule
 
@@ -115,6 +116,44 @@ import { KeycloakService } from 'keycloak-angular';
 
 export function initializer(keycloak: KeycloakService): () => Promise<any> {
   return (): Promise<any> => keycloak.init();
+}
+```
+
+#### Using ngDoBootstrap
+
+The KeycloakService can be initialized before the application loading. When the Keycloak initialization is successful the application is bootstrapped. 
+
+This had two major benefits. 
+1. This is faster because the application isn't fully bootstrapped and 
+1. it prevents a moment when you see the application without having the authorization.
+
+#### AppModule
+
+```js
+import { NgModule } from '@angular/core';
+import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
+
+const keycloakService = new KeycloakService();
+
+@NgModule({
+  imports: [KeycloakAngularModule],
+  providers: [
+    {
+      provide: KeycloakService,
+      useValue: keycloakService
+    }
+  ]
+})
+export class AppModule {
+  ngDoBootstrap(app) {
+    keycloakService.init()
+      .then(() => {
+        console.log('[ngDoBootstrap] bootstrap app');
+
+        app.bootstrap(AppComponent);
+      })
+      .catch(error => console.error('[ngDoBootstrap] init Keycloak failed', error));
+  }
 }
 ```
 

@@ -1,0 +1,39 @@
+<clr-main-container>
+  <clr-header>
+    <div class="branding">
+      <a routerLink="/" class="nav-link">
+        <span class="logo"></span>
+      </a>
+      <span class="title">
+        <a href="https://github.com/mauriciovigolo/keycloak-angular" target="_blank">keycloak-angular</a>
+        - Dota Heroes
+      </span>
+    </div>
+    <div class="header-nav" [clr-nav-level]="1">
+      <a routerLink="/" class="active nav-link nav-text">Home</a>
+      <a class="nav-link nav-text" routerLink="/heroes">Heroes</a>
+    </div>
+    <div class="header-actions">
+      <clr-dropdown>
+        <button class="nav-icon" clrDropdownTrigger>
+          <clr-icon shape="user"></clr-icon>
+          <clr-icon shape="caret down"></clr-icon>
+        </button>
+        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+          <div class="userDetails" *ngIf="userDetails">
+            <h2>{{userDetails.firstName}}</h2>
+            <p>
+              {{userDetails.email}}
+            </p>
+          </div>
+          <a (click)="doLogout()" clrDropdownItem>Log out</a>
+        </clr-dropdown-menu>
+      </clr-dropdown>
+    </div>
+  </clr-header>
+  <div class="content-container">
+    <main class="content-area">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</clr-main-container>

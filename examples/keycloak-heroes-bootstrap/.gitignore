@@ -4,23 +4,18 @@
 /dist
 /tmp
 /out-tsc
-/build
 
 # dependencies
-node_modules
-package-lock*
-yarn.lock*
+/node_modules
 
 # IDEs and editors
 /.idea
-.vscode
 .project
 .classpath
 .c9/
 *.launch
 .settings/
 *.sublime-workspace
-*.iml
 
 # IDE - VSCode
 .vscode/*
@@ -35,10 +30,16 @@ yarn.lock*
 /coverage
 /libpeerconnection.log
 npm-debug.log
-yarn-error.log
 testem.log
 /typings
+
+# e2e
+/e2e/*.js
+/e2e/*.map
 
 # System Files
 .DS_Store
 Thumbs.db
+
+package-lock*
+yarn.lock*
