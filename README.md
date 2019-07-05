@@ -134,6 +134,8 @@ When requesting the method to get the User's Profile, the client app should have
 
 ![keycloak-account-scope](./docs/images/keycloak-account-scope.png)
 
+Please be aware that when accessing the `https://keycloak/auth/realms/REALM/account` endpoint, if this role is not configured, a misleading `No 'Access-Control-Allow-Origin'` error might show up. If that happens, this role should be enough to fix it, no changes in the Web Origin of the account client is needed.
+
 ## AuthGuard
 
 A generic AuthGuard, `KeycloakAuthGuard`, was created to help you bootstrap your security configuration and avoid duplicate code. This class already checks if the user is logged in and get the list of roles from the authenticated user, provided by the keycloak instance. In your implementation you just need to implement the desired security logic.
