@@ -7,20 +7,12 @@
  */
 
 import { Injectable } from '@angular/core';
-
 import { HttpHeaders } from '@angular/common/http';
 
 import { Observable, Observer, Subject } from 'rxjs';
+import Keycloak from 'keycloak-js';
 
-// Workaround for rollup library behaviour, as pointed out on issue #1267 (https://github.com/rollup/rollup/issues/1267).
-import * as Keycloak_ from 'keycloak-js';
-export const Keycloak = Keycloak_;
-
-import {
-  KeycloakOptions,
-  ExcludedUrlRegex,
-  ExcludedUrl
-} from '../interfaces/keycloak-options';
+import { ExcludedUrl, ExcludedUrlRegex, KeycloakOptions } from '../interfaces/keycloak-options';
 import { KeycloakEvent, KeycloakEventType } from '../interfaces/keycloak-event';
 
 /**
@@ -69,9 +61,7 @@ export class KeycloakService {
   /**
    * Observer for the keycloak events
    */
-  private _keycloakEvents$: Subject<KeycloakEvent> = new Subject<
-    KeycloakEvent
-  >();
+  private _keycloakEvents$: Subject<KeycloakEvent> = new Subject<KeycloakEvent>();
 
   /**
    * Binds the keycloak-js events to the keycloakEvents Subject
@@ -129,9 +119,7 @@ export class KeycloakService {
    * @param bearerExcludedUrls array of strings or ExcludedUrl that includes
    * the url and HttpMethod.
    */
-  private loadExcludedUrls(
-    bearerExcludedUrls: (string | ExcludedUrl)[]
-  ): ExcludedUrlRegex[] {
+  private loadExcludedUrls(bearerExcludedUrls: (string | ExcludedUrl)[]): ExcludedUrlRegex[] {
     const excludedUrls: ExcludedUrlRegex[] = [];
     for (const item of bearerExcludedUrls) {
       let excludedUrl: ExcludedUrlRegex;
@@ -316,18 +304,14 @@ export class KeycloakService {
    * @returns
    * A void Promise if the register flow was successful.
    */
-  register(
-    options: Keycloak.KeycloakLoginOptions = { action: 'register' }
-  ): Promise<void> {
+  register(options: Keycloak.KeycloakLoginOptions = { action: 'register' }): Promise<void> {
     return new Promise((resolve, reject) => {
       this._instance
         .register(options)
         .success(() => {
           resolve();
         })
-        .error(() =>
-          reject('An error happened during the register execution.')
-        );
+        .error(() => reject('An error happened during the register execution.'));
     });
   }
 
@@ -444,9 +428,7 @@ export class KeycloakService {
         .success(refreshed => {
           resolve(refreshed);
         })
-        .error(() =>
-          reject('Failed to refresh the token, or the session is expired')
-        );
+        .error(() => reject('Failed to refresh the token, or the session is expired'));
     });
   }
 
@@ -460,9 +442,7 @@ export class KeycloakService {
    * @returns
    * A promise with the KeycloakProfile data loaded.
    */
-  loadUserProfile(
-    forceReload: boolean = false
-  ): Promise<Keycloak.KeycloakProfile> {
+  loadUserProfile(forceReload: boolean = false): Promise<Keycloak.KeycloakProfile> {
     return new Promise(async (resolve, reject) => {
       if (this._userProfile && !forceReload) {
         resolve(this._userProfile);
@@ -535,16 +515,11 @@ export class KeycloakService {
    * @returns
    * An observable with with the HTTP Authorization header and the current token.
    */
-  addTokenToHeader(
-    headers: HttpHeaders = new HttpHeaders()
-  ): Observable<HttpHeaders> {
+  addTokenToHeader(headers: HttpHeaders = new HttpHeaders()): Observable<HttpHeaders> {
     return Observable.create(async (observer: Observer<any>) => {
       try {
         const token: string = await this.getToken();
-        headers = headers.set(
-          this._authorizationHeaderName,
-          this._bearerPrefix + token
-        );
+        headers = headers.set(this._authorizationHeaderName, this._bearerPrefix + token);
         observer.next(headers);
         observer.complete();
       } catch (error) {
