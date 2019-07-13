@@ -1,0 +1,31 @@
+<div class="content-area">
+  <div class="row">
+    <div class="col-xs-12">
+      <h2>Heroes</h2>
+    </div>
+  </div>
+  <div class="row">
+    <clr-datagrid class="col-xs">
+      <clr-dg-column>Hero</clr-dg-column>
+      <clr-dg-column>Attack</clr-dg-column>
+      <clr-dg-column>Roles</clr-dg-column>
+      <clr-dg-column>Legs</clr-dg-column>
+
+      <clr-dg-row *clrDgItems="let hero of heroes$ | async">
+        <clr-dg-cell>
+          <span class="heroes-small-image" [style.backgroundImage]="hero.image_url"></span>
+          <a routerLink="/heroes/{{ hero.id }}">{{ hero.localized_name }} ></a>
+        </clr-dg-cell>
+        <clr-dg-cell>
+          {{ hero.attack_type }}
+        </clr-dg-cell>
+        <clr-dg-cell>
+          {{ hero.roles }}
+        </clr-dg-cell>
+        <clr-dg-cell>
+          {{ hero.legs }}
+        </clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  </div>
+</div>
