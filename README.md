@@ -16,6 +16,7 @@
 
 - [About](#about)
 - [Install](#install)
+  - [Angular](#angular)
 - [Setup](#setup)
   - [Angular](#angular)
   - [Keycloak](#keycloak)
@@ -26,7 +27,7 @@
 
 ---
 
-## About
+## 1. About
 
 This library helps you to use [keycloak-js](https://github.com/keycloak/keycloak-js-bower) in Angular > v4.3 applications providing the following features:
 
@@ -39,15 +40,11 @@ This library helps you to use [keycloak-js](https://github.com/keycloak/keycloak
 - This documentation also assists you to configure the keycloak in the Angular applications and with
   the client setup in the admin console of your keycloak installation.
 
-## Install
+## 2. Install
 
 > Since keycloak-angular v.7.0.0, the [keycloak-js](https://www.npmjs.com/package/keycloak-js) dependency became a peer dependency. This change allows greater flexibility for choosing the keycloak-js adapter version and follows the [project documentation recommendation](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter).
 
-### Steps to install
-
-In your angular application directory:
-
-#### keycloak-js
+### 2.1. keycloak-js
 
 With npm:
 
@@ -55,27 +52,27 @@ With npm:
 npm i --save keycloak-js@version
 ```
 
-##### Choosing the keycloak-js version
+#### 2.1.1. Choosing the keycloak-js version
 
 The keycloak-js adapter documentation recommends to use the same version of your Keycloak / RH-SSO (Red Hat Single Sign On) installation.
 
 > A best practice is to load the JavaScript adapter directly from Keycloak Server as it will automatically be updated when you upgrade the server. If you copy the adapter to your web application instead, make sure you upgrade the adapter only after you have upgraded the server.
 
-#### keycloak-angular
+### 2.2. keycloak-angular
 
 ```sh
 npm i --save keycloak-angular
 ```
 
-## Setup
+## 3. Setup
 
-### Angular
+### 3.1. Angular
 
-#### Using APP_INITIALIZER
+#### 3.1.1. Using APP_INITIALIZER
 
 The KeycloakService can be initialized during the application loading, using the [APP_INITIALIZER](https://angular.io/api/core/APP_INITIALIZER) token.
 
-#### AppModule
+##### AppModule
 
 ```js
 import { NgModule, APP_INITIALIZER } from '@angular/core';
@@ -96,9 +93,7 @@ import { initializer } from './utils/app-init';
 export class AppModule {}
 ```
 
-- **Notice** that the KeycloakAngularModule was imported by the AppModule. For this reason you don't need to insert the KeycloakService in the AppModule providers array.
-
-#### initializer Function
+##### initializer Function
 
 This function can be named and placed in the way you think is most appropriate. In the
 underneath example it was placed in a separate file `app-init.ts` and the function was called
