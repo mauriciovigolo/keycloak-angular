@@ -41,17 +41,13 @@ This library helps you to use [keycloak-js](https://github.com/keycloak/keycloak
 
 ## Install
 
-> Since keycloak-angular v.7.0.0, the keycloak-js dependency became a peer dependency. The reason for this change is to be more flexible and follow the [Keycloak documentation guidelines](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter).
+> Since keycloak-angular v.7.0.0, the [keycloak-js](https://www.npmjs.com/package/keycloak-js) dependency became a peer dependency. This change allows greater flexibility for choosing the keycloak-js adapter version and follows the [project documentation recommendation](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter).
 
-### Choosing the keycloak-js version
-
-The keycloak-js adapter documentation recommends the use of the same version of your Keycloak / RH-SSO (Red Hat Single Sign On) installation.
-
-> A best practice is to load the JavaScript adapter directly from Keycloak Server as it will automatically be updated when you upgrade the server. If you copy the adapter to your web application instead, make sure you upgrade the adapter only after you have upgraded the server.
-
-### Steps to install using NPM or YARN
+### Steps to install
 
 In your angular application directory:
+
+#### keycloak-js
 
 With npm:
 
@@ -59,18 +55,16 @@ With npm:
 npm i --save keycloak-js@version
 ```
 
+##### Choosing the keycloak-js version
+
+The keycloak-js adapter documentation recommends to use the same version of your Keycloak / RH-SSO (Red Hat Single Sign On) installation.
+
+> A best practice is to load the JavaScript adapter directly from Keycloak Server as it will automatically be updated when you upgrade the server. If you copy the adapter to your web application instead, make sure you upgrade the adapter only after you have upgraded the server.
+
+#### keycloak-angular
+
 ```sh
 npm i --save keycloak-angular
-```
-
-With yarn:
-
-```
-yarn add keycloak-js@version
-```
-
-```sh
-yarn add keycloak-angular
 ```
 
 ## Setup
