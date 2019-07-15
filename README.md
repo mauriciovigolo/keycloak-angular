@@ -41,38 +41,36 @@ This library helps you to use [keycloak-js](https://github.com/keycloak/keycloak
 
 ## Install
 
-### Choosing the appropriate version of keycloak-angular
+> Since keycloak-angular v.7.0.0, the keycloak-js dependency became a peer dependency. The reason for this change is to be more flexible and follow the [Keycloak documentation guidelines](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter).
 
-This library depends on angular and keycloak versions so as it might exist breaking changes in some of them there are
-different build versions supporting these combinations, so be aware to choose the correct version for your project.
+### Choosing the keycloak-js version
 
-| keycloak-angular | Angular | Keycloak | SSO-RH |
-| :--------------: | :-----: | :------: | :----: |
-|      1.3.x       | 4 and 5 |    3     |   7    |
-|      2.x.x       | 4 and 5 |    4     |   -    |
-|      3.x.x       |    6    |    3     |   7    |
-|      4.x.x       |    6    |    4     |   -    |
-|      5.x.x       |    7    |    3     |   7    |
-|      6.x.x       |    7    |    4     |   -    |
+The keycloak-js adapter documentation recommends the use of the same version of your Keycloak / RH-SSO (Red Hat Single Sign On) installation.
 
-**Warning**: This library will work only with versions higher or equal than 4.3.0 of Angular. The reason for this is that keycloak-angular uses the Interceptor from `@angular/common/http` package and this feature was available from this version on.
+> A best practice is to load the JavaScript adapter directly from Keycloak Server as it will automatically be updated when you upgrade the server. If you copy the adapter to your web application instead, make sure you upgrade the adapter only after you have upgraded the server.
 
 ### Steps to install using NPM or YARN
-
-> Please, again, be aware to choose the correct version, as stated above. Installing this package without a version will make it compatible with the **latest** angular and keycloak versions.
 
 In your angular application directory:
 
 With npm:
 
 ```sh
-npm install --save keycloak-angular@<choosen-version-from-table-above>
+npm i --save keycloak-js@version
+```
+
+```sh
+npm i --save keycloak-angular
 ```
 
 With yarn:
 
+```
+yarn add keycloak-js@version
+```
+
 ```sh
-yarn add keycloak-angular@<choosen-version-from-table-above>
+yarn add keycloak-angular
 ```
 
 ## Setup
@@ -80,6 +78,7 @@ yarn add keycloak-angular@<choosen-version-from-table-above>
 ### Angular
 
 #### Using APP_INITIALIZER
+
 The KeycloakService can be initialized during the application loading, using the [APP_INITIALIZER](https://angular.io/api/core/APP_INITIALIZER) token.
 
 #### AppModule
@@ -121,17 +120,19 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
 
 #### Using ngDoBootstrap
 
-The KeycloakService can be initialized before the application loading. When the Keycloak initialization is successful the application is bootstrapped. 
+The KeycloakService can be initialized before the application loading. When the Keycloak initialization is successful the application is bootstrapped.
 
-This had two major benefits. 
-1. This is faster because the application isn't fully bootstrapped and 
+This has two major benefits.
+
+1. This is faster because the application isn't fully bootstrapped and
 1. it prevents a moment when you see the application without having the authorization.
 
 #### AppModule
 
 ```js
 import { NgModule } from '@angular/core';
-import { KeycloakService, KeycloakAngularModule } from 'keycloak-angular';
+
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
 const keycloakService = new KeycloakService();
 
@@ -142,17 +143,21 @@ const keycloakService = new KeycloakService();
       provide: KeycloakService,
       useValue: keycloakService
     }
-  ]
+  ],
+  entryComponents: [AppComponent]
 })
 export class AppModule {
   ngDoBootstrap(app) {
-    keycloakService.init()
+    keycloakService
+      .init()
       .then(() => {
         console.log('[ngDoBootstrap] bootstrap app');
 
         app.bootstrap(AppComponent);
       })
-      .catch(error => console.error('[ngDoBootstrap] init Keycloak failed', error));
+      .catch(error =>
+        console.error('[ngDoBootstrap] init Keycloak failed', error)
+      );
   }
 }
 ```
@@ -246,8 +251,8 @@ try {
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 
 <!-- prettier-ignore -->
- |[<img src="https://avatars3.githubusercontent.com/u/676270?v=4" width="100px;"/><br /><sub><b>Mauricio Gemelli Vigolo</b></sub>](https://github.com/mauriciovigolo)<br />|[<img src="https://avatars0.githubusercontent.com/u/2146903?v=4" width="100px;"/><br /><sub><b>Frederik Prijck</b></sub>](https://github.com/frederikprijck)<br /> | [<img src="https://avatars1.githubusercontent.com/u/980278?v=4" width="100px;"/><br /><sub><b>jmparra</b></sub>](https://github.com/jmparra)<br /> | [<img src="https://avatars2.githubusercontent.com/u/6547340?v=4" width="100px;"/><br /><sub><b>Marcel Német</b></sub>](https://github.com/marcelnem)<br /> | [<img src="https://avatars3.githubusercontent.com/u/14264577?v=4" width="100px;"/><br /><sub><b>Raphael Alex Silva Abreu</b></sub>](https://github.com/aelkz)<br /> |
-| :---: | :---: | :---: | :---: | :---: |
+ |[<img src="https://avatars3.githubusercontent.com/u/676270?v=4" width="100px;"/><br /><sub><b>Mauricio Gemelli Vigolo</b></sub>](https://github.com/mauriciovigolo)<br />|[<img src="https://avatars0.githubusercontent.com/u/2146903?v=4" width="100px;"/><br /><sub><b>Frederik Prijck</b></sub>](https://github.com/frederikprijck)<br /> | [<img src="https://avatars2.githubusercontent.com/u/161351?s=460&v=4" width="100px;"/><br /><sub><b>Jonathan Share</b></sub>](https://github.com/sharebear)<br /> | [<img src="https://avatars1.githubusercontent.com/u/980278?v=4" width="100px;"/><br /><sub><b>jmparra</b></sub>](https://github.com/jmparra)<br /> | [<img src="https://avatars2.githubusercontent.com/u/6547340?v=4" width="100px;"/><br /><sub><b>Marcel Német</b></sub>](https://github.com/marcelnem)<br /> | [<img src="https://avatars3.githubusercontent.com/u/14264577?v=4" width="100px;"/><br /><sub><b>Raphael Alex Silva Abreu</b></sub>](https://github.com/aelkz)<br /> |
+| :---: | :---: | :---: | :---: | :---: | :---: |
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
