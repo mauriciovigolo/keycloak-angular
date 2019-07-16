@@ -7,8 +7,6 @@
 ![npm](https://img.shields.io/npm/dm/keycloak-angular.svg)
 [![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors)
 [![Slack](https://slackin-iijwrzzihr.now.sh/badge.svg)](https://slackin-iijwrzzihr.now.sh)
-[![dependencies Status](https://david-dm.org/mauriciovigolo/keycloak-angular/status.svg?path=projects/keycloak-angular)](https://david-dm.org/mauriciovigolo/keycloak-angular?path=projects/keycloak-angular)
-[![DevDependencies](https://david-dm.org/mauriciovigolo/keycloak-angular/dev-status.svg)](https://david-dm.org/mauriciovigolo/keycloak-angular?type=dev)
 
 > Easy Keycloak setup for Angular applications.
 
