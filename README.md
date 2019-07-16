@@ -16,7 +16,6 @@
 
 - [About](#about)
 - [Install](#install)
-  - [Angular](#angular)
 - [Setup](#setup)
   - [Angular](#angular)
   - [Keycloak](#keycloak)
