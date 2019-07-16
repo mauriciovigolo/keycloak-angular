@@ -6,7 +6,7 @@
     "contributors:add": "node ./node_modules/all-contributors-cli/dist/cli add",
     "contributors:generate": "node ./node_modules/all-contributors-cli/dist/cli generate",
     "clean": "node ./node_modules/shx/lib/cli rm -rf ./dist/",
-    "build": "npm run clean && node ./node_modules/@angular/cli/bin/ng build keycloak-angular --prod && node ./node_modules/shx/lib/cli cp {./README.md} ./dist/keycloak-angular/",
+    "build": "npm run clean && node ./node_modules/@angular/cli/bin/ng build keycloak-angular --prod && node ./node_modules/shx/lib/cli cp ./README.md ./dist/keycloak-angular/",
     "test": "node ./node_modules/@angular/cli/bin/ng test keycloak-angular",
     "test:ci": "node ./node_modules/@angular/cli/bin/ng test keycloak-angular --watch=false",
     "lint": "node ./node_modules/@angular/cli/bin/ng lint"
