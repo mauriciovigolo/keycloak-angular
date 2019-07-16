@@ -27,7 +27,7 @@
 
 ---
 
-## 1. About
+## About
 
 This library helps you to use [keycloak-js](https://github.com/keycloak/keycloak-js-bower) in Angular > v4.3 applications providing the following features:
 
@@ -37,38 +37,38 @@ This library helps you to use [keycloak-js](https://github.com/keycloak/keycloak
 - Generic **AuthGuard implementation**, so you can customize your own AuthGuard logic inheriting the authentication logic and the roles load.
 - A **HttpClient interceptor** that adds the authorization header to all HttpClient requests.
   It is also possible to disable this interceptor or exclude routes from having the authorization header.
-- This documentation also assists you to configure the keycloak in the Angular applications and with
+- This documentation also assists you to configure the keycloak in your Angular applications and with
   the client setup in the admin console of your keycloak installation.
 
-## 2. Install
+## Install
 
-> Since keycloak-angular v.7.0.0, the [keycloak-js](https://www.npmjs.com/package/keycloak-js) dependency became a peer dependency. This change allows greater flexibility for choosing the keycloak-js adapter version and follows the [project documentation recommendation](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter).
-
-### 2.1. keycloak-js
-
-With npm:
-
-```sh
-npm i --save keycloak-js@version
-```
-
-#### 2.1.1. Choosing the keycloak-js version
-
-The keycloak-js adapter documentation recommends to use the same version of your Keycloak / RH-SSO (Red Hat Single Sign On) installation.
-
-> A best practice is to load the JavaScript adapter directly from Keycloak Server as it will automatically be updated when you upgrade the server. If you copy the adapter to your web application instead, make sure you upgrade the adapter only after you have upgraded the server.
-
-### 2.2. keycloak-angular
+### keycloak-angular
 
 ```sh
 npm i --save keycloak-angular
 ```
 
-## 3. Setup
+### keycloak-js
 
-### 3.1. Angular
+> Since keycloak-angular v.7.0.0, the [keycloak-js](https://www.npmjs.com/package/keycloak-js) dependency became a peer dependency. This change allows greater flexibility for choosing the keycloak-js adapter version and follows the [project documentation recommendation](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter).
 
-#### 3.1.1. Using APP_INITIALIZER
+```sh
+npm i --save keycloak-js@version
+```
+
+#### Choosing the keycloak-js version
+
+The keycloak-js adapter documentation recommends to use the same version of your Keycloak / RH-SSO (Red Hat Single Sign On) installation.
+
+> A best practice is to load the JavaScript adapter directly from Keycloak Server as it will automatically be updated when you upgrade the server. If you copy the adapter to your web application instead, make sure you upgrade the adapter only after you have upgraded the server.
+
+## Setup
+
+### Angular
+
+The following topics explain two different ways to bootstrap the library and configure keycloak-angular. The first one is by using the APP_INITIALIZER token and the second option uses ngDoBootstrap. You will have to choose one of them.
+
+#### Using APP_INITIALIZER
 
 The KeycloakService can be initialized during the application loading, using the [APP_INITIALIZER](https://angular.io/api/core/APP_INITIALIZER) token.
 
@@ -93,7 +93,7 @@ import { initializer } from './utils/app-init';
 export class AppModule {}
 ```
 
-##### initializer Function
+##### Initializer Function
 
 This function can be named and placed in the way you think is most appropriate. In the
 underneath example it was placed in a separate file `app-init.ts` and the function was called
@@ -144,9 +144,7 @@ export class AppModule {
 
         app.bootstrap(AppComponent);
       })
-      .catch(error =>
-        console.error('[ngDoBootstrap] init Keycloak failed', error)
-      );
+      .catch(error => console.error('[ngDoBootstrap] init Keycloak failed', error));
   }
 }
 ```
