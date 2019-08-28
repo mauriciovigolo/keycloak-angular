@@ -111,13 +111,12 @@ The KeycloakService can be initialized before the application loading. When the 
 This has two major benefits.
 
 1. This is faster because the application isn't fully bootstrapped and
-1. it prevents a moment when you see the application without having the authorization.
+1. It prevents a moment when you see the application without having the authorization.
 
 #### AppModule
 
 ```js
-import { NgModule } from '@angular/core';
-
+import { NgModule, DoBootstrap, ApplicationRef } from '@angular/core';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
 const keycloakService = new KeycloakService();
@@ -132,14 +131,14 @@ const keycloakService = new KeycloakService();
   ],
   entryComponents: [AppComponent]
 })
-export class AppModule {
-  ngDoBootstrap(app) {
+export class AppModule implements DoBootstrap {
+  ngDoBootstrap(appRef: ApplicationRef) {
     keycloakService
       .init()
       .then(() => {
         console.log('[ngDoBootstrap] bootstrap app');
 
-        app.bootstrap(AppComponent);
+        appRef.bootstrap(AppComponent);
       })
       .catch(error => console.error('[ngDoBootstrap] init Keycloak failed', error));
   }
@@ -172,8 +171,8 @@ Example:
 
 ```js
 import { Injectable } from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
-import {KeycloakAuthGuard, KeycloakService} from 'keycloak-angular';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { KeycloakAuthGuard, KeycloakService } from 'keycloak-angular';
 
 @Injectable({
   providedIn: 'root'
