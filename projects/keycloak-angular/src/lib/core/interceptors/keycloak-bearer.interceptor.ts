@@ -14,7 +14,7 @@ import {
   HttpEvent
 } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { KeycloakService } from '../services/keycloak.service';
@@ -53,7 +53,7 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
 
   /**
    * Intercept implementation that checks if the request url matches the excludedUrls.
-   * If not, adds the Authorization header to the request.
+   * If not, adds the Authorization header to the request if the user is logged in.
    *
    * @param req
    * @param next
@@ -73,6 +73,23 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
+    return from(this.keycloak.isLoggedIn()).pipe(
+      mergeMap((loggedIn: boolean) => loggedIn
+        ? this.handleRequestWithTokenHeader(req, next)
+        : next.handle(req))
+    );
+  }
+
+  /**
+   * Adds the token of the current user to the Authorization header
+   *
+   * @param req
+   * @param next
+   */
+  private handleRequestWithTokenHeader(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<any> {
     return this.keycloak.addTokenToHeader(req.headers).pipe(
       mergeMap(headersWithBearer => {
         const kcReq = req.clone({ headers: headersWithBearer });
