@@ -6,7 +6,6 @@
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
  */
 
-import { KeycloakInitOptions } from './keycloak-init-options';
 import { KeycloakConfig } from './keycloak-config';
 
 /**
@@ -68,9 +67,9 @@ export interface KeycloakOptions {
    */
   config?: string | KeycloakConfig;
   /**
-   * Options to initialize the adapter. Used by keycloak-js.
+   * Options to initialize the Keycloak adapter, matches the options as provided by Keycloak itself.
    */
-  initOptions?: KeycloakInitOptions;
+  initOptions?: Keycloak.KeycloakInitOptions;
   /**
    * By default all requests made by Angular HttpClient will be intercepted in order to
    * add the bearer in the Authorization Http Header. However, if this is a not desired
