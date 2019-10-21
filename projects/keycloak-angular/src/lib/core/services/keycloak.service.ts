@@ -174,21 +174,7 @@ export class KeycloakService {
    * - clientId: client id
    *
    * initOptions:
-   * - onLoad: Specifies an action to do on load. Supported values are 'login-required' or
-   * 'check-sso'.
-   * - token: Set an initial value for the token.
-   * - refreshToken: Set an initial value for the refresh token.
-   * - idToken: Set an initial value for the id token (only together with token or refreshToken).
-   * - timeSkew: Set an initial value for skew between local time and Keycloak server in seconds
-   * (only together with token or refreshToken).
-   * - checkLoginIframe: Set to enable/disable monitoring login state (default is true).
-   * - checkLoginIframeInterval: Set the interval to check login state (default is 5 seconds).
-   * - responseMode: Set the OpenID Connect response mode send to Keycloak server at login
-   * request. Valid values are query or fragment . Default value is fragment, which means
-   * that after successful authentication will Keycloak redirect to javascript application
-   * with OpenID Connect parameters added in URL fragment. This is generally safer and
-   * recommended over query.
-   * - flow: Set the OpenID Connect flow. Valid values are standard, implicit or hybrid.
+   * Options to initialize the Keycloak adapter, matches the options as provided by Keycloak itself.
    *
    * enableBearerInterceptor:
    * Flag to indicate if the bearer will added to the authorization header.
