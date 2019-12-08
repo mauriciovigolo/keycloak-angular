@@ -49,7 +49,7 @@ Prerequisites:
 > ./examples/webapp/keycloak-heroes/src/environments/environment.ts
 
 ```typescript
-import { KeycloakConfig } from "keycloak-angular";
+import { KeycloakConfig } from "keycloak-js";
 
 // Add here your keycloak setup infos
 const keycloakConfig: KeycloakConfig = {

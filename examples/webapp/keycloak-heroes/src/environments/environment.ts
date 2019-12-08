@@ -3,7 +3,7 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
-import { KeycloakConfig } from 'keycloak-angular';
+import { KeycloakConfig } from 'keycloak-js';
 
 // Add here your keycloak setup infos
 const keycloakConfig: KeycloakConfig = {
