@@ -6,7 +6,10 @@
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
  */
 
-export { KeycloakConfig } from './lib/core/interfaces/keycloak-config';
+/**
+ * @deprecated Use Keycloak's internal types instead.
+ */
+export type KeycloakConfig = Keycloak.KeycloakConfig;
 export {
   KeycloakEvent,
   KeycloakEventType

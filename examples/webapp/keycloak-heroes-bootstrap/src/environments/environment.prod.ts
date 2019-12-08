@@ -1,4 +1,4 @@
-import { KeycloakConfig } from 'keycloak-angular';
+import { KeycloakConfig } from 'keycloak-js';
 
 // Add here your keycloak setup infos
 let keycloakConfig: KeycloakConfig = {

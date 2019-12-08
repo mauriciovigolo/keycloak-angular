@@ -6,8 +6,6 @@
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
  */
 
-import { KeycloakConfig } from './keycloak-config';
-
 /**
  * HTTP Methods
  */
@@ -61,11 +59,11 @@ export interface KeycloakOptions {
    * Configs to init the keycloak-js library. If undefined, will look for a keycloak.json file
    * at root of the project.
    * If not undefined, can be a string meaning the url to the keycloak.json file or an object
-   * of {@link KeycloakConfig}. Use this configuration if you want to specify the keycloak server,
+   * of {@link Keycloak.KeycloakConfig}. Use this configuration if you want to specify the keycloak server,
    * realm, clientId. This is usefull if you have different configurations for production, stage
    * and development environments. Hint: Make use of Angular environment configuration.
    */
-  config?: string | KeycloakConfig;
+  config?: string | Keycloak.KeycloakConfig;
   /**
    * Options to initialize the Keycloak adapter, matches the options as provided by Keycloak itself.
    */
