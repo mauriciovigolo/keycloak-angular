@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
  */
 
-import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 
 import { KeycloakService } from './keycloak.service';
 
@@ -35,7 +35,7 @@ export abstract class KeycloakAuthGuard implements CanActivate {
    * @param route
    * @param state
    */
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean | UrlTree> {
     return new Promise(async (resolve, reject) => {
       try {
         this.authenticated = await this.keycloakAngular.isLoggedIn();
@@ -53,11 +53,13 @@ export abstract class KeycloakAuthGuard implements CanActivate {
    * Create your own customized authorization flow in this method. From here you already known
    * if the user is authenticated (this.authenticated) and the user roles (this.roles).
    *
+   * Return a UrlTree if the user should be redirected to another route.
+   *
    * @param route
    * @param state
    */
   abstract isAccessAllowed(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Promise<boolean>;
+  ): Promise<boolean | UrlTree>;
 }
