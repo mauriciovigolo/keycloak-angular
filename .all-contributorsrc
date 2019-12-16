@@ -10,6 +10,14 @@
   "commit": false,
   "contributors": [
     {
+      "login": "jonkoops",
+      "name": "Jon Koops",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/695720?s=400&v=4",
+      "profile": "https://github.com/jonkoops",
+      "contributions": [
+      ]
+    }, 
+    {
       "login": "frederikprijck",
       "name": "Frederik Prijck",
       "avatar_url": "https://avatars0.githubusercontent.com/u/2146903?v=4",
