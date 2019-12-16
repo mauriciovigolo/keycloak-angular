@@ -8,7 +8,7 @@
     "clean": "node ./node_modules/shx/lib/cli rm -rf ./dist/",
     "build": "npm run clean && node ./node_modules/@angular/cli/bin/ng build keycloak-angular --prod && node ./node_modules/shx/lib/cli cp ./README.md ./dist/keycloak-angular/",
     "test": "node ./node_modules/@angular/cli/bin/ng test keycloak-angular",
-    "test:ci": "node ./node_modules/@angular/cli/bin/ng test keycloak-angular --watch=false --browsers=ChromeHeadless",
+    "test:ci": "node ./node_modules/@angular/cli/bin/ng test keycloak-angular -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox",
     "lint": "node ./node_modules/@angular/cli/bin/ng lint"
   },
   "repository": {

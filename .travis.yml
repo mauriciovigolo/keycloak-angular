@@ -1,28 +1,23 @@
+dist: trusty
 sudo: false
+
 language: node_js
-
-cache:
-  directories:
-    - node_modules
-
-services:
-  - xvfb
-
-branches:
-  only:
-    - master
-
-notifications:
-  email:
-    on_failure: change
-
 node_js:
   - '10'
 
-before_install:
-  - export CHROME_BIN=chromium-browser
-  - export DISPLAY=:99.0
-  - npm i -g npm
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
+
+cache:
+  directories:
+    - ./node_modules
+
+install:
+  - npm install
 
 script:
   - npm run test:ci
