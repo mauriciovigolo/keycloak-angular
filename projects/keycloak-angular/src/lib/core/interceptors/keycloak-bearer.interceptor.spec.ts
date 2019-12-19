@@ -26,7 +26,7 @@ describe('KeycloakBearerInterceptor', () => {
     });
   });
 
-  it('Should be created', inject(
+  it('should be created', inject(
     [KeycloakBearerInterceptor],
     (service: KeycloakBearerInterceptor) => {
       expect(service).toBeTruthy();

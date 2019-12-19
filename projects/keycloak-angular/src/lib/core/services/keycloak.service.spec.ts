@@ -17,7 +17,7 @@ describe('KeycloakService', () => {
     });
   });
 
-  it('Should be created', inject(
+  it('should be created', inject(
     [KeycloakService],
     (service: KeycloakService) => {
       expect(service).toBeTruthy();
@@ -25,7 +25,7 @@ describe('KeycloakService', () => {
   ));
 
   describe('#loadExcludedUrls', () => {
-    it('Should create the ExcludedUrlRegex objects if the bearerExcludedUrls arg is a string array', inject(
+    it('should create the ExcludedUrlRegex objects if the bearerExcludedUrls arg is a string array', inject(
       [KeycloakService],
       (service: KeycloakService) => {
         const loadExcludedUrls = service['loadExcludedUrls'];
@@ -39,7 +39,7 @@ describe('KeycloakService', () => {
       }
     ));
 
-    it('Should create the ExcludedUrlRegex objects if the bearerExcludedUrls arg is an mixed array of strings and ExcludedUrl objects', inject(
+    it('should create the ExcludedUrlRegex objects if the bearerExcludedUrls arg is an mixed array of strings and ExcludedUrl objects', inject(
       [KeycloakService],
       (service: KeycloakService) => {
         const loadExcludedUrls = service['loadExcludedUrls'];
@@ -61,6 +61,34 @@ describe('KeycloakService', () => {
         ).toBeTruthy();
         expect(excludedRegex2.httpMethods.length).toBe(1);
         expect(excludedRegex2.httpMethods[0]).toBe('GET');
+      }
+    ));
+
+    it('should not call login in error case if getToken is called with forceLogin false', inject(
+      [KeycloakService],
+      async (service: KeycloakService) => {
+        service.updateToken = async () => Promise.reject(new Error('test'));
+        spyOn(service, 'login');
+
+        let error: Error;
+        await service.getToken(false).catch(e => error = e);
+
+        expect(error).toBeDefined();
+        expect(service.login).not.toHaveBeenCalled();
+      }
+    ));
+
+    it('should return correct token in success case if getToken is called with forceLogin false', inject(
+      [KeycloakService],
+      async (service: KeycloakService) => {
+        service.updateToken = async () => Promise.resolve(true);
+        (service['_instance'] as any) = {
+          token: 'testToken'
+        };
+
+        const token = await service.getToken(false);
+
+        expect(token).toEqual('testToken');
       }
     ));
   });
