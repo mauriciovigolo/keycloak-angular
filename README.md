@@ -134,7 +134,7 @@ const keycloakService = new KeycloakService();
 export class AppModule implements DoBootstrap {
   ngDoBootstrap(appRef: ApplicationRef) {
     keycloakService
-      .init()
+      .init(initOptions: {onLoad: 'login-required'})
       .then(() => {
         console.log('[ngDoBootstrap] bootstrap app');
 
