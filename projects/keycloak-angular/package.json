@@ -34,6 +34,6 @@
     "@angular/common": ">= 4.3.0 < 10",
     "@angular/core": ">= 4.3.0 < 10",
     "@angular/router": ">= 4.3.0 < 10",
-    "keycloak-js": ">= 3.4.3 < 7 || > 7 < 9"
+    "keycloak-js": ">= 3.4.3 < 7 || > 7 < 10"
   }
 }
