@@ -239,7 +239,7 @@ try {
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-If you want to contribute to the project, please check out the [contributing](docs/CONTRIBUTING.md)
+If you want to contribute to the project, please check out the [contributing](docs/contributing.md)
 document.
 
 ## License
