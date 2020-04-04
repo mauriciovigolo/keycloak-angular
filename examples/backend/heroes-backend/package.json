@@ -18,18 +18,18 @@
     "express": "^4.17.1",
     "express-session": "^1.16.2",
     "file-matcher": "^1.3.0",
-    "keycloak-connect": "^6.0.1",
-    "swagger-jsdoc": "^3.3.0",
+    "keycloak-connect": "^9.0.2",
+    "swagger-jsdoc": "^4.0.0",
     "swagger-ui-express": "^4.0.7",
     "winston": "^3.2.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
-    "babel-jest": "^24.8.0",
+    "babel-jest": "^25.2.6",
     "babel-preset-env": "^1.7.0",
-    "jest": "^24.8.0",
-    "nodemon": "^1.19.1"
+    "jest": "^25.2.7",
+    "nodemon": "^2.0.2"
   },
   "nodemonConfig": {
     "watch": [

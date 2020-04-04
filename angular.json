@@ -17,8 +17,9 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/keycloak-angular/ng-package.prod.json"
-            }
+              "project": "projects/keycloak-angular/ng-package.prod.json",
+              "tsConfig": "projects/keycloak-angular/tsconfig.lib.prod.json"
+}
           }
         },
         "test": {
