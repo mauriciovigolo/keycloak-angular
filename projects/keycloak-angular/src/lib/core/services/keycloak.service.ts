@@ -9,7 +9,7 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 
-import { Observable, Observer, Subject } from 'rxjs';
+import { Subject, from } from 'rxjs';
 
 // Workaround for rollup library behaviour, as pointed out on issue #1267 (https://github.com/rollup/rollup/issues/1267).
 import * as Keycloak_ from 'keycloak-js';
@@ -198,20 +198,20 @@ export class KeycloakService {
    * A Promise with a boolean indicating if the initialization was successful.
    */
   public async init(options: KeycloakOptions = {}) {
-      this.initServiceValues(options);
-      const { config, initOptions } = options;
+    this.initServiceValues(options);
+    const { config, initOptions } = options;
 
-      this._instance = Keycloak(config);
-      this.bindsKeycloakEvents();
+    this._instance = Keycloak(config);
+    this.bindsKeycloakEvents();
 
     const authenticated = await toPromise(this._instance.init(initOptions));
 
-          if (authenticated && this._loadUserProfileAtStartUp) {
-            await this.loadUserProfile();
-          }
+    if (authenticated && this._loadUserProfileAtStartUp) {
+      await this.loadUserProfile();
+    }
 
     return authenticated;
-          }
+  }
 
   /**
    * Redirects to login form on (options is an optional object with redirectUri and/or
@@ -237,9 +237,9 @@ export class KeycloakService {
   public async login(options: Keycloak.KeycloakLoginOptions = {}) {
     await toPromise(this._instance.login(options));
 
-          if (this._loadUserProfileAtStartUp) {
-            await this.loadUserProfile();
-          }
+    if (this._loadUserProfileAtStartUp) {
+      await this.loadUserProfile();
+    }
   }
 
   /**
@@ -252,11 +252,11 @@ export class KeycloakService {
    */
   public async logout(redirectUri?: string) {
     const options = {
-        redirectUri
-      };
+      redirectUri
+    };
 
     await toPromise(this._instance.logout(options));
-          this._userProfile = undefined;
+    this._userProfile = undefined;
   }
 
   /**
@@ -315,7 +315,7 @@ export class KeycloakService {
       }
     }
     if (allRoles && this._instance.realmAccess) {
-      let realmRoles = this._instance.realmAccess['roles'] || [];
+      const realmRoles = this._instance.realmAccess['roles'] || [];
       roles.push(...realmRoles);
     }
     return roles;
@@ -364,19 +364,19 @@ export class KeycloakService {
    * Promise with a boolean indicating if the token was succesfully updated.
    */
   public async updateToken(minValidity = 5) {
-      // TODO: this is a workaround until the silent refresh (issue #43)
-      // is not implemented, avoiding the redirect loop.
-      if (this._silentRefresh) {
-        if (this.isTokenExpired()) {
+    // TODO: this is a workaround until the silent refresh (issue #43)
+    // is not implemented, avoiding the redirect loop.
+    if (this._silentRefresh) {
+      if (this.isTokenExpired()) {
         throw new Error('Failed to refresh the token, or the session is expired');
-        }
+      }
 
       return true;
-      }
+    }
 
-      if (!this._instance) {
+    if (!this._instance) {
       throw new Error('Keycloak Angular library is not initialized.');
-      }
+    }
 
     return toPromise(this._instance.updateToken(minValidity));
   }
@@ -392,13 +392,13 @@ export class KeycloakService {
    * A promise with the KeycloakProfile data loaded.
    */
   public async loadUserProfile(forceReload = false) {
-      if (this._userProfile && !forceReload) {
+    if (this._userProfile && !forceReload) {
       return this._userProfile;
-      }
+    }
 
-      if (!this._instance.authenticated) {
+    if (!this._instance.authenticated) {
       throw new Error('The user profile was not loaded as the user is not logged in.');
-      }
+    }
 
     return this._userProfile = await toPromise(this._instance.loadUserProfile());
   }
@@ -432,12 +432,12 @@ export class KeycloakService {
    * @returns
    * The logged username.
    */
-  getUsername(): string {
+  public getUsername() {
     if (!this._userProfile) {
       throw new Error('User not logged in or user profile was not loaded.');
     }
 
-    return this._userProfile.username!;
+    return this._userProfile.username;
   }
 
   /**
@@ -459,16 +459,10 @@ export class KeycloakService {
    * @returns
    * An observable with with the HTTP Authorization header and the current token.
    */
-  addTokenToHeader(headers: HttpHeaders = new HttpHeaders()): Observable<HttpHeaders> {
-    return Observable.create(async (observer: Observer<any>) => {
-      try {
-        const token: string = await this.getToken();
-        headers = headers.set(this._authorizationHeaderName, this._bearerPrefix + token);
-        observer.next(headers);
-        observer.complete();
-      } catch (error) {
-        observer.error(error);
-      }
+  public addTokenToHeader(headers: HttpHeaders = new HttpHeaders()) {
+    return from(async () => {
+      const token = await this.getToken();
+      return headers.set(this._authorizationHeaderName, this._bearerPrefix + token);
     });
   }
 

@@ -29,7 +29,7 @@ describe('toPromise', () => {
 // Old promise code copied from Keycloak JS and modified to work here.
 // See: https://github.com/keycloak/keycloak/pull/6665/files#diff-f41a82d32ba240c5165fc1ee64741068L1147-L1185
 function createLegacyPromise() {
-  let p = {
+  const p = {
       success: false,
       error: false,
       result: null,

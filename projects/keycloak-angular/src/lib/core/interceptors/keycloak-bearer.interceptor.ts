@@ -42,11 +42,11 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
     { method, url }: HttpRequest<any>,
     { urlPattern, httpMethods }: ExcludedUrlRegex
   ): boolean {
-    let httpTest =
+    const httpTest =
       httpMethods.length === 0 ||
       httpMethods.join().indexOf(method.toUpperCase()) > -1;
 
-    let urlTest = urlPattern.test(url);
+    const urlTest = urlPattern.test(url);
 
     return httpTest && urlTest;
   }

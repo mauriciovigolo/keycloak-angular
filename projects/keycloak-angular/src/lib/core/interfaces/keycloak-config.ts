@@ -11,12 +11,12 @@
  * mentioned in the keycloak's documentation:
  * http://www.keycloak.org/docs/latest/securing_apps/index.html#_configuring_a_client_for_use_with_client_registration_cli
  */
-export type Credentials = {
+export interface Credentials {
   /**
    * Secret or Signed JWT. Please, caution where you store this sensitive information!
    */
   secret: string;
-};
+}
 
 /**
  * This is the interface containing the attributes for the keycloak configuration in case

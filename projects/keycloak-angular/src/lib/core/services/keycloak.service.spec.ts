@@ -30,7 +30,7 @@ describe('KeycloakService', () => {
       (service: KeycloakService) => {
         const loadExcludedUrls = service['loadExcludedUrls'];
         const result = loadExcludedUrls(['home', 'public']);
-        let { urlPattern, httpMethods } = result[0];
+        const { urlPattern, httpMethods } = result[0];
 
         expect(result.length).toBe(2);
         expect(urlPattern).toBeDefined();
@@ -39,9 +39,8 @@ describe('KeycloakService', () => {
       }
     ));
 
-    it('should create the ExcludedUrlRegex objects if the bearerExcludedUrls arg is an mixed array of strings and ExcludedUrl objects', inject(
-      [KeycloakService],
-      (service: KeycloakService) => {
+    it('should create the ExcludedUrlRegex objects if the bearerExcludedUrls arg is an mixed array of strings and ExcludedUrl objects',
+      inject([KeycloakService], (service: KeycloakService) => {
         const loadExcludedUrls = service['loadExcludedUrls'];
         const result = loadExcludedUrls([
           'home',
@@ -49,12 +48,12 @@ describe('KeycloakService', () => {
         ]);
         expect(result.length).toBe(2);
 
-        let excludedRegex1 = result[0];
+        const excludedRegex1 = result[0];
         expect(excludedRegex1.urlPattern).toBeDefined();
         expect(excludedRegex1.urlPattern.test('https://url/home')).toBeTruthy();
         expect(excludedRegex1.httpMethods.length).toBe(0);
 
-        let excludedRegex2 = result[1];
+        const excludedRegex2 = result[1];
         expect(excludedRegex2.urlPattern).toBeDefined();
         expect(
           excludedRegex2.urlPattern.test('https://url/public')
