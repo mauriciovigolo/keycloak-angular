@@ -1,3 +1,0 @@
-- Languages
-  - [🇬🇧 English](./docs/en/README)
-  - [🇧🇷 Português](./docs/pt/README)
