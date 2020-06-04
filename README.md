@@ -145,6 +145,8 @@ export class AppModule implements DoBootstrap {
 }
 ```
 
+**Hint:** Do not forget to remove `bootstrap: [AppComponent]` from NgModule decorator options.
+
 ### Keycloak
 
 Besides configuring the keycloak lib in your application it is also necessary to setup the
