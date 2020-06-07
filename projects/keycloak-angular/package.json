@@ -1,6 +1,6 @@
 {
   "name": "keycloak-angular",
-  "version": "7.3.0",
+  "version": "7.3.1",
   "description": "Easy Keycloak setup for Angular applications",
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
     "angular 6",
     "angular 7",
     "angular 8",
+    "angular 9",
     "keycloak",
     "keycloak-js",
     "authentication",

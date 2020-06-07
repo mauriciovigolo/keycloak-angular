@@ -1,6 +1,6 @@
 {
   "name": "keycloak-angular",
-  "version": "7.3.0",
+  "version": "7.3.1",
   "description": "Easy Keycloak setup for Angular applications",
   "scripts": {
     "contributors:add": "node ./node_modules/all-contributors-cli/dist/cli add",
@@ -32,6 +32,7 @@
     "angular 6",
     "angular 7",
     "angular 8",
+    "angular 9",
     "authentication",
     "authorization",
     "keycloak",
