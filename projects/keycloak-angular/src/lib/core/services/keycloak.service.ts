@@ -10,12 +10,17 @@ import { Injectable } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 
 import { Subject, from } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 // Workaround for rollup library behaviour, as pointed out on issue #1267 (https://github.com/rollup/rollup/issues/1267).
 import * as Keycloak_ from 'keycloak-js';
 export const Keycloak = Keycloak_;
 
-import { ExcludedUrl, ExcludedUrlRegex, KeycloakOptions } from '../interfaces/keycloak-options';
+import {
+  ExcludedUrl,
+  ExcludedUrlRegex,
+  KeycloakOptions,
+} from '../interfaces/keycloak-options';
 import { KeycloakEvent, KeycloakEventType } from '../interfaces/keycloak-event';
 import { toPromise } from '../utils/to-promise';
 
@@ -65,7 +70,9 @@ export class KeycloakService {
   /**
    * Observer for the keycloak events
    */
-  private _keycloakEvents$: Subject<KeycloakEvent> = new Subject<KeycloakEvent>();
+  private _keycloakEvents$: Subject<KeycloakEvent> = new Subject<
+    KeycloakEvent
+  >();
 
   /**
    * Binds the keycloak-js events to the keycloakEvents Subject
@@ -75,10 +82,10 @@ export class KeycloakService {
    * argument if the source function provides any.
    */
   private bindsKeycloakEvents(): void {
-    this._instance.onAuthError = errorData => {
+    this._instance.onAuthError = (errorData) => {
       this._keycloakEvents$.next({
         args: errorData,
-        type: KeycloakEventType.OnAuthError
+        type: KeycloakEventType.OnAuthError,
       });
     };
 
@@ -88,13 +95,13 @@ export class KeycloakService {
 
     this._instance.onAuthRefreshSuccess = () => {
       this._keycloakEvents$.next({
-        type: KeycloakEventType.OnAuthRefreshSuccess
+        type: KeycloakEventType.OnAuthRefreshSuccess,
       });
     };
 
     this._instance.onAuthRefreshError = () => {
       this._keycloakEvents$.next({
-        type: KeycloakEventType.OnAuthRefreshError
+        type: KeycloakEventType.OnAuthRefreshError,
       });
     };
 
@@ -104,14 +111,14 @@ export class KeycloakService {
 
     this._instance.onTokenExpired = () => {
       this._keycloakEvents$.next({
-        type: KeycloakEventType.OnTokenExpired
+        type: KeycloakEventType.OnTokenExpired,
       });
     };
 
-    this._instance.onReady = authenticated => {
+    this._instance.onReady = (authenticated) => {
       this._keycloakEvents$.next({
         args: authenticated,
-        type: KeycloakEventType.OnReady
+        type: KeycloakEventType.OnReady,
       });
     };
   }
@@ -123,7 +130,9 @@ export class KeycloakService {
    * @param bearerExcludedUrls array of strings or ExcludedUrl that includes
    * the url and HttpMethod.
    */
-  private loadExcludedUrls(bearerExcludedUrls: (string | ExcludedUrl)[]): ExcludedUrlRegex[] {
+  private loadExcludedUrls(
+    bearerExcludedUrls: (string | ExcludedUrl)[]
+  ): ExcludedUrlRegex[] {
     const excludedUrls: ExcludedUrlRegex[] = [];
     for (const item of bearerExcludedUrls) {
       let excludedUrl: ExcludedUrlRegex;
@@ -132,7 +141,7 @@ export class KeycloakService {
       } else {
         excludedUrl = {
           urlPattern: new RegExp(item.url, 'i'),
-          httpMethods: item.httpMethods
+          httpMethods: item.httpMethods,
         };
       }
       excludedUrls.push(excludedUrl);
@@ -151,7 +160,7 @@ export class KeycloakService {
     bearerExcludedUrls = [],
     authorizationHeaderName = 'Authorization',
     bearerPrefix = 'bearer',
-    initOptions
+    initOptions,
   }: KeycloakOptions): void {
     this._enableBearerInterceptor = enableBearerInterceptor;
     this._loadUserProfileAtStartUp = loadUserProfileAtStartUp;
@@ -252,7 +261,7 @@ export class KeycloakService {
    */
   public async logout(redirectUri?: string) {
     const options = {
-      redirectUri
+      redirectUri,
     };
 
     await toPromise(this._instance.logout(options));
@@ -269,7 +278,9 @@ export class KeycloakService {
    * @returns
    * A void Promise if the register flow was successful.
    */
-  public async register(options: Keycloak.KeycloakLoginOptions = { action: 'register' }) {
+  public async register(
+    options: Keycloak.KeycloakLoginOptions = { action: 'register' }
+  ) {
     await toPromise(this._instance.register(options));
   }
 
@@ -368,7 +379,9 @@ export class KeycloakService {
     // is not implemented, avoiding the redirect loop.
     if (this._silentRefresh) {
       if (this.isTokenExpired()) {
-        throw new Error('Failed to refresh the token, or the session is expired');
+        throw new Error(
+          'Failed to refresh the token, or the session is expired'
+        );
       }
 
       return true;
@@ -397,10 +410,14 @@ export class KeycloakService {
     }
 
     if (!this._instance.authenticated) {
-      throw new Error('The user profile was not loaded as the user is not logged in.');
+      throw new Error(
+        'The user profile was not loaded as the user is not logged in.'
+      );
     }
 
-    return this._userProfile = await toPromise(this._instance.loadUserProfile());
+    return (this._userProfile = await toPromise(
+      this._instance.loadUserProfile()
+    ));
   }
 
   /**
@@ -460,10 +477,11 @@ export class KeycloakService {
    * An observable with with the HTTP Authorization header and the current token.
    */
   public addTokenToHeader(headers: HttpHeaders = new HttpHeaders()) {
-    return from(async () => {
-      const token = await this.getToken();
-      return headers.set(this._authorizationHeaderName, this._bearerPrefix + token);
-    });
+    return from(this.getToken()).pipe(
+      map((token) =>
+        headers.set(this._authorizationHeaderName, this._bearerPrefix + token)
+      )
+    );
   }
 
   /**
