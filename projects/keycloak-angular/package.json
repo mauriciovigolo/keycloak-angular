@@ -32,9 +32,9 @@
     "oidc"
   ],
   "peerDependencies": {
-    "@angular/common": ">= 4.3.0 < 10",
-    "@angular/core": ">= 4.3.0 < 10",
-    "@angular/router": ">= 4.3.0 < 10",
+    "@angular/common": ">= 9.0.0 < 10",
+    "@angular/core": ">= 9.0.0 < 10",
+    "@angular/router": ">= 9.0.0 < 10",
     "keycloak-js": ">= 3.4.3 < 7 || > 7 < 11"
   }
 }
