@@ -18,12 +18,6 @@
   "homepage": "https://github.com/mauriciovigolo/keycloak-angular#readme",
   "keywords": [
     "angular",
-    "angular 4",
-    "angular 5",
-    "angular 6",
-    "angular 7",
-    "angular 8",
-    "angular 9",
     "keycloak",
     "keycloak-js",
     "authentication",
@@ -32,9 +26,9 @@
     "oidc"
   ],
   "peerDependencies": {
-    "@angular/common": ">= 9.0.0 < 10",
-    "@angular/core": ">= 9.0.0 < 10",
-    "@angular/router": ">= 9.0.0 < 10",
+    "@angular/common": ">= 8.0.0 < 10",
+    "@angular/core": ">= 8.0.0 < 10",
+    "@angular/router": ">= 8.0.0 < 10",
     "keycloak-js": ">= 3.4.3 < 7 || > 7 < 11"
   }
 }
