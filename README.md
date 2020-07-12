@@ -45,11 +45,6 @@ This library helps you to use [keycloak-js](https://www.keycloak.org/docs/latest
 npm i --save keycloak-angular
 ```
 
-**Note about versions**:
-
-- For Angular v9, please use keycloak-angular v7.3 or higher.
-- For Angular v8 and bellow, keycloak-angular v7.2.
-
 ### keycloak-js
 
 > Since keycloak-angular v.7.0.0, the [keycloak-js](https://www.npmjs.com/package/keycloak-js) dependency became a peer dependency. This change allows greater flexibility for choosing the keycloak-js adapter version and follows the [project documentation recommendation](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter).
