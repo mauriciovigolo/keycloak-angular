@@ -10,10 +10,6 @@ export {
   KeycloakEvent,
   KeycloakEventType
 } from './lib/core/interfaces/keycloak-event';
-/**
- * @deprecated Use Keycloak's internal types instead.
- */
-export type KeycloakInitOptions = Keycloak.KeycloakInitOptions;
 export { KeycloakOptions } from './lib/core/interfaces/keycloak-options';
 export { KeycloakAuthGuard } from './lib/core/services/keycloak-auth-guard';
 export { KeycloakService } from './lib/core/services/keycloak.service';
