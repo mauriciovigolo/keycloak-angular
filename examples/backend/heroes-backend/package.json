@@ -4,7 +4,7 @@
   "description": "Server Examples For Keycloak Angular, just for demo purposes",
   "main": "./src/app.js",
   "scripts": {
-    "start": "node_modules/.bin/nodemon src/app.js --exec babel-node --presets env",
+    "start": "node_modules/.bin/nodemon src/app.js --exec babel-node --preset env",
     "test": "node_modules/.bin/jest",
     "coverage": "node_modules/.bin/jest --collectCoverageFrom=src/**.spec.js --coverage",
     "build": "node_modules/.bin/babel lib -d dist --presets es2015,stage-2",
@@ -24,10 +24,11 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
     "babel-jest": "^26.1.0",
-    "babel-preset-env": "^1.7.0",
     "jest": "^26.1.0",
     "nodemon": "^2.0.4"
   },
