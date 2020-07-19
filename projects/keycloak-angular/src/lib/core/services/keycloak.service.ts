@@ -158,7 +158,7 @@ export class KeycloakService {
     loadUserProfileAtStartUp = false,
     bearerExcludedUrls = [],
     authorizationHeaderName = 'Authorization',
-    bearerPrefix = 'bearer',
+    bearerPrefix = 'Bearer',
     initOptions,
   }: KeycloakOptions): void {
     this._enableBearerInterceptor = enableBearerInterceptor;

@@ -103,9 +103,10 @@ export interface KeycloakOptions {
   authorizationHeaderName?: string;
   /**
    * This value will be included in the Authorization Http Header param. The default value is
-   * **bearer**, which will result in a Http Header Authorization as "Authorization: bearer <token>".
+   * **Bearer**, which will result in a Http Header Authorization as "Authorization: Bearer <token>".
+   *
    * If any other value is needed by the backend in the authorization header, you should change this
-   * value, i.e: **Bearer**.
+   * value.
    *
    * Warning: this value must be in compliance with the keycloak server instance and the adapter.
    */
