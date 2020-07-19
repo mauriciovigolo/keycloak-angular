@@ -156,7 +156,7 @@ export class KeycloakService {
    */
   private initServiceValues({
     enableBearerInterceptor = true,
-    loadUserProfileAtStartUp = true,
+    loadUserProfileAtStartUp = false,
     bearerExcludedUrls = [],
     authorizationHeaderName = 'Authorization',
     bearerPrefix = 'bearer',
