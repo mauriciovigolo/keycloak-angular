@@ -63,21 +63,7 @@ describe('KeycloakService', () => {
       }
     ));
 
-    it('should not call login in error case if getToken is called with forceLogin false', inject(
-      [KeycloakService],
-      async (service: KeycloakService) => {
-        service.updateToken = async () => Promise.reject(new Error('test'));
-        spyOn(service, 'login');
-
-        let error: Error;
-        await service.getToken(false).catch(e => error = e);
-
-        expect(error).toBeDefined();
-        expect(service.login).not.toHaveBeenCalled();
-      }
-    ));
-
-    it('should return correct token in success case if getToken is called with forceLogin false', inject(
+    it('should return the token getToken is called', inject(
       [KeycloakService],
       async (service: KeycloakService) => {
         service.updateToken = async () => Promise.resolve(true);
@@ -85,7 +71,7 @@ describe('KeycloakService', () => {
           token: 'testToken'
         };
 
-        const token = await service.getToken(false);
+        const token = await service.getToken();
 
         expect(token).toEqual('testToken');
       }
