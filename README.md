@@ -184,7 +184,7 @@ await keycloak.init({
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-If you want to contribute to the project, please check out the [contributing](docs/contributing.md)
+If you want to contribute to the project, please check out the [contributing](CONTRIBUTING.md)
 document.
 
 ## License
