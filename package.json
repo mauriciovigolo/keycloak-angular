@@ -8,7 +8,6 @@
     "clean": "node ./node_modules/shx/lib/cli rm -rf ./dist/",
     "build": "npm run clean && node ./node_modules/@angular/cli/bin/ng build keycloak-angular --prod && node ./node_modules/shx/lib/cli cp ./README.md ./dist/keycloak-angular/",
     "test": "node ./node_modules/@angular/cli/bin/ng test keycloak-angular",
-    "test:ci": "node ./node_modules/@angular/cli/bin/ng test keycloak-angular -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox",
     "lint": "node ./node_modules/@angular/cli/bin/ng lint"
   },
   "repository": {
@@ -52,13 +51,14 @@
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~5.0.2",
     "karma": "~5.1.0",
-    "karma-chrome-launcher": "~3.1.0",
+    "karma-chrome-launcher": "^3.1.0",
     "karma-coverage-istanbul-reporter": "~3.0.3",
     "karma-jasmine": "~3.3.1",
     "karma-jasmine-html-reporter": "^1.5.4",
     "keycloak-js": "^10.0.2",
     "ng-packagr": "^10.0.1",
     "protractor": "~7.0.0",
+    "puppeteer": "^5.2.1",
     "rxjs": "~6.6.0",
     "shx": "^0.3.2",
     "ts-node": "^8.10.2",
