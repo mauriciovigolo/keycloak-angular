@@ -29,7 +29,7 @@
     "@angular/common": "^10",
     "@angular/core": "^10",
     "@angular/router": "^10",
-    "keycloak-js": "^10"
+    "keycloak-js": "^10 || ^11"
   },
   "dependencies": {
     "tslib": "^2.0.0"

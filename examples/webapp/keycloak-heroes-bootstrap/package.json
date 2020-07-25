@@ -23,16 +23,16 @@
     "@angular/platform-browser-dynamic": "^10.0.3",
     "@angular/router": "^10.0.3",
     "@clr/angular": "^3.1.4",
+    "@clr/core": "^3.1.4",
     "@clr/icons": "^3.1.4",
     "@clr/ui": "^3.1.4",
+    "@webcomponents/webcomponentsjs": "^2.4.3",
     "core-js": "^3.6.5",
     "keycloak-angular": "^7.3.1",
-    "keycloak-js": "^10.0.2",
+    "keycloak-js": "^11.0.0",
     "rxjs": "^6.6.0",
     "tslib": "^2.0.0",
-    "zone.js": "~0.10.3",
-    "@clr/core": "^3.1.4",
-    "@webcomponents/webcomponentsjs": "^2.4.3"
+    "zone.js": "~0.10.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.1000.2",
