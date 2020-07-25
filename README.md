@@ -45,8 +45,18 @@ npm install keycloak-angular keycloak-js
 
 Note that `keycloak-js` is a peer dependency of Keycloak Angular. This change allows greater flexibility of choosing the right version of the Keycloak client version for your project.
 
+### Versions
 
-### Choosing the right keycloak-js version
+Supported versions:
+
+| keycloak-angular | Angular |     Maintained      |
+| :--------------: | :-----: | :-----------------: |
+|      8.x.x       | 10.x.x  | Bugs / New Features |
+|      7.3.x       |  9.x.x  |        Bugs         |
+|      7.2.x       |  8.x.x  |        Bugs         |
+|      6.x.x       |  7.x.x  |          -          |
+
+#### Choosing the right keycloak-js version
 
 The Keycloak client documentation recommends to use the same version of your Keycloak installation.
 
@@ -71,11 +81,12 @@ function initializeKeycloak(keycloak: KeycloakService) {
       config: {
         url: 'http://localhost:8080/auth',
         realm: 'your-realm',
-        clientId: 'your-client-id'
+        clientId: 'your-client-id',
       },
       initOptions: {
         onLoad: 'check-sso',
-        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
+        silentCheckSsoRedirectUri:
+          window.location.origin + '/assets/silent-check-sso.html',
       },
     });
 }
@@ -112,7 +123,7 @@ Create a file called `silent-check-sso.html` in the `assets` directory of your a
 </html>
 ```
 
-If you want to know more about these options and various other capabilities of the Keycloak client is recommended to read the [JavaScript Adapter documentation](https://www.keycloak.org/docs/latest/securing_apps/#_javascript_adapter). 
+If you want to know more about these options and various other capabilities of the Keycloak client is recommended to read the [JavaScript Adapter documentation](https://www.keycloak.org/docs/latest/securing_apps/#_javascript_adapter).
 
 ## AuthGuard
 
@@ -122,7 +133,11 @@ To write your own implementation extend the `KeycloakAuthGuard` class and implem
 
 ```ts
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  Router,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { KeycloakAuthGuard, KeycloakService } from 'keycloak-angular';
 
 @Injectable({
@@ -136,10 +151,15 @@ export class AuthGuard extends KeycloakAuthGuard {
     super(router, keycloak);
   }
 
-  public async isAccessAllowed(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  public async isAccessAllowed(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ) {
     // Force the user to log in if currently unauthenticated.
     if (!this.authenticated) {
-      await this.keycloak.login({ redirectUri: window.location.origin + state.url });
+      await this.keycloak.login({
+        redirectUri: window.location.origin + state.url,
+      });
     }
 
     // Get the roles required from the route.
@@ -155,7 +175,6 @@ export class AuthGuard extends KeycloakAuthGuard {
   }
 }
 ```
-
 
 ## HttpClient Interceptor
 
