@@ -20,6 +20,7 @@
 - [Example project](#example-project)
 - [AuthGuard](#authguard)
 - [HttpClient Interceptor](#httpclient-interceptor)
+- [Keycloak-js Events](#keycloak-js-events)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -196,6 +197,22 @@ await keycloak.init({
     clientId: 'your-client-id',
   },
   bearerExcludedUrls: ['/assets', '/clients/public'],
+});
+```
+
+## Keycloak-js Events
+
+The callback events from [keycloak-js](https://www.keycloak.org/docs/latest/securing_apps/index.html#javascript-adapter-reference) are available through a RxJS subject which is defined by `keycloakEvents$`.
+
+For example you make keycloak-angular auto refreshing your access token when expired:
+
+```ts
+keycloakService.keycloakEvents$.subscribe({
+  next: e => {
+    if (e.type == KeycloakEventType.OnTokenExpired) {
+      keycloakService.updateToken(20);
+    }
+  }
 });
 ```
 
