@@ -15,6 +15,7 @@
 - [About](#about)
 - [Installation](#installation)
 - [Setup](#setup)
+- [Example project](#example-project)
 - [AuthGuard](#authguard)
 - [HttpClient Interceptor](#httpclient-interceptor)
 - [Contributors](#contributors)
@@ -121,6 +122,10 @@ Create a file called `silent-check-sso.html` in the `assets` directory of your a
 ```
 
 If you want to know more about these options and various other capabilities of the Keycloak client is recommended to read the [JavaScript Adapter documentation](https://www.keycloak.org/docs/latest/securing_apps/#_javascript_adapter).
+
+## Example project
+
+If you want to see an complete overview a pre-configured client together with a working Keycloak server make sure to check out the [example project](example/README.md) in this repository.
 
 ## AuthGuard
 
