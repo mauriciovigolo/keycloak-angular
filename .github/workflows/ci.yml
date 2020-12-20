@@ -1,4 +1,4 @@
-name: Angular CI
+name: CI
 
 on:
   push:
@@ -7,21 +7,28 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  ci:
 
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
+        job:
+          - lint
+          - test -- --no-watch --no-progress --browsers=ChromeHeadless
+          - build
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm run lint
-    - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadless
-    - run: npm run build
+    
+    - name: install
+      run: npm ci
+
+    - name: Run ${{ matrix.job }}
+      run: npm run ${{ matrix.job }}
