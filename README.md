@@ -1,12 +1,14 @@
 # Keycloak Angular
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://travis-ci.org/mauriciovigolo/keycloak-angular.svg?branch=master)](https://travis-ci.org/mauriciovigolo/keycloak-angular)
-[![Known Vulnerabilities](https://snyk.io/test/github/mauriciovigolo/keycloak-angular/badge.svg)](https://snyk.io/test/github/mauriciovigolo/keycloak-angular)
-[![npm version](https://badge.fury.io/js/keycloak-angular.svg)](https://badge.fury.io/js/keycloak-angular)
-![npm](https://img.shields.io/npm/dm/keycloak-angular.svg)
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors)
-[![Slack](https://slackin-iijwrzzihr.now.sh/badge.svg)](https://slackin-iijwrzzihr.now.sh)
+<!-- prettier-ignore-start -->
+[![License: MIT][license-mit-badge]][license-mit]
+[![Build Status][build-badge]][build]
+[![Known Vulnerabilities][vulnerabilities-badge]][vulnerabilities]
+[![npm version][npm-version-badge]][npm-version]
+[![npm][npm-badge]][npm]
+[![All Contributors][contributors-badge]](#contributors)
+[![Discord][discord-badge]][discord]
+<!-- prettier-ignore-end -->
 
 > Easy Keycloak setup for Angular applications.
 
@@ -50,7 +52,8 @@ Note that `keycloak-js` is a peer dependency of Keycloak Angular. This change al
 
 | Angular | keycloak-angular | keycloak-js               | Support             |
 | :-----: | :--------------: | :-----------------------: | :-----------------: |
-| 10.x.x  | 8.x.x            | 10 - 11                   | Bugs / New Features |
+| 11.x.x  | 8.1.x            | 10 - 12                   | Bugs / New Features |
+| 10.x.x  | 8.x.x            | 10 - 11                   | Bugs                |
 |  9.x.x  | 7.3.x            | 3.4.3 - 10 (excluding v7) | Bugs                |
 |  8.x.x  | 7.2.x            | 3.4.3 - 9 (excluding v7)  | Bugs                |
 
@@ -211,3 +214,19 @@ document.
 ## License
 
 **keycloak-angular** is licensed under the **[MIT license](LICENSE)**.
+
+<!-- prettier-ignore-start -->
+[license-mit-badge]: https://img.shields.io/badge/License-MIT-yellow.svg
+[license-mit]: https://opensource.org/licenses/MIT
+[build-badge]: https://travis-ci.org/mauriciovigolo/keycloak-angular.svg?branch=master
+[build]: https://travis-ci.org/mauriciovigolo/keycloak-angular
+[vulnerabilities-badge]: https://snyk.io/test/github/mauriciovigolo/keycloak-angular/badge.svg
+[vulnerabilities]: https://snyk.io/test/github/mauriciovigolo/keycloak-angular
+[npm-version-badge]: https://badge.fury.io/js/keycloak-angular.svg
+[npm-version]: https://badge.fury.io/js/keycloak-angular
+[npm-badge]: https://img.shields.io/npm/dm/keycloak-angular.svg
+[npm]: https://www.npmjs.com/package/keycloak-angular
+[contributors-badge]: https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square
+[discord-badge]: https://img.shields.io/discord/790617227853692958.svg?color=7389D8&labelColor=6A7EC2&logo=discord&logoColor=ffffff&style=flat-square
+[discord]: https://discord.gg/mmzEhYXXDG
+<!-- prettier-ignore-end -->
