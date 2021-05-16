@@ -26,9 +26,9 @@
     "oidc"
   ],
   "peerDependencies": {
-    "@angular/common": "^10 || ^11",
-    "@angular/core": "^10 || ^11",
-    "@angular/router": "^10 || ^11",
+    "@angular/common": "^10 || ^11 || ^12",
+    "@angular/core": "^10 || ^11 || ^12",
+    "@angular/router": "^10 || ^11 || ^12",
     "keycloak-js": "^10 || ^11 || ^12 || ^13"
   },
   "dependencies": {
