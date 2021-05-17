@@ -8,5 +8,5 @@
       "keycloak-js": "Keycloak"
     }
   },
-  "whitelistedNonPeerDependencies": ["tslib", "keycloak-js"]
+  "allowedNonPeerDependencies": ["tslib", "keycloak-js"]
 }

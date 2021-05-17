@@ -8,5 +8,5 @@
       "keycloak-js": "Keycloak"
     }
   },
-  "whitelistedNonPeerDependencies": ["keycloak-js"]
+  "allowedNonPeerDependencies": ["keycloak-js"]
 }
