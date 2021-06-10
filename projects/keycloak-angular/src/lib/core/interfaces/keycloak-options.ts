@@ -6,6 +6,8 @@
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
  */
 
+import {KeycloakLoginOptions} from 'keycloak-js';
+
 /**
  * HTTP Methods
  */
@@ -111,4 +113,8 @@ export interface KeycloakOptions {
    * Warning: this value must be in compliance with the keycloak server instance and the adapter.
    */
   bearerPrefix?: string;
+  /**
+   * A way to provide keycloak login options during initialization.
+   */
+  keycloakLoginOptions?: KeycloakLoginOptions;
 }

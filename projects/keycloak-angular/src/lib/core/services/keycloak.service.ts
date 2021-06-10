@@ -22,6 +22,7 @@ import {
   KeycloakOptions,
 } from '../interfaces/keycloak-options';
 import { KeycloakEvent, KeycloakEventType } from '../interfaces/keycloak-event';
+import {KeycloakLoginOptions, KeycloakPromise} from 'keycloak-js';
 
 /**
  * Service to expose existent methods from the Keycloak JS adapter, adding new
@@ -72,6 +73,10 @@ export class KeycloakService {
   private _keycloakEvents$: Subject<KeycloakEvent> = new Subject<
     KeycloakEvent
   >();
+  /**
+   * keycloak login options
+   */
+  private _keycloakLoginOptions: KeycloakLoginOptions = null;
 
   /**
    * Binds the keycloak-js events to the keycloakEvents Subject
@@ -160,6 +165,7 @@ export class KeycloakService {
     authorizationHeaderName = 'Authorization',
     bearerPrefix = 'Bearer',
     initOptions,
+    keycloakLoginOptions,
   }: KeycloakOptions): void {
     this._enableBearerInterceptor = enableBearerInterceptor;
     this._loadUserProfileAtStartUp = loadUserProfileAtStartUp;
@@ -167,6 +173,7 @@ export class KeycloakService {
     this._bearerPrefix = bearerPrefix.trim().concat(' ');
     this._excludedUrls = this.loadExcludedUrls(bearerExcludedUrls);
     this._silentRefresh = initOptions ? initOptions.flow === 'implicit' : false;
+    this._keycloakLoginOptions = keycloakLoginOptions;
   }
 
   /**
@@ -212,6 +219,14 @@ export class KeycloakService {
     this._instance = Keycloak(config);
     this.bindsKeycloakEvents();
 
+    if (this._keycloakLoginOptions !== null) {
+      const kcLogin = this._instance.login;
+      this._instance.login = (options: KeycloakLoginOptions): any => {
+        Object.assign(options, this._keycloakLoginOptions);
+        kcLogin(options);
+      };
+    }
+
     const authenticated = await this._instance.init(initOptions);
 
     if (authenticated && this._loadUserProfileAtStartUp) {
@@ -243,7 +258,11 @@ export class KeycloakService {
    * A void Promise if the login is successful and after the user profile loading.
    */
   public async login(options: Keycloak.KeycloakLoginOptions = {}) {
-    await this._instance.login(options);
+    if ( this._keycloakLoginOptions !== null ) {
+      await this._instance.login(this._keycloakLoginOptions);
+    } else {
+      await this._instance.login(options);
+    }
 
     if (this._loadUserProfileAtStartUp) {
       await this.loadUserProfile();
