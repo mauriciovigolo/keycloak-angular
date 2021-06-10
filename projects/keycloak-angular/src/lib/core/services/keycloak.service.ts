@@ -221,9 +221,9 @@ export class KeycloakService {
 
     if (this._keycloakLoginOptions !== null) {
       const kcLogin = this._instance.login;
-      this._instance.login = (options: KeycloakLoginOptions): any => {
-        Object.assign(options, this._keycloakLoginOptions);
-        kcLogin(options);
+      this._instance.login = (keycloakLoginOptions: KeycloakLoginOptions): any => {
+        Object.assign(keycloakLoginOptions, this._keycloakLoginOptions);
+        kcLogin(keycloakLoginOptions);
       };
     }
 
