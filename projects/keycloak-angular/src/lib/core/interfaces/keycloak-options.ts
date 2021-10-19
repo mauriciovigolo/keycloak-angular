@@ -51,6 +51,11 @@ export interface ExcludedUrlRegex {
   httpMethods?: HttpMethods[];
 }
 
+export interface TokenUpdateExcludedHeader {
+  header: string;
+  values: string[];
+}
+
 /**
  * keycloak-angular initialization options.
  */
@@ -111,4 +116,21 @@ export interface KeycloakOptions {
    * Warning: this value must be in compliance with the keycloak server instance and the adapter.
    */
   bearerPrefix?: string;
+  /**
+   * This value is a list of Http Header key and value combinations that will be used to exclude an http
+   * request from updating the user's token. This allows for more fine-tuned control over the users'
+   * authenticated time.
+   *
+   * When attempting to set up an idle timeout, do note that Keycloak has a built-in 2 minute window where
+   * the token is kept unexpired after its configured timeout has been reached.
+   * https://www.keycloak.org/docs/latest/server_admin/
+   */
+  tokenUpdateExcludedHeaders?: TokenUpdateExcludedHeader[];
+  /**
+   * This value will be used to determine whether or not the token needs to be updated. If the token
+   * will expire is fewer seconds than the updateMinValidity value, then it will be updated.
+   *
+   * The default value is 20.
+   */
+  updateMinValidity?: number;
 }

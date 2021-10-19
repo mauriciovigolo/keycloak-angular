@@ -20,6 +20,7 @@ import {
   ExcludedUrl,
   ExcludedUrlRegex,
   KeycloakOptions,
+  TokenUpdateExcludedHeader
 } from '../interfaces/keycloak-options';
 import { KeycloakEvent, KeycloakEventType } from '../interfaces/keycloak-event';
 
@@ -72,6 +73,14 @@ export class KeycloakService {
   private _keycloakEvents$: Subject<KeycloakEvent> = new Subject<
     KeycloakEvent
   >();
+  /**
+   * The list of Http Headers that will prevent a request from updating the token.
+   */
+  private _tokenUpdateExcludedHeaders: TokenUpdateExcludedHeader[];
+  /**
+   * The amount of required time remaining before expiry of the token before the token will be refreshed.
+   */
+  private _updateMinValidity: number;
 
   /**
    * Binds the keycloak-js events to the keycloakEvents Subject
@@ -160,6 +169,8 @@ export class KeycloakService {
     authorizationHeaderName = 'Authorization',
     bearerPrefix = 'Bearer',
     initOptions,
+    tokenUpdateExcludedHeaders = [],
+    updateMinValidity = 20
   }: KeycloakOptions): void {
     this._enableBearerInterceptor = enableBearerInterceptor;
     this._loadUserProfileAtStartUp = loadUserProfileAtStartUp;
@@ -167,6 +178,8 @@ export class KeycloakService {
     this._bearerPrefix = bearerPrefix.trim().concat(' ');
     this._excludedUrls = this.loadExcludedUrls(bearerExcludedUrls);
     this._silentRefresh = initOptions ? initOptions.flow === 'implicit' : false;
+    this._tokenUpdateExcludedHeaders = tokenUpdateExcludedHeaders;
+    this._updateMinValidity = updateMinValidity;
   }
 
   /**
@@ -201,6 +214,12 @@ export class KeycloakService {
    *
    * bearerPrefix:
    * This value will be included in the Authorization Http Header param.
+   *
+   * tokenUpdateExcludedHeaders:
+   * Array of Http Header key/value maps that should not trigger the token to be updated.
+   *
+   * updateMinValidity:
+   * This value determines if the token will be refreshed based on its expiration time.
    *
    * @returns
    * A Promise with a boolean indicating if the initialization was successful.
@@ -339,11 +358,7 @@ export class KeycloakService {
    */
   async isLoggedIn(): Promise<boolean> {
     try {
-      if (!this._instance.authenticated) {
-        return false;
-      }
-      await this.updateToken(20);
-      return true;
+      return this._instance.authenticated;
     } catch (error) {
       return false;
     }
@@ -363,17 +378,15 @@ export class KeycloakService {
   }
 
   /**
-   * If the token expires within minValidity seconds the token is refreshed. If the
+   * If the token expires within _updateMinValidity seconds the token is refreshed. If the
    * session status iframe is enabled, the session status is also checked.
    * Returns a promise telling if the token was refreshed or not. If the session is not active
    * anymore, the promise is rejected.
    *
-   * @param minValidity
-   * Seconds left. (minValidity is optional, if not specified 5 is used)
    * @returns
    * Promise with a boolean indicating if the token was succesfully updated.
    */
-  public async updateToken(minValidity = 5) {
+  public async updateToken() {
     // TODO: this is a workaround until the silent refresh (issue #43)
     // is not implemented, avoiding the redirect loop.
     if (this._silentRefresh) {
@@ -390,7 +403,7 @@ export class KeycloakService {
       throw new Error('Keycloak Angular library is not initialized.');
     }
 
-    return this._instance.updateToken(minValidity);
+    return this._instance.updateToken(this._updateMinValidity);
   }
 
   /**
@@ -421,7 +434,6 @@ export class KeycloakService {
    * Returns the authenticated token, calling updateToken to get a refreshed one if necessary.
    */
   public async getToken() {
-    await this.updateToken(10);
     return this._instance.token;
   }
 
@@ -496,6 +508,17 @@ export class KeycloakService {
    */
   get enableBearerInterceptor(): boolean {
     return this._enableBearerInterceptor;
+  }
+
+  /**
+   * Returns the Http Headers that, if present on a request, should not trigger a potential update of the
+   * token.
+   *
+   * @returns
+   * Returns the list of token update excluded headers.
+   */
+  get tokenUpdateExcludedHeaders(): TokenUpdateExcludedHeader[] {
+    return this._tokenUpdateExcludedHeaders;
   }
 
   /**
