@@ -200,6 +200,26 @@ await keycloak.init({
 });
 ```
 
+In the case where your application frequently polls an authenticated endpoint, you will find that users will not be logged out automatically over time. If that functionality is not desirable, you can add an http header to the polling requests then configure excluded http headers in the keycloak initialization.
+
+In the example below, any http requests with the header `token-update: false` will not trigger the user's keycloak token to be updated.
+
+```ts
+await keycloak.init({
+  config: {
+    url: 'http://localhost:8080/auth',
+    realm: 'your-realm',
+    clientId: 'your-client-id',
+  },
+  tokenUpdateExcludedHeaders: [
+    {
+      header: 'token-update',
+      values: ['false']
+    }
+  ]
+});
+```
+
 ## Keycloak-js Events
 
 The callback events from [keycloak-js](https://www.keycloak.org/docs/latest/securing_apps/index.html#javascript-adapter-reference) are available through a RxJS subject which is defined by `keycloakEvents$`.
