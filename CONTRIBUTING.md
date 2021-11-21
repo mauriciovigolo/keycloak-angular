@@ -24,11 +24,13 @@ Missing an important feature? Please open an issue for discussion. If you want t
 - First of all, fork this repository at GitHub.
 
 - Clone the forked repository
+
 ```sh
 git clone https://github.com/YOUR-USERNAME/keycloak-angular.git
 ```
 
 - Install the dependencies
+
 ```sh
 npm install
 ```
@@ -46,6 +48,7 @@ For opening an issue, you can fill out this [issue form](https://github.com/maur
 ### Submitting a Pull Request (PR)
 
 Before submiting a Pull Request, please:
+
 - Search for open and closed related PRs.
 - Follow the coding rules.
 - Follow the commit message guidelines.
@@ -53,17 +56,18 @@ Before submiting a Pull Request, please:
 
 ## <a name="cru"></a> Coding rules
 
-This project uses the [Airbnb coding style](https://github.com/airbnb/javascript) with little 
-exceptions. The project tslint.json file extends tslint-config-airbnb. Check if you have the tslint 
+This project uses the [Airbnb coding style](https://github.com/airbnb/javascript) with little
+exceptions. The project tslint.json file extends tslint-config-airbnb. Check if you have the tslint
 extension in your editor.
 
 Details:
+
 - The code must also be documented following the [jsdoc guidelines](http://usejsdoc.org/).
 - Wrap all code at 100 characters.
 
 ## <a name="cmg"></a> Commit message guidelines
 
-This project follows the [Angular commit message guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit). 
+This project follows the [Angular commit message guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit).
 
 From the Angular documentation:
 
@@ -93,15 +97,15 @@ If the commit reverts a previous commit, it should begin with revert:, followed 
 
 Must be one of the following:
 
-* **build:** Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
-* **ci:** Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
-* **docs:** Documentation only changes
-* **feat:** A new feature
-* **fix:** A bug fix
-* **perf:** A code change that improves performance
-* **refactor:** A code change that neither fixes a bug nor adds a feature
-* **style:** Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
-* **test:** Adding missing tests or correcting existing tests
+- **build:** Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+- **ci:** Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
+- **docs:** Documentation only changes
+- **feat:** A new feature
+- **fix:** A bug fix
+- **perf:** A code change that improves performance
+- **refactor:** A code change that neither fixes a bug nor adds a feature
+- **style:** Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+- **test:** Adding missing tests or correcting existing tests
 
 ### Subject
 
@@ -122,6 +126,6 @@ Breaking Changes should start with the word BREAKING CHANGE: with a space or two
 
 ## <a name="fmg"></a> Final message
 
-Thanks for your interest in this project. Hope to see your contribution! 
+Thanks for your interest in this project. Hope to see your contribution!
 
-See you and happy coding! 
+See you and happy coding!

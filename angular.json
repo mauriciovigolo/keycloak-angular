@@ -19,7 +19,7 @@
             "production": {
               "project": "projects/keycloak-angular/ng-package.prod.json",
               "tsConfig": "projects/keycloak-angular/tsconfig.lib.prod.json"
-}
+            }
           }
         },
         "test": {
@@ -31,17 +31,19 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/keycloak-angular/tsconfig.lib.json",
-              "projects/keycloak-angular/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": [
+              "projects/keycloak-angular/**/*.ts",
+              "projects/keycloak-angular/**/*.html"
+            ]
           }
         }
       }
     }
   },
-  "defaultProject": "keycloak-angular"
+  "defaultProject": "keycloak-angular",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }
