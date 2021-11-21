@@ -3,10 +3,7 @@
   "dest": "../../dist/keycloak-angular",
   "deleteDestPath": true,
   "lib": {
-    "entryFile": "src/public_api.ts",
-    "umdModuleIds": {
-      "keycloak-js": "Keycloak"
-    }
+    "entryFile": "src/public_api.ts"
   },
   "allowedNonPeerDependencies": ["keycloak-js"]
 }

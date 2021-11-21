@@ -1,0 +1,59 @@
+name: CI
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+env:
+  NODE_VERSION: 16
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          check-latest: true
+          cache: npm
+
+      - name: Cache Node modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Cache setup
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ github.sha }}
+
+  run:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        command: [lint, test -- --no-watch --no-progress --browsers=ChromeHeadless, build]
+    steps:
+      - name: Restore setup
+        uses: actions/cache@v2
+        with:
+          path: ./*
+          key: ${{ github.sha }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Run ${{ matrix.command }}
+        run: npm run ${{ matrix.command }}

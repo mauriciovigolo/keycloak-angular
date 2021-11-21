@@ -1,6 +1,6 @@
 {
   "name": "keycloak-angular",
-  "version": "8.3.0",
+  "version": "8.5.0",
   "description": "Easy Keycloak setup for Angular applications",
   "repository": {
     "type": "git",
@@ -26,9 +26,9 @@
     "oidc"
   ],
   "peerDependencies": {
-    "@angular/common": "^10 || ^11 || ^12",
-    "@angular/core": "^10 || ^11 || ^12",
-    "@angular/router": "^10 || ^11 || ^12",
+    "@angular/common": "^11 || ^12 || ^13",
+    "@angular/core": "^11 || ^12 || ^13",
+    "@angular/router": "^11 || ^12 || ^13",
     "keycloak-js": "^10 || ^11 || ^12 || ^13 || ^14 || ^15"
   },
   "dependencies": {
