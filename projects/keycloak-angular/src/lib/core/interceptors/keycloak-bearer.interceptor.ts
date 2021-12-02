@@ -31,8 +31,7 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
   constructor(private keycloak: KeycloakService) {}
 
   /**
-   * Calls to update the keycloak token if the http request headers are not in
-   * the exclusion list.
+   * Calls to update the keycloak token if the request should update the token.
    *
    * @param req http request from @angular http module.
    * @returns
@@ -41,19 +40,15 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
   private async conditionallyUpdateToken(
     req: HttpRequest<any>
   ): Promise<boolean> {
-    const { tokenUpdateExcludedHeaders } = this.keycloak;
-    const excludeBasedOnHeaders = (tokenUpdateExcludedHeaders || [])
-      .some(({header, values}) =>
-        values.some(value => req.headers.get(header) === value)
-      );
-    if (excludeBasedOnHeaders) {
-      return true;
-    } else {
+    if (this.keycloak.shouldUpdateToken(req)) {
       return await this.keycloak.updateToken();
+    } else {
+      return true;
     }
   }
 
   /**
+   * @deprecated
    * Checks if the url is excluded from having the Bearer Authorization
    * header added.
    *
@@ -90,8 +85,7 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    const shallPass: boolean =
-      excludedUrls.findIndex(item => this.isUrlExcluded(req, item)) > -1;
+    const shallPass: boolean = !this.keycloak.shouldAddToken(req) || excludedUrls.findIndex(item => this.isUrlExcluded(req, item)) > -1;
     if (shallPass) {
       return next.handle(req);
     }

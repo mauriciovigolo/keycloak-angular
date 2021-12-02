@@ -7,7 +7,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpRequest } from '@angular/common/http';
 
 import { Subject, from } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -20,7 +20,6 @@ import {
   ExcludedUrl,
   ExcludedUrlRegex,
   KeycloakOptions,
-  TokenUpdateExcludedHeader
 } from '../interfaces/keycloak-options';
 import { KeycloakEvent, KeycloakEventType } from '../interfaces/keycloak-event';
 
@@ -64,6 +63,7 @@ export class KeycloakService {
    */
   private _authorizationHeaderName: string;
   /**
+   * @deprecated
    * The excluded urls patterns that must skip the KeycloakBearerInterceptor.
    */
   private _excludedUrls: ExcludedUrlRegex[];
@@ -74,13 +74,17 @@ export class KeycloakService {
     KeycloakEvent
   >();
   /**
-   * The list of Http Headers that will prevent a request from updating the token.
-   */
-  private _tokenUpdateExcludedHeaders: TokenUpdateExcludedHeader[];
-  /**
    * The amount of required time remaining before expiry of the token before the token will be refreshed.
    */
   private _updateMinValidity: number;
+  /**
+   * Returns true if the request should have the token added to the headers by the KeycloakBearerInterceptor.
+   */
+  shouldAddToken: (_: HttpRequest<any>) => Boolean;
+  /**
+   * Returns true if the request being made should potentially update the token.
+   */
+  shouldUpdateToken: (_: HttpRequest<any>) => Boolean;
 
   /**
    * Binds the keycloak-js events to the keycloakEvents Subject
@@ -169,8 +173,9 @@ export class KeycloakService {
     authorizationHeaderName = 'Authorization',
     bearerPrefix = 'Bearer',
     initOptions,
-    tokenUpdateExcludedHeaders = [],
-    updateMinValidity = 20
+    updateMinValidity = 20,
+    shouldAddToken = (_: HttpRequest<any>) => true,
+    shouldUpdateToken = (_: HttpRequest<any>) => true
   }: KeycloakOptions): void {
     this._enableBearerInterceptor = enableBearerInterceptor;
     this._loadUserProfileAtStartUp = loadUserProfileAtStartUp;
@@ -178,8 +183,9 @@ export class KeycloakService {
     this._bearerPrefix = bearerPrefix.trim().concat(' ');
     this._excludedUrls = this.loadExcludedUrls(bearerExcludedUrls);
     this._silentRefresh = initOptions ? initOptions.flow === 'implicit' : false;
-    this._tokenUpdateExcludedHeaders = tokenUpdateExcludedHeaders;
     this._updateMinValidity = updateMinValidity;
+    this.shouldAddToken = shouldAddToken;
+    this.shouldUpdateToken = shouldUpdateToken;
   }
 
   /**
@@ -490,6 +496,7 @@ export class KeycloakService {
   }
 
   /**
+   * @deprecated
    * Returns the excluded URLs that should not be considered by
    * the http interceptor which automatically adds the authorization header in the Http Request.
    *
@@ -508,17 +515,6 @@ export class KeycloakService {
    */
   get enableBearerInterceptor(): boolean {
     return this._enableBearerInterceptor;
-  }
-
-  /**
-   * Returns the Http Headers that, if present on a request, should not trigger a potential update of the
-   * token.
-   *
-   * @returns
-   * Returns the list of token update excluded headers.
-   */
-  get tokenUpdateExcludedHeaders(): TokenUpdateExcludedHeader[] {
-    return this._tokenUpdateExcludedHeaders;
   }
 
   /**

@@ -6,6 +6,8 @@
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/LICENSE
  */
 
+import { HttpRequest } from '@angular/common/http';
+
 /**
  * HTTP Methods
  */
@@ -51,11 +53,6 @@ export interface ExcludedUrlRegex {
   httpMethods?: HttpMethods[];
 }
 
-export interface TokenUpdateExcludedHeader {
-  header: string;
-  values: string[];
-}
-
 /**
  * keycloak-angular initialization options.
  */
@@ -94,6 +91,7 @@ export interface KeycloakOptions {
    */
   loadUserProfileAtStartUp?: boolean;
   /**
+   * @deprecated
    * String Array to exclude the urls that should not have the Authorization Header automatically
    * added. This library makes use of Angular Http Interceptor, to automatically add the Bearer
    * token to the request.
@@ -117,20 +115,28 @@ export interface KeycloakOptions {
    */
   bearerPrefix?: string;
   /**
-   * This value is a list of Http Header key and value combinations that will be used to exclude an http
-   * request from updating the user's token. This allows for more fine-tuned control over the users'
-   * authenticated time.
-   *
-   * When attempting to set up an idle timeout, do note that Keycloak has a built-in 2 minute window where
-   * the token is kept unexpired after its configured timeout has been reached.
-   * https://www.keycloak.org/docs/latest/server_admin/
-   */
-  tokenUpdateExcludedHeaders?: TokenUpdateExcludedHeader[];
-  /**
    * This value will be used to determine whether or not the token needs to be updated. If the token
    * will expire is fewer seconds than the updateMinValidity value, then it will be updated.
    *
    * The default value is 20.
    */
   updateMinValidity?: number;
+  /**
+   * A function that will tell the KeycloakBearerInterceptor whether to add the token to the request
+   * or to leave the request as it is. If the returned value is `true`, the request will have the token
+   * present on it. If it is `false`, the token will be left off the request.
+   *
+   * The default is a function that always returns `true`.
+   */
+  shouldAddToken?: (_: HttpRequest<any>) => Boolean;
+  /**
+   * A function that will tell the KeycloakBearerInterceptor if the token should be considered for
+   * updating as a part of the request being made. If the returned value is `true`, the request will
+   * check the token's expiry time and if it is less than the number of seconds configured by
+   * updateMinValidity then it will be updated before the request is made. If the returned value is
+   * false, the token will not be updated.
+   *
+   * The default is a function that always returns `true`.
+   */
+  shouldUpdateToken?: (_: HttpRequest<any>) => Boolean;
 }
