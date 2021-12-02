@@ -185,9 +185,9 @@ export class AuthGuard extends KeycloakAuthGuard {
 
 ## HttpClient Interceptor
 
-By default all HttpClient requests will add the Authorization header in the format of: Authorization: Bearer **_TOKEN_**.
+By default, all HttpClient requests will add the Authorization header in the format of: `Authorization: Bearer **_TOKEN_**`.
 
-There is also the possibility to exclude a list of URLs that should not have the authorization header. The excluded list must be provided in the keycloak initialization. For example:
+There is also the possibility to exclude requests that should not have the authorization header. This is accomplished by implementing the `shouldAddToken` method in the keycloak initialization. For example, the configuration below will not add the token to `GET` requests that match the paths `/assets` or `/clients/public`:
 
 ```ts
 await keycloak.init({
@@ -196,11 +196,20 @@ await keycloak.init({
     realm: 'your-realm',
     clientId: 'your-client-id',
   },
-  bearerExcludedUrls: ['/assets', '/clients/public'],
+  shouldAddToken: (req: HttpRequest<any>): Boolean => {
+    const { method, url } = req;
+    
+    const methodMatch = 'GET' === method.toUpperCase();
+    
+    const urls = ['/assets', '/clients/public'];
+    const urlMatch = urls.some(pattern => urlPattern.test(url));
+
+    return !(methodMatch && urlMatch);    
+  }
 });
 ```
 
-In the case where your application frequently polls an authenticated endpoint, you will find that users will not be logged out automatically over time. If that functionality is not desirable, you can add an http header to the polling requests then configure excluded http headers in the keycloak initialization.
+In the case where your application frequently polls an authenticated endpoint, you will find that users will not be logged out automatically over time. If that functionality is not desirable, you can add an http header to the polling requests then configure the `shouldUpdateToken` option in the keycloak initialization.
 
 In the example below, any http requests with the header `token-update: false` will not trigger the user's keycloak token to be updated.
 
@@ -211,12 +220,9 @@ await keycloak.init({
     realm: 'your-realm',
     clientId: 'your-client-id',
   },
-  tokenUpdateExcludedHeaders: [
-    {
-      header: 'token-update',
-      values: ['false']
-    }
-  ]
+  shouldUpdateToken: (req: HttpRequest<any>): Boolean => {
+    return !req.headers.get('token-update') === 'false';
+  }
 });
 ```
 
