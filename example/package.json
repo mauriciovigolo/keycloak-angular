@@ -18,7 +18,7 @@
     "@angular/platform-browser": "~13.1.0",
     "@angular/platform-browser-dynamic": "~13.1.0",
     "@angular/router": "~13.1.0",
-    "keycloak-angular": "^8.4.0",
+    "keycloak-angular": "^9.0.0",
     "keycloak-js": "^15.1.0",
     "rxjs": "^7.4.0",
     "tslib": "^2.2.0",
