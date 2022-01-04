@@ -53,7 +53,7 @@ Note that `keycloak-js` is a peer dependency of Keycloak Angular. This change al
 
 |   Angular   | keycloak-angular | keycloak-js |       Support       |
 | :---------: | :--------------: | :---------: | :-----------------: |
-| 11.x - 13.x |      9.x.x       |   10 - 15   | Bugs / New Features |
+| 11.x - 13.x |      9.x.x       |   10 - 16   | Bugs / New Features |
 |    10.x     |      8.x.x       |   10 - 11   |        Bugs         |
 
 We try to support the same Angular versions that are [supported](https://angular.io/guide/releases#support-policy-and-schedule) by the Angular team. That said, it's always best to keep up to date with the latest version of Angular for optimal support.
