@@ -41,7 +41,11 @@ export enum KeycloakEventType {
    * can be refreshed with updateToken, or in cases where it is not (that is, with implicit flow)
    * you can redirect to login screen to obtain a new access token.
    */
-  OnTokenExpired
+  OnTokenExpired,
+  /**
+  * Called when a AIA has been requested by the application.
+  */
+  OnActionUpdate
 }
 
 /**
