@@ -115,7 +115,7 @@ export class KeycloakService {
         args: state,
         type: KeycloakEventType.OnActionUpdate
       });
-    }
+    };
 
     this._instance.onReady = (authenticated) => {
       this._keycloakEvents$.next({

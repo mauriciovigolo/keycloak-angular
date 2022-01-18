@@ -43,8 +43,8 @@ export enum KeycloakEventType {
    */
   OnTokenExpired,
   /**
-  * Called when a AIA has been requested by the application.
-  */
+   * Called when a AIA has been requested by the application.
+   */
   OnActionUpdate
 }
 
