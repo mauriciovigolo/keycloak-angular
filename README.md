@@ -53,9 +53,10 @@ Note that `keycloak-js` is a peer dependency of Keycloak Angular. This change al
 
 |   Angular   | keycloak-angular | keycloak-js |       Support       |
 | :---------: | :--------------: | :---------: | :-----------------: |
-| 11.x - 13.x |      9.x.x       |   10 - 16   | Bugs / New Features |
+|    13.x     |      9.x.x       |   10 - 16   | Bugs / New Features |
+| 11.x - 12.x |      8.4.0       |   10 - 15   |        None         |
 
-We try to support the same Angular versions that are [supported](https://angular.io/guide/releases#support-policy-and-schedule) by the Angular team. That said, it's always best to keep up to date with the latest version of Angular for optimal support.
+Only the latest version of Angular in the table above is actively supported. This is due to the fact that compilation of Angular libraries is [incompatible between major versions](https://angular.io/guide/creating-libraries#ensuring-library-version-compatibility).
 
 _Note_: In keycloak-angular **v.9**, it is needed to add `allowSyntheticDefaultImports: true` in the tsconfig.json file in your project. There is an [issue in the keycloak project](https://github.com/keycloak/keycloak/issues/9045) to update the typescript definitions file and solve the problem.
 
