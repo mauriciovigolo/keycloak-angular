@@ -212,7 +212,11 @@ export class KeycloakService {
     this.initServiceValues(options);
     const { config, initOptions } = options;
 
-    this._instance = Keycloak(config);
+    let initFonction = Keycloak;
+    if (typeof Keycloak == 'object') {
+      initFonction = Keycloak['default'];
+    }
+    this._instance = initFonction(config);
     this.bindsKeycloakEvents();
 
     const authenticated = await this._instance.init(initOptions);
