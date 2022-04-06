@@ -51,8 +51,8 @@ export abstract class KeycloakAuthGuard implements CanActivate {
     try {
       this.authenticated = await this.keycloakAngular.isLoggedIn();
       this.roles = await this.keycloakAngular.getUserRoles(true);
-      const result = await this.isAccessAllowed(route, state);
-      return result;
+
+      return await this.isAccessAllowed(route, state);
     } catch (error) {
       throw new Error(
         'An error happened during access validation. Details:' + error
