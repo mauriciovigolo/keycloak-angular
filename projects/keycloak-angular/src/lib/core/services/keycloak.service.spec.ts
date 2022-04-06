@@ -67,7 +67,7 @@ describe('KeycloakService', () => {
     it('should return the token getToken is called', inject(
       [KeycloakService],
       async (service: KeycloakService) => {
-        service.updateToken = async () => Promise.resolve(true);
+        service.updateToken = () => Promise.resolve(true);
         (service['_instance'] as any) = {
           token: 'testToken'
         };
