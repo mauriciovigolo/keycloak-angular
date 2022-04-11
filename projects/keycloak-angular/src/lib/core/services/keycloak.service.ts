@@ -11,15 +11,12 @@ import { HttpHeaders, HttpRequest } from '@angular/common/http';
 
 import { Subject, from } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-// Workaround for rollup library behaviour, as pointed out on issue #1267 (https://github.com/rollup/rollup/issues/1267).
-import * as Keycloak_ from 'keycloak-js';
-export const Keycloak = Keycloak_;
+import Keycloak from 'keycloak-js';
 
 import {
   ExcludedUrl,
   ExcludedUrlRegex,
-  KeycloakOptions,
+  KeycloakOptions
 } from '../interfaces/keycloak-options';
 import { KeycloakEvent, KeycloakEventType } from '../interfaces/keycloak-event';
 
@@ -70,9 +67,8 @@ export class KeycloakService {
   /**
    * Observer for the keycloak events
    */
-  private _keycloakEvents$: Subject<KeycloakEvent> = new Subject<
-    KeycloakEvent
-  >();
+  private _keycloakEvents$: Subject<KeycloakEvent> =
+    new Subject<KeycloakEvent>();
   /**
    * The amount of required time remaining before expiry of the token before the token will be refreshed.
    */
@@ -97,7 +93,7 @@ export class KeycloakService {
     this._instance.onAuthError = (errorData) => {
       this._keycloakEvents$.next({
         args: errorData,
-        type: KeycloakEventType.OnAuthError,
+        type: KeycloakEventType.OnAuthError
       });
     };
 
@@ -107,13 +103,13 @@ export class KeycloakService {
 
     this._instance.onAuthRefreshSuccess = () => {
       this._keycloakEvents$.next({
-        type: KeycloakEventType.OnAuthRefreshSuccess,
+        type: KeycloakEventType.OnAuthRefreshSuccess
       });
     };
 
     this._instance.onAuthRefreshError = () => {
       this._keycloakEvents$.next({
-        type: KeycloakEventType.OnAuthRefreshError,
+        type: KeycloakEventType.OnAuthRefreshError
       });
     };
 
@@ -123,14 +119,21 @@ export class KeycloakService {
 
     this._instance.onTokenExpired = () => {
       this._keycloakEvents$.next({
-        type: KeycloakEventType.OnTokenExpired,
+        type: KeycloakEventType.OnTokenExpired
+      });
+    };
+
+    this._instance.onActionUpdate = (state) => {
+      this._keycloakEvents$.next({
+        args: state,
+        type: KeycloakEventType.OnActionUpdate
       });
     };
 
     this._instance.onReady = (authenticated) => {
       this._keycloakEvents$.next({
         args: authenticated,
-        type: KeycloakEventType.OnReady,
+        type: KeycloakEventType.OnReady
       });
     };
   }
@@ -153,7 +156,7 @@ export class KeycloakService {
       } else {
         excludedUrl = {
           urlPattern: new RegExp(item.url, 'i'),
-          httpMethods: item.httpMethods,
+          httpMethods: item.httpMethods
         };
       }
       excludedUrls.push(excludedUrl);
@@ -285,7 +288,7 @@ export class KeycloakService {
    */
   public async logout(redirectUri?: string) {
     const options = {
-      redirectUri,
+      redirectUri
     };
 
     await this._instance.logout(options);
@@ -433,7 +436,7 @@ export class KeycloakService {
       );
     }
 
-    return this._userProfile = await this._instance.loadUserProfile();
+    return (this._userProfile = await this._instance.loadUserProfile());
   }
 
   /**
@@ -479,7 +482,12 @@ export class KeycloakService {
   public addTokenToHeader(headers: HttpHeaders = new HttpHeaders()) {
     return from(this.getToken()).pipe(
       map((token) =>
-        token ? headers.set(this._authorizationHeaderName, this._bearerPrefix + token) : headers
+        token
+          ? headers.set(
+              this._authorizationHeaderName,
+              this._bearerPrefix + token
+            )
+          : headers
       )
     );
   }

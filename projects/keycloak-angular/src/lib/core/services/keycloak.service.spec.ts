@@ -39,8 +39,9 @@ describe('KeycloakService', () => {
       }
     ));
 
-    it('should create the ExcludedUrlRegex objects if the bearerExcludedUrls arg is an mixed array of strings and ExcludedUrl objects',
-      inject([KeycloakService], (service: KeycloakService) => {
+    it('should create the ExcludedUrlRegex objects if the bearerExcludedUrls arg is an mixed array of strings and ExcludedUrl objects', inject(
+      [KeycloakService],
+      (service: KeycloakService) => {
         const loadExcludedUrls = service['loadExcludedUrls'];
         const result = loadExcludedUrls([
           'home',
@@ -66,7 +67,7 @@ describe('KeycloakService', () => {
     it('should return the token getToken is called', inject(
       [KeycloakService],
       async (service: KeycloakService) => {
-        service.updateToken = async () => Promise.resolve(true);
+        service.updateToken = () => Promise.resolve(true);
         (service['_instance'] as any) = {
           token: 'testToken'
         };

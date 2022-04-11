@@ -51,13 +51,14 @@ Note that `keycloak-js` is a peer dependency of Keycloak Angular. This change al
 
 ### Versions
 
-| Angular     | keycloak-angular | keycloak-js               | Support             |
-| :---------: | :--------------: | :-----------------------: | :-----------------: |
-| 11.x - 12.x | 8.4.x            | 10 - 15                   | Bugs / New Features |
-| 10.x        | 8.x.x            | 10 - 11                   | Bugs                |
-|  9.x        | 7.3.x            | 3.4.3 - 10 (excluding v7) | Bugs                |
+|   Angular   | keycloak-angular | keycloak-js |       Support       |
+| :---------: | :--------------: | :---------: | :-----------------: |
+|    13.x     |      9.x.x       |   10 - 16   | Bugs / New Features |
+| 11.x - 12.x |      8.4.0       |   10 - 15   |        None         |
 
-We try to support the same Angular versions that are [supported](https://angular.io/guide/releases#support-policy-and-schedule) by the Angular team. That said, it's always best to keep up to date with the latest version of Angular for optimal support.
+Only the latest version of Angular in the table above is actively supported. This is due to the fact that compilation of Angular libraries is [incompatible between major versions](https://angular.io/guide/creating-libraries#ensuring-library-version-compatibility).
+
+_Note_: In keycloak-angular **v.9**, it is needed to add `allowSyntheticDefaultImports: true` in the tsconfig.json file in your project. There is an [issue in the keycloak project](https://github.com/keycloak/keycloak/issues/9045) to update the typescript definitions file and solve the problem.
 
 #### Choosing the right keycloak-js version
 
@@ -84,13 +85,13 @@ function initializeKeycloak(keycloak: KeycloakService) {
       config: {
         url: 'http://localhost:8080/auth',
         realm: 'your-realm',
-        clientId: 'your-client-id',
+        clientId: 'your-client-id'
       },
       initOptions: {
         onLoad: 'check-sso',
         silentCheckSsoRedirectUri:
-          window.location.origin + '/assets/silent-check-sso.html',
-      },
+          window.location.origin + '/assets/silent-check-sso.html'
+      }
     });
 }
 
@@ -102,10 +103,10 @@ function initializeKeycloak(keycloak: KeycloakService) {
       provide: APP_INITIALIZER,
       useFactory: initializeKeycloak,
       multi: true,
-      deps: [KeycloakService],
-    },
+      deps: [KeycloakService]
+    }
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
 ```
@@ -143,12 +144,12 @@ import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   Router,
-  RouterStateSnapshot,
+  RouterStateSnapshot
 } from '@angular/router';
 import { KeycloakAuthGuard, KeycloakService } from 'keycloak-angular';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthGuard extends KeycloakAuthGuard {
   constructor(
@@ -165,7 +166,7 @@ export class AuthGuard extends KeycloakAuthGuard {
     // Force the user to log in if currently unauthenticated.
     if (!this.authenticated) {
       await this.keycloak.login({
-        redirectUri: window.location.origin + state.url,
+        redirectUri: window.location.origin + state.url
       });
     }
 
@@ -218,8 +219,9 @@ await keycloak.init({
   config: {
     url: 'http://localhost:8080/auth',
     realm: 'your-realm',
-    clientId: 'your-client-id',
+    clientId: 'your-client-id'
   },
+  bearerExcludedUrls: ['/assets', '/clients/public'],
   shouldUpdateToken: (req: HttpRequest<any>): Boolean => {
     return !req.headers.get('token-update') === 'false';
   }
@@ -234,7 +236,7 @@ For example you make keycloak-angular auto refreshing your access token when exp
 
 ```ts
 keycloakService.keycloakEvents$.subscribe({
-  next: e => {
+  next: (e) => {
     if (e.type == KeycloakEventType.OnTokenExpired) {
       keycloakService.updateToken(20);
     }

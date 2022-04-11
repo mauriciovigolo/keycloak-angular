@@ -111,7 +111,7 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<any> {
     return this.keycloak.addTokenToHeader(req.headers).pipe(
-      mergeMap(headersWithBearer => {
+      mergeMap((headersWithBearer) => {
         const kcReq = req.clone({ headers: headersWithBearer });
         return next.handle(kcReq);
       })
