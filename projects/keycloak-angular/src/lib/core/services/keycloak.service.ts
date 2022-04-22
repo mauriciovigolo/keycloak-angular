@@ -213,7 +213,7 @@ export class KeycloakService {
     const { config, initOptions } = options;
 
     let initFunction = Keycloak;
-    if (typeof Keycloak == 'object') {
+    if (typeof Keycloak === 'object') {
       initFunction = Keycloak['default'];
     }
     this._instance = initFunction(config);
