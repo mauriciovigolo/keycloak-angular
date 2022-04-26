@@ -4,7 +4,7 @@
 [![License: MIT][license-mit-badge]][license-mit]
 [![Build Status][build-badge]][build]
 [![Known Vulnerabilities][vulnerabilities-badge]][vulnerabilities]
-[![npm version][npm-version-badge]][npm-version]
+[![npm version][npm-version-badge]][npm]
 [![npm][npm-badge]][npm]
 [![All Contributors][contributors-badge]](#contributors)
 [![Discord][discord-badge]][discord]
@@ -235,17 +235,16 @@ document.
 **keycloak-angular** is licensed under the **[MIT license](LICENSE)**.
 
 <!-- prettier-ignore-start -->
-[license-mit-badge]: https://img.shields.io/badge/License-MIT-yellow.svg
+[license-mit-badge]: https://img.shields.io/badge/License-MIT-yellow
 [license-mit]: https://opensource.org/licenses/MIT
-[build-badge]: https://travis-ci.org/mauriciovigolo/keycloak-angular.svg?branch=master
-[build]: https://travis-ci.org/mauriciovigolo/keycloak-angular
-[vulnerabilities-badge]: https://snyk.io/test/github/mauriciovigolo/keycloak-angular/badge.svg
+[build-badge]: https://img.shields.io/github/workflow/status/mauriciovigolo/keycloak-angular/CI?label=CI&logo=github
+[build]: https://github.com/mauriciovigolo/keycloak-angular/actions/workflows/main.yml
+[vulnerabilities-badge]: https://img.shields.io/snyk/vulnerabilities/github/mauriciovigolo/keycloak-angular?logo=snyk
 [vulnerabilities]: https://snyk.io/test/github/mauriciovigolo/keycloak-angular
-[npm-version-badge]: https://badge.fury.io/js/keycloak-angular.svg
-[npm-version]: https://badge.fury.io/js/keycloak-angular
-[npm-badge]: https://img.shields.io/npm/dm/keycloak-angular.svg
+[npm-version-badge]: https://img.shields.io/npm/v/keycloak-angular
+[npm-badge]: https://img.shields.io/npm/dm/keycloak-angular
 [npm]: https://www.npmjs.com/package/keycloak-angular
-[contributors-badge]: https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square
-[discord-badge]: https://img.shields.io/discord/790617227853692958.svg?color=7389D8&labelColor=6A7EC2&logo=discord&logoColor=ffffff&style=flat-square
+[contributors-badge]: https://img.shields.io/badge/all_contributors-5-orange
+[discord-badge]: https://img.shields.io/discord/790617227853692958?color=7389d8&labelColor=6a7ec2&logo=discord&logoColor=fff
 [discord]: https://discord.gg/mmzEhYXXDG
 <!-- prettier-ignore-end -->
