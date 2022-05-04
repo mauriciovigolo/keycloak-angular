@@ -76,11 +76,11 @@ export class KeycloakService {
   /**
    * Returns true if the request should have the token added to the headers by the KeycloakBearerInterceptor.
    */
-  shouldAddToken: (_: HttpRequest<any>) => Boolean;
+  shouldAddToken: (_: HttpRequest<any>) => boolean;
   /**
    * Returns true if the request being made should potentially update the token.
    */
-  shouldUpdateToken: (_: HttpRequest<any>) => Boolean;
+  shouldUpdateToken: (_: HttpRequest<any>) => boolean;
 
   /**
    * Binds the keycloak-js events to the keycloakEvents Subject
