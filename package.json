@@ -62,7 +62,7 @@
     "karma-coverage-istanbul-reporter": "~3.0.3",
     "karma-jasmine": "~4.0.2",
     "karma-jasmine-html-reporter": "^1.7.0",
-    "keycloak-js": "^17.0.1",
+    "keycloak-js": "^18.0.0",
     "ng-packagr": "^13.3.0",
     "prettier": "^2.6.2",
     "protractor": "~7.0.0",
