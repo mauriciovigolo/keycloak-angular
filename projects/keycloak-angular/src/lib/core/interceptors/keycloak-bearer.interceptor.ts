@@ -85,7 +85,9 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    const shallPass: boolean = !this.keycloak.shouldAddToken(req) || excludedUrls.findIndex(item => this.isUrlExcluded(req, item)) > -1;
+    const shallPass: boolean =
+      !this.keycloak.shouldAddToken(req) ||
+      excludedUrls.findIndex((item) => this.isUrlExcluded(req, item)) > -1;
     if (shallPass) {
       return next.handle(req);
     }
@@ -94,9 +96,11 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
       this.conditionallyUpdateToken(req),
       this.keycloak.isLoggedIn()
     ]).pipe(
-      mergeMap(([_, loggedIn]: [boolean, boolean]) => loggedIn
-        ? this.handleRequestWithTokenHeader(req, next)
-        : next.handle(req))
+      mergeMap(([_, loggedIn]: [boolean, boolean]) =>
+        loggedIn
+          ? this.handleRequestWithTokenHeader(req, next)
+          : next.handle(req)
+      )
     );
   }
 

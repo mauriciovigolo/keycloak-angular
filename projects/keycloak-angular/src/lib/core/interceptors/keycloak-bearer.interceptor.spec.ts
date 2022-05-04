@@ -14,7 +14,6 @@ import { of } from 'rxjs';
 import { HttpHandler, HttpHeaders, HttpRequest } from '@angular/common/http';
 
 describe('KeycloakBearerInterceptor', () => {
-
   let keycloak: any;
 
   beforeEach(() => {
@@ -53,18 +52,24 @@ describe('KeycloakBearerInterceptor', () => {
           'header-a': 'value'
         })
       });
-      spyOn(keycloak, 'addTokenToHeader').and.returnValue(of(new HttpHeaders({
-        'header-a': 'value',
-        'Authorization': 'Bearer token'
-      })));
+      spyOn(keycloak, 'addTokenToHeader').and.returnValue(
+        of(
+          new HttpHeaders({
+            'header-a': 'value',
+            Authorization: 'Bearer token'
+          })
+        )
+      );
 
       let newRequest: HttpRequest<any> = null;
-      await service.intercept(request, {
-        handle: (req: HttpRequest<any>) => {
-          newRequest = req;
-          return of(null);
-        }
-      } as HttpHandler).toPromise();
+      await service
+        .intercept(request, {
+          handle: (req: HttpRequest<any>) => {
+            newRequest = req;
+            return of(null);
+          }
+        } as HttpHandler)
+        .toPromise();
 
       expect(keycloak['addTokenToHeader']).toHaveBeenCalled();
       expect(keycloak['updateToken']).toHaveBeenCalled();
@@ -83,38 +88,47 @@ describe('KeycloakBearerInterceptor', () => {
       spyOn(keycloak, 'addTokenToHeader');
 
       let newRequest: HttpRequest<any> = null;
-      await service.intercept(request, {
-        handle: (req: HttpRequest<any>) => {
-          newRequest = req;
-          return of(null);
-        }
-      } as HttpHandler).toPromise();
+      await service
+        .intercept(request, {
+          handle: (req: HttpRequest<any>) => {
+            newRequest = req;
+            return of(null);
+          }
+        } as HttpHandler)
+        .toPromise();
 
       expect(keycloak['addTokenToHeader']).not.toHaveBeenCalled();
       expect(keycloak['updateToken']).not.toHaveBeenCalled();
     }
   ));
 
-  it('should not call to update the keycloak token if the request has a header value that matches any value for any header in the exclusion list',
-    inject([KeycloakBearerInterceptor], async (service: KeycloakBearerInterceptor) => {
+  it('should not call to update the keycloak token if the request has a header value that matches any value for any header in the exclusion list', inject(
+    [KeycloakBearerInterceptor],
+    async (service: KeycloakBearerInterceptor) => {
       const request = new HttpRequest<any>('GET', 'test', {
         headers: new HttpHeaders({
           'header-b': 'value2'
         })
       });
       spyOn(keycloak, 'shouldUpdateToken').and.returnValue(false);
-      spyOn(keycloak, 'addTokenToHeader').and.returnValue(of(new HttpHeaders({
-        'header-b': 'value2',
-        'Authorization': 'Bearer token'
-      })));
+      spyOn(keycloak, 'addTokenToHeader').and.returnValue(
+        of(
+          new HttpHeaders({
+            'header-b': 'value2',
+            Authorization: 'Bearer token'
+          })
+        )
+      );
 
       let newRequest: HttpRequest<any> = null;
-      await service.intercept(request, {
-        handle: (req: HttpRequest<any>) => {
-          newRequest = req;
-          return of(null);
-        }
-      } as HttpHandler).toPromise();
+      await service
+        .intercept(request, {
+          handle: (req: HttpRequest<any>) => {
+            newRequest = req;
+            return of(null);
+          }
+        } as HttpHandler)
+        .toPromise();
 
       expect(keycloak['addTokenToHeader']).toHaveBeenCalled();
       expect(keycloak['updateToken']).not.toHaveBeenCalled();
