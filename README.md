@@ -191,6 +191,10 @@ By default, all HttpClient requests will add the Authorization header in the for
 There is also the possibility to exclude requests that should not have the authorization header. This is accomplished by implementing the `shouldAddToken` method in the keycloak initialization. For example, the configuration below will not add the token to `GET` requests that match the paths `/assets` or `/clients/public`:
 
 ```ts
+import { HttpRequest } from '@angular/common/http';
+
+...
+
 await keycloak.init({
   config: {
     url: 'http://localhost:8080/auth',
@@ -199,13 +203,12 @@ await keycloak.init({
   },
   shouldAddToken: (req: HttpRequest<any>): Boolean => {
     const { method, url } = req;
-    
-    const methodMatch = 'GET' === method.toUpperCase();
-    
-    const urls = ['/assets', '/clients/public'];
-    const urlMatch = urls.some(pattern => urlPattern.test(url));
 
-    return !(methodMatch && urlMatch);    
+    const isGetRequest = 'GET' === method.toUpperCase();
+    const acceptablePaths = ['/assets', '/clients/public'];
+    const isAcceptablePathMatch = urls.some(path => url.includes(path));
+
+    return !(isGetRequest && isAcceptablePathMatch);
   }
 });
 ```
