@@ -14,7 +14,7 @@ import {
   HttpEvent
 } from '@angular/common/http';
 
-import { Observable, from } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { KeycloakService } from '../services/keycloak.service';
@@ -31,6 +31,24 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
   constructor(private keycloak: KeycloakService) {}
 
   /**
+   * Calls to update the keycloak token if the request should update the token.
+   *
+   * @param req http request from @angular http module.
+   * @returns
+   * A promise boolean for the token update or noop result.
+   */
+  private async conditionallyUpdateToken(
+    req: HttpRequest<any>
+  ): Promise<boolean> {
+    if (this.keycloak.shouldUpdateToken(req)) {
+      return await this.keycloak.updateToken();
+    } else {
+      return true;
+    }
+  }
+
+  /**
+   * @deprecated
    * Checks if the url is excluded from having the Bearer Authorization
    * header added.
    *
@@ -68,13 +86,17 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
     }
 
     const shallPass: boolean =
+      !this.keycloak.shouldAddToken(req) ||
       excludedUrls.findIndex((item) => this.isUrlExcluded(req, item)) > -1;
     if (shallPass) {
       return next.handle(req);
     }
 
-    return from(this.keycloak.isLoggedIn()).pipe(
-      mergeMap((loggedIn: boolean) =>
+    return combineLatest([
+      this.conditionallyUpdateToken(req),
+      this.keycloak.isLoggedIn()
+    ]).pipe(
+      mergeMap(([_, loggedIn]: [boolean, boolean]) =>
         loggedIn
           ? this.handleRequestWithTokenHeader(req, next)
           : next.handle(req)

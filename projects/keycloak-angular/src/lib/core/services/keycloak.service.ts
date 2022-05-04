@@ -7,7 +7,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpRequest } from '@angular/common/http';
 
 import { Subject, from } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -60,6 +60,7 @@ export class KeycloakService {
    */
   private _authorizationHeaderName: string;
   /**
+   * @deprecated
    * The excluded urls patterns that must skip the KeycloakBearerInterceptor.
    */
   private _excludedUrls: ExcludedUrlRegex[];
@@ -68,6 +69,18 @@ export class KeycloakService {
    */
   private _keycloakEvents$: Subject<KeycloakEvent> =
     new Subject<KeycloakEvent>();
+  /**
+   * The amount of required time remaining before expiry of the token before the token will be refreshed.
+   */
+  private _updateMinValidity: number;
+  /**
+   * Returns true if the request should have the token added to the headers by the KeycloakBearerInterceptor.
+   */
+  shouldAddToken: (_: HttpRequest<any>) => boolean;
+  /**
+   * Returns true if the request being made should potentially update the token.
+   */
+  shouldUpdateToken: (_: HttpRequest<any>) => boolean;
 
   /**
    * Binds the keycloak-js events to the keycloakEvents Subject
@@ -162,7 +175,10 @@ export class KeycloakService {
     bearerExcludedUrls = [],
     authorizationHeaderName = 'Authorization',
     bearerPrefix = 'Bearer',
-    initOptions
+    initOptions,
+    updateMinValidity = 20,
+    shouldAddToken = (_: HttpRequest<any>) => true,
+    shouldUpdateToken = (_: HttpRequest<any>) => true
   }: KeycloakOptions): void {
     this._enableBearerInterceptor = enableBearerInterceptor;
     this._loadUserProfileAtStartUp = loadUserProfileAtStartUp;
@@ -170,6 +186,9 @@ export class KeycloakService {
     this._bearerPrefix = bearerPrefix.trim().concat(' ');
     this._excludedUrls = this.loadExcludedUrls(bearerExcludedUrls);
     this._silentRefresh = initOptions ? initOptions.flow === 'implicit' : false;
+    this._updateMinValidity = updateMinValidity;
+    this.shouldAddToken = shouldAddToken;
+    this.shouldUpdateToken = shouldUpdateToken;
   }
 
   /**
@@ -204,6 +223,12 @@ export class KeycloakService {
    *
    * bearerPrefix:
    * This value will be included in the Authorization Http Header param.
+   *
+   * tokenUpdateExcludedHeaders:
+   * Array of Http Header key/value maps that should not trigger the token to be updated.
+   *
+   * updateMinValidity:
+   * This value determines if the token will be refreshed based on its expiration time.
    *
    * @returns
    * A Promise with a boolean indicating if the initialization was successful.
@@ -342,11 +367,7 @@ export class KeycloakService {
    */
   async isLoggedIn(): Promise<boolean> {
     try {
-      if (!this._instance.authenticated) {
-        return false;
-      }
-      await this.updateToken(20);
-      return true;
+      return this._instance.authenticated;
     } catch (error) {
       return false;
     }
@@ -366,17 +387,15 @@ export class KeycloakService {
   }
 
   /**
-   * If the token expires within minValidity seconds the token is refreshed. If the
+   * If the token expires within _updateMinValidity seconds the token is refreshed. If the
    * session status iframe is enabled, the session status is also checked.
    * Returns a promise telling if the token was refreshed or not. If the session is not active
    * anymore, the promise is rejected.
    *
-   * @param minValidity
-   * Seconds left. (minValidity is optional, if not specified 5 is used)
    * @returns
    * Promise with a boolean indicating if the token was succesfully updated.
    */
-  public async updateToken(minValidity = 5) {
+  public async updateToken() {
     // TODO: this is a workaround until the silent refresh (issue #43)
     // is not implemented, avoiding the redirect loop.
     if (this._silentRefresh) {
@@ -393,7 +412,7 @@ export class KeycloakService {
       throw new Error('Keycloak Angular library is not initialized.');
     }
 
-    return this._instance.updateToken(minValidity);
+    return this._instance.updateToken(this._updateMinValidity);
   }
 
   /**
@@ -424,7 +443,6 @@ export class KeycloakService {
    * Returns the authenticated token, calling updateToken to get a refreshed one if necessary.
    */
   public async getToken() {
-    await this.updateToken(10);
     return this._instance.token;
   }
 
@@ -486,6 +504,7 @@ export class KeycloakService {
   }
 
   /**
+   * @deprecated
    * Returns the excluded URLs that should not be considered by
    * the http interceptor which automatically adds the authorization header in the Http Request.
    *
