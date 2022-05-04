@@ -201,7 +201,7 @@ await keycloak.init({
     realm: 'your-realm',
     clientId: 'your-client-id',
   },
-  shouldAddToken: (req: HttpRequest<any>): Boolean => {
+  shouldAddToken: (req: HttpRequest<unknown>): Boolean => {
     const { method, url } = req;
 
     const isGetRequest = 'GET' === method.toUpperCase();
@@ -218,6 +218,10 @@ In the case where your application frequently polls an authenticated endpoint, y
 In the example below, any http requests with the header `token-update: false` will not trigger the user's keycloak token to be updated.
 
 ```ts
+import { HttpRequest } from '@angular/common/http';
+
+...
+
 await keycloak.init({
   config: {
     url: 'http://localhost:8080/auth',
@@ -225,7 +229,7 @@ await keycloak.init({
     clientId: 'your-client-id'
   },
   bearerExcludedUrls: ['/assets', '/clients/public'],
-  shouldUpdateToken: (req: HttpRequest<any>): Boolean => {
+  shouldUpdateToken: (req: HttpRequest<unknown>): Boolean => {
     return !req.headers.get('token-update') === 'false';
   }
 });
