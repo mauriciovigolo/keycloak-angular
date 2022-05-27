@@ -191,22 +191,18 @@ By default, all HttpClient requests will add the Authorization header in the for
 There is also the possibility to exclude requests that should not have the authorization header. This is accomplished by implementing the `shouldAddToken` method in the keycloak initialization. For example, the configuration below will not add the token to `GET` requests that match the paths `/assets` or `/clients/public`:
 
 ```ts
-import { HttpRequest } from '@angular/common/http';
-
-...
-
 await keycloak.init({
   config: {
     url: 'http://localhost:8080/auth',
     realm: 'your-realm',
-    clientId: 'your-client-id',
+    clientId: 'your-client-id'
   },
-  shouldAddToken: (req: HttpRequest<unknown>): Boolean => {
-    const { method, url } = req;
+  shouldAddToken: (request) => {
+    const { method, url } = request;
 
     const isGetRequest = 'GET' === method.toUpperCase();
     const acceptablePaths = ['/assets', '/clients/public'];
-    const isAcceptablePathMatch = urls.some(path => url.includes(path));
+    const isAcceptablePathMatch = urls.some((path) => url.includes(path));
 
     return !(isGetRequest && isAcceptablePathMatch);
   }
@@ -218,10 +214,6 @@ In the case where your application frequently polls an authenticated endpoint, y
 In the example below, any http requests with the header `token-update: false` will not trigger the user's keycloak token to be updated.
 
 ```ts
-import { HttpRequest } from '@angular/common/http';
-
-...
-
 await keycloak.init({
   config: {
     url: 'http://localhost:8080/auth',
@@ -229,8 +221,8 @@ await keycloak.init({
     clientId: 'your-client-id'
   },
   bearerExcludedUrls: ['/assets', '/clients/public'],
-  shouldUpdateToken: (req: HttpRequest<unknown>): Boolean => {
-    return !req.headers.get('token-update') === 'false';
+  shouldUpdateToken: (request) => {
+    return !request.headers.get('token-update') === 'false';
   }
 });
 ```
