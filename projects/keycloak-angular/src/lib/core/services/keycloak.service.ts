@@ -76,11 +76,11 @@ export class KeycloakService {
   /**
    * Returns true if the request should have the token added to the headers by the KeycloakBearerInterceptor.
    */
-  shouldAddToken: (_: HttpRequest<any>) => boolean;
+  shouldAddToken: (request: HttpRequest<any>) => boolean;
   /**
    * Returns true if the request being made should potentially update the token.
    */
-  shouldUpdateToken: (_: HttpRequest<any>) => boolean;
+  shouldUpdateToken: (request: HttpRequest<any>) => boolean;
 
   /**
    * Binds the keycloak-js events to the keycloakEvents Subject
@@ -177,8 +177,8 @@ export class KeycloakService {
     bearerPrefix = 'Bearer',
     initOptions,
     updateMinValidity = 20,
-    shouldAddToken = (_: HttpRequest<any>) => true,
-    shouldUpdateToken = (_: HttpRequest<any>) => true
+    shouldAddToken = () => true,
+    shouldUpdateToken = () => true
   }: KeycloakOptions): void {
     this._enableBearerInterceptor = enableBearerInterceptor;
     this._loadUserProfileAtStartUp = loadUserProfileAtStartUp;

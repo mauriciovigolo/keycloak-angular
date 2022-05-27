@@ -18,8 +18,8 @@ describe('KeycloakBearerInterceptor', () => {
 
   beforeEach(() => {
     keycloak = new KeycloakService();
-    keycloak.shouldAddToken = (_) => true;
-    keycloak.shouldUpdateToken = (_) => true;
+    keycloak.shouldAddToken = () => true;
+    keycloak.shouldUpdateToken = () => true;
 
     TestBed.configureTestingModule({
       providers: [
