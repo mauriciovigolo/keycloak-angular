@@ -76,11 +76,11 @@ export class KeycloakService {
   /**
    * Returns true if the request should have the token added to the headers by the KeycloakBearerInterceptor.
    */
-  shouldAddToken: (request: HttpRequest<any>) => boolean;
+  shouldAddToken: (request: HttpRequest<unknown>) => boolean;
   /**
    * Returns true if the request being made should potentially update the token.
    */
-  shouldUpdateToken: (request: HttpRequest<any>) => boolean;
+  shouldUpdateToken: (request: HttpRequest<unknown>) => boolean;
 
   /**
    * Binds the keycloak-js events to the keycloakEvents Subject
@@ -346,7 +346,7 @@ export class KeycloakService {
     if (this._instance.resourceAccess) {
       for (const key in this._instance.resourceAccess) {
         if (this._instance.resourceAccess.hasOwnProperty(key)) {
-          const resourceAccess: any = this._instance.resourceAccess[key];
+          const resourceAccess = this._instance.resourceAccess[key];
           const clientRoles = resourceAccess['roles'] || [];
           roles = roles.concat(clientRoles);
         }

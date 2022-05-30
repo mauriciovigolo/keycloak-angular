@@ -60,5 +60,5 @@ export interface KeycloakEvent {
   /**
    * Arguments from the keycloak-js event function.
    */
-  args?: any;
+  args?: unknown;
 }

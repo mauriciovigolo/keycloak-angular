@@ -38,13 +38,13 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
    * A promise boolean for the token update or noop result.
    */
   private async conditionallyUpdateToken(
-    req: HttpRequest<any>
+    req: HttpRequest<unknown>
   ): Promise<boolean> {
     if (this.keycloak.shouldUpdateToken(req)) {
       return await this.keycloak.updateToken();
-    } else {
-      return true;
     }
+
+    return true;
   }
 
   /**
@@ -57,7 +57,7 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
    * excluded from adding the bearer at the Http Request.
    */
   private isUrlExcluded(
-    { method, url }: HttpRequest<any>,
+    { method, url }: HttpRequest<unknown>,
     { urlPattern, httpMethods }: ExcludedUrlRegex
   ): boolean {
     const httpTest =
@@ -77,9 +77,9 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
    * @param next
    */
   public intercept(
-    req: HttpRequest<any>,
+    req: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  ): Observable<HttpEvent<unknown>> {
     const { enableBearerInterceptor, excludedUrls } = this.keycloak;
     if (!enableBearerInterceptor) {
       return next.handle(req);
@@ -111,9 +111,9 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
    * @param next
    */
   private handleRequestWithTokenHeader(
-    req: HttpRequest<any>,
+    req: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<any> {
+  ): Observable<HttpEvent<unknown>> {
     return this.keycloak.addTokenToHeader(req.headers).pipe(
       mergeMap((headersWithBearer) => {
         const kcReq = req.clone({ headers: headersWithBearer });

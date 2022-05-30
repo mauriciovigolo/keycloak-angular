@@ -47,7 +47,7 @@ describe('KeycloakBearerInterceptor', () => {
   it('should add token to request and call to update the keycloak token', inject(
     [KeycloakBearerInterceptor],
     async (service: KeycloakBearerInterceptor) => {
-      const request = new HttpRequest<any>('GET', 'test', {
+      const request = new HttpRequest<unknown>('GET', 'test', {
         headers: new HttpHeaders({
           'header-a': 'value'
         })
@@ -61,10 +61,10 @@ describe('KeycloakBearerInterceptor', () => {
         )
       );
 
-      let newRequest: HttpRequest<any> = null;
+      let newRequest: HttpRequest<unknown> = null;
       await service
         .intercept(request, {
-          handle: (req: HttpRequest<any>) => {
+          handle: (req: HttpRequest<unknown>) => {
             newRequest = req;
             return of(null);
           }
@@ -79,7 +79,7 @@ describe('KeycloakBearerInterceptor', () => {
   it('should not add token to request', inject(
     [KeycloakBearerInterceptor],
     async (service: KeycloakBearerInterceptor) => {
-      const request = new HttpRequest<any>('GET', 'test', {
+      const request = new HttpRequest<unknown>('GET', 'test', {
         headers: new HttpHeaders({
           'header-a': 'value'
         })
@@ -87,10 +87,10 @@ describe('KeycloakBearerInterceptor', () => {
       spyOn(keycloak, 'shouldAddToken').and.returnValue(false);
       spyOn(keycloak, 'addTokenToHeader');
 
-      let newRequest: HttpRequest<any> = null;
+      let newRequest: HttpRequest<unknown> = null;
       await service
         .intercept(request, {
-          handle: (req: HttpRequest<any>) => {
+          handle: (req: HttpRequest<unknown>) => {
             newRequest = req;
             return of(null);
           }
@@ -105,7 +105,7 @@ describe('KeycloakBearerInterceptor', () => {
   it('should not call to update the keycloak token if the request has a header value that matches any value for any header in the exclusion list', inject(
     [KeycloakBearerInterceptor],
     async (service: KeycloakBearerInterceptor) => {
-      const request = new HttpRequest<any>('GET', 'test', {
+      const request = new HttpRequest<unknown>('GET', 'test', {
         headers: new HttpHeaders({
           'header-b': 'value2'
         })
@@ -120,10 +120,10 @@ describe('KeycloakBearerInterceptor', () => {
         )
       );
 
-      let newRequest: HttpRequest<any> = null;
+      let newRequest: HttpRequest<unknown> = null;
       await service
         .intercept(request, {
-          handle: (req: HttpRequest<any>) => {
+          handle: (req: HttpRequest<unknown>) => {
             newRequest = req;
             return of(null);
           }
