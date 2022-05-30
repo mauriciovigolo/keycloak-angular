@@ -1,13 +1,14 @@
 {
   "name": "keycloak-angular",
-  "version": "9.1.0",
+  "version": "9.2.0",
   "description": "Easy Keycloak setup for Angular applications",
   "scripts": {
     "clean": "shx rm -rf ./dist/",
     "build": "npm run clean && ng build keycloak-angular --configuration production",
     "test": "ng test keycloak-angular",
     "lint": "ng lint && prettier -c .",
-    "lint:fix": "prettier --write ."
+    "lint:fix": "prettier --write .",
+    "typecheck": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
