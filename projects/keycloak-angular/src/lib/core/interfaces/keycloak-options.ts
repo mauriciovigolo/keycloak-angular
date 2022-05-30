@@ -128,7 +128,7 @@ export interface KeycloakOptions {
    *
    * The default is a function that always returns `true`.
    */
-  shouldAddToken?: (request: HttpRequest<any>) => boolean;
+  shouldAddToken?: (request: HttpRequest<unknown>) => boolean;
   /**
    * A function that will tell the KeycloakBearerInterceptor if the token should be considered for
    * updating as a part of the request being made. If the returned value is `true`, the request will
@@ -138,5 +138,5 @@ export interface KeycloakOptions {
    *
    * The default is a function that always returns `true`.
    */
-  shouldUpdateToken?: (request: HttpRequest<any>) => boolean;
+  shouldUpdateToken?: (request: HttpRequest<unknown>) => boolean;
 }
