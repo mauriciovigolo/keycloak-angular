@@ -8,7 +8,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        realm: 'master',
+        realm: 'keycloak-angular-sandbox',
         url: 'http://localhost:8080',
         clientId: 'keycloak-angular'
       },
