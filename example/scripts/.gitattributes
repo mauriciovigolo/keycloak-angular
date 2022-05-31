@@ -1,2 +1,0 @@
-# Prevents crlf line endings in shell scripts when cloning on windows.
-*.sh eol=lf

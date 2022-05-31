@@ -53,12 +53,14 @@ Note that `keycloak-js` is a peer dependency of Keycloak Angular. This change al
 
 |   Angular   | keycloak-angular | keycloak-js |       Support       |
 | :---------: | :--------------: | :---------: | :-----------------: |
-|    13.x     |      9.x.x       |   10 - 17   | Bugs / New Features |
+|    13.x     |      10.x.x      |     18      | Bugs / New Features |
+|    13.x     |      9.x.x       |   10 - 17   |        Bugs         |
 | 11.x - 12.x |      8.4.0       |   10 - 15   |        None         |
 
 Only the latest version of Angular in the table above is actively supported. This is due to the fact that compilation of Angular libraries is [incompatible between major versions](https://angular.io/guide/creating-libraries#ensuring-library-version-compatibility).
 
-_Note_: In keycloak-angular **v.9**, it is needed to add `allowSyntheticDefaultImports: true` in the tsconfig.json file in your project. There is an [issue in the keycloak project](https://github.com/keycloak/keycloak/issues/9045) to update the typescript definitions file and solve the problem.
+_Note_: Only in keycloak-angular **v.9** it is needed to add `allowSyntheticDefaultImports: true` in the tsconfig.json file in your project. There is related to an [issue in the keycloak project](https://github.com/keycloak/keycloak/issues/9045) to update the typescript definitions file. From keycloak-angular v.10 on there is no need to set
+this configuration.
 
 #### Choosing the right keycloak-js version
 
@@ -83,7 +85,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
       config: {
-        url: 'http://localhost:8080/auth',
+        url: 'http://localhost:8080',
         realm: 'your-realm',
         clientId: 'your-client-id'
       },
@@ -221,7 +223,7 @@ In the example below, any http requests with the header `token-update: false` wi
 ```ts
 await keycloak.init({
   config: {
-    url: 'http://localhost:8080/auth',
+    url: 'http://localhost:8080',
     realm: 'your-realm',
     clientId: 'your-client-id'
   },
