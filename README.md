@@ -59,8 +59,8 @@ Note that `keycloak-js` is a peer dependency of Keycloak Angular. This change al
 
 Only the latest version of Angular in the table above is actively supported. This is due to the fact that compilation of Angular libraries is [incompatible between major versions](https://angular.io/guide/creating-libraries#ensuring-library-version-compatibility).
 
-_Note_: Only in keycloak-angular **v.9** it is needed to add `allowSyntheticDefaultImports: true` in the tsconfig.json file in your project. There is related to an [issue in the keycloak project](https://github.com/keycloak/keycloak/issues/9045) to update the typescript definitions file. From keycloak-angular v.10 on there is no need to set
-this configuration.
+_Note_: Only in keycloak-angular **v.9** there is the need to add `allowSyntheticDefaultImports: true` in the tsconfig.json file in your project. This is related to this [issue in the keycloak project](https://github.com/keycloak/keycloak/issues/9045), to update the typescript definitions file.
+From keycloak-angular v.10 on, there is no need to set this configuration.
 
 #### Choosing the right keycloak-js version
 
@@ -260,8 +260,8 @@ keycloakService.keycloakEvents$.subscribe({
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 
 <!-- prettier-ignore -->
- |[<img src="https://avatars3.githubusercontent.com/u/676270?v=4" width="89px;"/><br /><sub><b>Mauricio Gemelli Vigolo</b></sub>](https://github.com/mauriciovigolo)<br />|[<img src="https://avatars1.githubusercontent.com/u/695720?s=400&v=4" width="89px;"/><br /><sub><b>Jon Koops</b></sub>](https://github.com/https://github.com/jonkoops)<br />|[<img src="https://avatars0.githubusercontent.com/u/2146903?v=4" width="89px;"/><br /><sub><b>Frederik Prijck</b></sub>](https://github.com/frederikprijck)<br /> | [<img src="https://avatars2.githubusercontent.com/u/161351?s=460&v=4" width="89px;"/><br /><sub><b>Jonathan Share</b></sub>](https://github.com/sharebear)<br /> | [<img src="https://avatars1.githubusercontent.com/u/980278?v=4" width="89px;"/><br /><sub><b>jmparra</b></sub>](https://github.com/jmparra)<br /> | [<img src="https://avatars2.githubusercontent.com/u/6547340?v=4" width="89px;"/><br /><sub><b>Marcel Német</b></sub>](https://github.com/marcelnem)<br /> | [<img src="https://avatars3.githubusercontent.com/u/14264577?v=4" width="89px;"/><br /><sub><b>Raphael Alex Silva Abreu</b></sub>](https://github.com/aelkz)<br /> |
-| :---: | :---: | :---: | :---: | :---: | :---: |:---: |
+ |[<img src="https://avatars3.githubusercontent.com/u/676270?v=4" width="89px;"/><br /><sub><b>Mauricio Vigolo</b></sub>](https://github.com/mauriciovigolo)<br />|[<img src="https://avatars1.githubusercontent.com/u/695720?s=400&v=4" width="89px;"/><br /><sub><b>Jon Koops</b></sub>](https://github.com/https://github.com/jonkoops)<br />|
+| :---: | :---: |
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
