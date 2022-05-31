@@ -53,7 +53,7 @@ Note that `keycloak-js` is a peer dependency of Keycloak Angular. This change al
 
 |   Angular   | keycloak-angular | keycloak-js |       Support       |
 | :---------: | :--------------: | :---------: | :-----------------: |
-|    13.x     |      9.x.x       |   10 - 16   | Bugs / New Features |
+|    13.x     |      9.x.x       |   10 - 17   | Bugs / New Features |
 | 11.x - 12.x |      8.4.0       |   10 - 15   |        None         |
 
 Only the latest version of Angular in the table above is actively supported. This is due to the fact that compilation of Angular libraries is [incompatible between major versions](https://angular.io/guide/creating-libraries#ensuring-library-version-compatibility).
@@ -193,9 +193,14 @@ There is also the possibility to exclude requests that should not have the autho
 ```ts
 await keycloak.init({
   config: {
-    url: 'http://localhost:8080/auth',
+    url: 'http://localhost:8080',
     realm: 'your-realm',
     clientId: 'your-client-id'
+  },
+  initOptions: {
+    onLoad: 'check-sso',
+    silentCheckSsoRedirectUri:
+      window.location.origin + '/assets/silent-check-sso.html'
   },
   shouldAddToken: (request) => {
     const { method, url } = request;
@@ -219,6 +224,11 @@ await keycloak.init({
     url: 'http://localhost:8080/auth',
     realm: 'your-realm',
     clientId: 'your-client-id'
+  },
+  initOptions: {
+    onLoad: 'check-sso',
+    silentCheckSsoRedirectUri:
+      window.location.origin + '/assets/silent-check-sso.html'
   },
   bearerExcludedUrls: ['/assets', '/clients/public'],
   shouldUpdateToken: (request) => {

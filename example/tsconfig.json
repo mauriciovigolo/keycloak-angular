@@ -12,11 +12,11 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2015",
     "module": "es2020",
+    "allowSyntheticDefaultImports": true,
     "lib": ["es2018", "dom"]
   },
   "angularCompilerOptions": {
