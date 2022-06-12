@@ -366,7 +366,7 @@ export class KeycloakService {
    * A boolean that indicates if the user is logged in.
    */
   async isLoggedIn(): Promise<boolean> {
-    return this._instance.authenticated;
+    return await this._instance.authenticated;
   }
 
   /**
@@ -394,23 +394,27 @@ export class KeycloakService {
    * Promise with a boolean indicating if the token was succesfully updated.
    */
   public async updateToken(minValidity = this._updateMinValidity) {
-    // TODO: this is a workaround until the silent refresh (issue #43)
-    // is not implemented, avoiding the redirect loop.
-    if (this._silentRefresh) {
-      if (this.isTokenExpired()) {
-        throw new Error(
-          'Failed to refresh the token, or the session is expired'
-        );
+    try {
+      // TODO: this is a workaround until the silent refresh (issue #43)
+      // is not implemented, avoiding the redirect loop.
+      if (this._silentRefresh) {
+        if (this.isTokenExpired()) {
+          throw new Error(
+            'Failed to refresh the token, or the session is expired'
+          );
+        }
+
+        return true;
       }
 
-      return true;
-    }
+      if (!this._instance) {
+        throw new Error('Keycloak Angular library is not initialized.');
+      }
 
-    if (!this._instance) {
-      throw new Error('Keycloak Angular library is not initialized.');
+      return await this._instance.updateToken(minValidity);
+    } catch (error) {
+      return false;
     }
-
-    return this._instance.updateToken(minValidity);
   }
 
   /**
