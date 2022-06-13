@@ -546,7 +546,5 @@ export class KeycloakService {
    * A subject with the {@link KeycloakEvent} which describes the event type and attaches the
    * function args.
    */
-  get keycloakEvents$(): Subject<KeycloakEvent> {
-    return this._keycloakEvents$;
-  }
+  public readonly keycloakEvents$: Observable<KeycloakEvent> = this._keycloakEvents$.asObservable();
 }

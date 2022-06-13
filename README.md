@@ -240,7 +240,7 @@ await keycloak.init({
 
 ## Keycloak-js Events
 
-The callback events from [keycloak-js](https://www.keycloak.org/docs/latest/securing_apps/index.html#javascript-adapter-reference) are available through a RxJS subject which is defined by `keycloakEvents$`.
+The callback events from [keycloak-js](https://www.keycloak.org/docs/latest/securing_apps/index.html#javascript-adapter-reference) are available through a RxJS observable which is defined by `keycloakEvents$`.
 
 For example you make keycloak-angular auto refreshing your access token when expired:
 
