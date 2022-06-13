@@ -1,6 +1,6 @@
 {
   "name": "keycloak-angular",
-  "version": "9.3.0",
+  "version": "9.3.1",
   "description": "Easy Keycloak setup for Angular applications",
   "scripts": {
     "clean": "shx rm -rf ./dist/",
