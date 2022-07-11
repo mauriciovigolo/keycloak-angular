@@ -366,7 +366,11 @@ export class KeycloakService {
    * A boolean that indicates if the user is logged in.
    */
   async isLoggedIn(): Promise<boolean> {
-    return await this._instance.authenticated;
+    if (!this._instance) {
+      return false;
+    }
+
+    return this._instance.authenticated;
   }
 
   /**
