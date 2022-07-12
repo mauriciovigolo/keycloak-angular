@@ -51,10 +51,12 @@ Note that `keycloak-js` is a peer dependency of Keycloak Angular. This change al
 
 ### Versions
 
-|   Angular   | keycloak-angular | keycloak-js |       Support       |
-| :---------: | :--------------: | :---------: | :-----------------: |
-|    13.x     |      9.x.x       |   10 - 17   | Bugs / New Features |
-| 11.x - 12.x |      8.4.0       |   10 - 15   |        None         |
+| Angular | keycloak-js | keycloak-angular |       Support       |
+| :-----: | :---------: | :--------------: | :-----------------: |
+|  14.x   |     18      |      12.x.x      | New Features / Bugs |
+|  14.x   |   10 - 17   |      11.x.x      | New Features / Bugs |
+|  13.x   |     18      |      10.x.x      |        Bugs         |
+|  13.x   |   10 - 17   |      9.x.x       |        Bugs         |
 
 Only the latest version of Angular in the table above is actively supported. This is due to the fact that compilation of Angular libraries is [incompatible between major versions](https://angular.io/guide/creating-libraries#ensuring-library-version-compatibility).
 
