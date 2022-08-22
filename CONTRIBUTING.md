@@ -67,7 +67,7 @@ Details:
 
 ## <a name="cmg"></a> Commit message guidelines
 
-This project follows the [Angular commit message guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit).
+This project follows the [Angular commit message guidelines](https://github.com/angular/angular/blob/main/CONTRIBUTING.md#commit).
 
 From the Angular documentation:
 
