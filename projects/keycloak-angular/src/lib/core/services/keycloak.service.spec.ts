@@ -77,5 +77,14 @@ describe('KeycloakService', () => {
         expect(token).toEqual('testToken');
       }
     ));
+
+    it('should throw error if updateToken is called before initialization', inject(
+      [KeycloakService],
+      async (service: KeycloakService) => {
+        await expectAsync(service.updateToken()).toBeRejectedWithError(
+          /not initialized/
+        );
+      }
+    ));
   });
 });
