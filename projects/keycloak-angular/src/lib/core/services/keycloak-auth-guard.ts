@@ -8,6 +8,7 @@
 
 import {
   CanActivate,
+  CanActivateChild,
   Router,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
@@ -22,7 +23,7 @@ import { KeycloakService } from './keycloak.service';
  * The reason for this is that the authorization flow is usually not unique, so in this way you will
  * have more freedom to customize your authorization flow.
  */
-export abstract class KeycloakAuthGuard implements CanActivate {
+export abstract class KeycloakAuthGuard implements CanActivate, CanActivateChild {
   /**
    * Indicates if the user is authenticated or not.
    */
@@ -53,6 +54,29 @@ export abstract class KeycloakAuthGuard implements CanActivate {
       this.roles = await this.keycloakAngular.getUserRoles(true);
 
       return await this.isAccessAllowed(route, state);
+    } catch (error) {
+      throw new Error(
+        'An error happened during access validation. Details:' + error
+      );
+    }
+  }
+
+  /**
+   * CanActivateChild checks if the user is logged in and get the full list of roles (REALM + CLIENT)
+   * of the logged user. This values are set to authenticated and roles params.
+   *
+   * @param route
+   * @param state
+   */
+  async canActivateChild(
+    childRoute: ActivatedRouteSnapshot, 
+    state: RouterStateSnapshot
+  ): Promise<boolean | UrlTree> {
+    try {
+      this.authenticated = await this.keycloakAngular.isLoggedIn();
+      this.roles = await this.keycloakAngular.getUserRoles(true);
+
+      return await this.isAccessAllowed(childRoute, state);
     } catch (error) {
       throw new Error(
         'An error happened during access validation. Details:' + error
