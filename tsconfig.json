@@ -8,13 +8,14 @@
     "declaration": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "target": "es2020",
+    "target": "ES2022",
     "allowSyntheticDefaultImports": true,
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2017", "dom"],
     "paths": {
       "keycloak-angular": ["dist/keycloak-angular"]
     },
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "useDefineForClassFields": false
   }
 }

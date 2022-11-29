@@ -1,0 +1,31 @@
+{
+  "realm": "keycloak-angular-sandbox",
+  "users": [
+    {
+      "id": "41cdb3ac-bb8e-4f1e-bd5b-dbd144a4ee86",
+      "createdTimestamp": 1669685802896,
+      "username": "admin",
+      "enabled": true,
+      "totp": false,
+      "emailVerified": true,
+      "firstName": "Admin",
+      "lastName": "",
+      "email": "admin@keycloak-angular.com",
+      "credentials": [
+        {
+          "id": "5291c160-14ac-48be-9872-a70d0a3a6cfa",
+          "type": "password",
+          "userLabel": "My password",
+          "createdDate": 1669685812309,
+          "secretData": "{\"value\":\"SzpzWG7BiIHrtK9/Q98wGObWfe086ausY43HPShkVGsByscGgvoCo77+vDJzOeRmHKCJWNOnx0BYiCT8pYSPKA==\",\"salt\":\"qBvKnYiJ1q4N66UwsTB+og==\",\"additionalParameters\":{}}",
+          "credentialData": "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+        }
+      ],
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": ["default-roles-keycloak-angular-sandbox"],
+      "notBefore": 0,
+      "groups": []
+    }
+  ]
+}

@@ -1,12 +1,12 @@
 version: '3'
 services:
   keycloak:
-    image: quay.io/keycloak/keycloak
+    image: quay.io/keycloak/keycloak:20.0.1
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
       - 8080:8080
     volumes:
-      - ./config/realm-keycloak-angular-sandbox.json:/opt/keycloak/data/import/realm-keycloak-angular-sandbox.json:ro
+      - ./config/:/opt/keycloak/data/import:ro
     entrypoint: '/opt/keycloak/bin/kc.sh start-dev --import-realm'
