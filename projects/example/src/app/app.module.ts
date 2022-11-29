@@ -1,8 +1,10 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -21,8 +23,14 @@ function initializeKeycloak(keycloak: KeycloakService) {
 }
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [AppRoutingModule, BrowserModule, KeycloakAngularModule],
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    KeycloakAngularModule
+  ],
   providers: [
     {
       provide: APP_INITIALIZER,
@@ -33,4 +41,4 @@ function initializeKeycloak(keycloak: KeycloakService) {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
