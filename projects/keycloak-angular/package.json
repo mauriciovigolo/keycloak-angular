@@ -25,13 +25,13 @@
     "oauth2",
     "oidc"
   ],
+  "dependencies": {
+    "tslib": "^2.4.1"
+  },
   "peerDependencies": {
     "@angular/common": "^15",
     "@angular/core": "^15",
     "@angular/router": "^15",
     "keycloak-js": "^18 || ^19 || ^20"
-  },
-  "dependencies": {
-    "tslib": "^2.3.0"
   }
 }
