@@ -209,7 +209,7 @@ await keycloak.init({
 
     const isGetRequest = 'GET' === method.toUpperCase();
     const acceptablePaths = ['/assets', '/clients/public'];
-    const isAcceptablePathMatch = urls.some((path) => url.includes(path));
+    const isAcceptablePathMatch = acceptablePaths.some((path) => url.includes(path));
 
     return !(isGetRequest && isAcceptablePathMatch);
   }
