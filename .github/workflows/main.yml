@@ -4,25 +4,28 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 env:
+  FORCE_COLOR: 2
   NODE_VERSION: 18
 jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
+      - name: Clone repository
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
 
-      - name: Set up Node
-        uses: actions/setup-node@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-          check-latest: true
           cache: npm
 
       - name: Cache Node modules
         id: cache-node-modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
@@ -32,10 +35,10 @@ jobs:
         run: npm ci
 
       - name: Cache setup
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ github.sha }}
+          key: setup-${{ github.sha }}
 
   run:
     needs: setup
@@ -45,13 +48,13 @@ jobs:
         command: [lint, test -- --no-watch --no-progress --browsers=ChromeHeadless, build]
     steps:
       - name: Restore setup
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ./*
-          key: ${{ github.sha }}
+          key: setup-${{ github.sha }}
 
-      - name: Set up Node
-        uses: actions/setup-node@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
 
