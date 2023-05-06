@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile } from 'keycloak-js';
 
@@ -7,7 +7,7 @@ import { KeycloakProfile } from 'keycloak-js';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   public isLoggedIn = false;
   public userProfile: KeycloakProfile | null = null;
 
