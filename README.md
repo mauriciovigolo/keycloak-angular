@@ -176,7 +176,7 @@ export class AuthGuard extends KeycloakAuthGuard {
     const requiredRoles = route.data.roles;
 
     // Allow the user to proceed if no additional roles are required to access the route.
-    if (!(requiredRoles instanceof Array) || requiredRoles.length === 0) {
+    if (!Array.isArray(requiredRoles) || requiredRoles.length === 0) {
       return true;
     }
 
@@ -209,7 +209,7 @@ await keycloak.init({
 
     const isGetRequest = 'GET' === method.toUpperCase();
     const acceptablePaths = ['/assets', '/clients/public'];
-    const isAcceptablePathMatch = urls.some((path) => url.includes(path));
+    const isAcceptablePathMatch = acceptablePaths.some((path) => url.includes(path));
 
     return !(isGetRequest && isAcceptablePathMatch);
   }
@@ -275,12 +275,12 @@ document.
 <!-- prettier-ignore-start -->
 [license-mit-badge]: https://img.shields.io/badge/License-MIT-yellow
 [license-mit]: https://opensource.org/licenses/MIT
-[build-badge]: https://img.shields.io/github/workflow/status/mauriciovigolo/keycloak-angular/CI?label=CI&logo=github
-[build]: https://github.com/mauriciovigolo/keycloak-angular/actions/workflows/main.yml
+[build-badge]: https://img.shields.io/github/actions/workflow/status/mauriciovigolo/keycloak-angular/main.yml?branch=main&label=CI&logo=github
+[build]: https://github.com/mauriciovigolo/keycloak-angular/actions/workflows/main.yml?query=branch%3Amain
 [vulnerabilities-badge]: https://img.shields.io/snyk/vulnerabilities/github/mauriciovigolo/keycloak-angular?logo=snyk
 [vulnerabilities]: https://snyk.io/test/github/mauriciovigolo/keycloak-angular
-[npm-version-badge]: https://img.shields.io/npm/v/keycloak-angular
-[npm-badge]: https://img.shields.io/npm/dm/keycloak-angular
+[npm-version-badge]: https://img.shields.io/npm/v/keycloak-angular?logo=npm&logoColor=fff
+[npm-badge]: https://img.shields.io/npm/dm/keycloak-angular?logo=npm&logoColor=fff
 [npm]: https://www.npmjs.com/package/keycloak-angular
 [contributors-badge]: https://img.shields.io/badge/all_contributors-5-orange
 [discord-badge]: https://img.shields.io/discord/790617227853692958?color=7389d8&labelColor=6a7ec2&logo=discord&logoColor=fff
