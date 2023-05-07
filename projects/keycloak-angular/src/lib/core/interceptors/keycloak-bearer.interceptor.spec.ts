@@ -10,11 +10,11 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { KeycloakBearerInterceptor } from './keycloak-bearer.interceptor';
 import { KeycloakService } from '../services/keycloak.service';
-import { of } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
 import { HttpHandler, HttpHeaders, HttpRequest } from '@angular/common/http';
 
 describe('KeycloakBearerInterceptor', () => {
-  let keycloak: any;
+  let keycloak: KeycloakService;
 
   beforeEach(() => {
     keycloak = new KeycloakService();
@@ -33,8 +33,8 @@ describe('KeycloakBearerInterceptor', () => {
 
     spyOnProperty(keycloak, 'enableBearerInterceptor').and.returnValue(true);
     spyOnProperty(keycloak, 'excludedUrls').and.returnValue([]);
-    spyOn(keycloak, 'updateToken').and.returnValue(of(true));
-    spyOn(keycloak, 'isLoggedIn').and.returnValue(of(true));
+    spyOn(keycloak, 'updateToken').and.returnValue(firstValueFrom(of(true)));
+    spyOn(keycloak, 'isLoggedIn').and.returnValue(firstValueFrom(of(true)));
   });
 
   it('should be created', inject(
@@ -62,21 +62,21 @@ describe('KeycloakBearerInterceptor', () => {
       );
 
       let newRequest: HttpRequest<unknown> = null;
-      await service
-        .intercept(request, {
+      await firstValueFrom(
+        service.intercept(request, {
           handle: (req: HttpRequest<unknown>) => {
             newRequest = req;
             return of(null);
           }
         } as HttpHandler)
-        .toPromise();
+      );
 
       expect(keycloak['addTokenToHeader']).toHaveBeenCalled();
       expect(keycloak['updateToken']).toHaveBeenCalled();
     }
   ));
 
-  it('should not add token to request', inject(
+  it(`should not add token to request when 'shouldAddToken' returns false`, inject(
     [KeycloakBearerInterceptor],
     async (service: KeycloakBearerInterceptor) => {
       const request = new HttpRequest<unknown>('GET', 'test', {
@@ -88,14 +88,14 @@ describe('KeycloakBearerInterceptor', () => {
       spyOn(keycloak, 'addTokenToHeader');
 
       let newRequest: HttpRequest<unknown> = null;
-      await service
-        .intercept(request, {
+      await firstValueFrom(
+        service.intercept(request, {
           handle: (req: HttpRequest<unknown>) => {
             newRequest = req;
             return of(null);
           }
         } as HttpHandler)
-        .toPromise();
+      );
 
       expect(keycloak['addTokenToHeader']).not.toHaveBeenCalled();
       expect(keycloak['updateToken']).not.toHaveBeenCalled();
@@ -121,17 +121,45 @@ describe('KeycloakBearerInterceptor', () => {
       );
 
       let newRequest: HttpRequest<unknown> = null;
-      await service
-        .intercept(request, {
+      await firstValueFrom(
+        service.intercept(request, {
           handle: (req: HttpRequest<unknown>) => {
             newRequest = req;
             return of(null);
           }
         } as HttpHandler)
-        .toPromise();
+      );
 
       expect(keycloak['addTokenToHeader']).toHaveBeenCalled();
       expect(keycloak['updateToken']).not.toHaveBeenCalled();
+    }
+  ));
+
+  it('should not call to update the keycloak token if the request has a header value that does not match any value for any header in the inclusion list', inject(
+    [KeycloakBearerInterceptor],
+    async (service: KeycloakBearerInterceptor) => {
+      spyOnProperty(keycloak, 'includedUrls').and.returnValue([
+        { urlPattern: /test/i, httpMethods: [] }
+      ]);
+
+      const request = new HttpRequest<unknown>('GET', 'test');
+
+      spyOn(keycloak, 'addTokenToHeader').and.returnValue(
+        of(new HttpHeaders({ Authorization: 'Bearer token' }))
+      );
+
+      let newRequest: HttpRequest<unknown> = null;
+      await firstValueFrom(
+        service.intercept(request, {
+          handle: (req: HttpRequest<unknown>) => {
+            newRequest = req;
+            return of(null);
+          }
+        } as HttpHandler)
+      );
+
+      expect(keycloak['addTokenToHeader']).toHaveBeenCalled();
+      expect(keycloak['updateToken']).toHaveBeenCalled();
     }
   ));
 });

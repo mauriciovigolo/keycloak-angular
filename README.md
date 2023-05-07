@@ -232,12 +232,29 @@ await keycloak.init({
     silentCheckSsoRedirectUri:
       window.location.origin + '/assets/silent-check-sso.html'
   },
-  bearerExcludedUrls: ['/assets', '/clients/public'],
   shouldUpdateToken: (request) => {
     return !request.headers.get('token-update') === 'false';
   }
 });
 ```
+
+By default, the interceptor add a bearer token to all http requests. 
+You can configure the interceptor to only add a bearer token for certain urls by setting the `bearerIncludedUrls` property:
+```ts
+await keycloak.init({
+  config: {...},
+  bearerIncludedUrls: ['/api/needs-token'],
+});
+```
+
+Alternatively, you can configure the interceptor to exclude urls by setting the `bearerExcludedUrls` property:
+```ts
+await keycloak.init({
+  config: {...},
+  bearerExcludedUrls: ['/assets', '/clients/public'],
+});
+```
+_Note: `bearerExcludedUrls` is deprecated and will be removed in a future release!_
 
 ## Keycloak-js Events
 

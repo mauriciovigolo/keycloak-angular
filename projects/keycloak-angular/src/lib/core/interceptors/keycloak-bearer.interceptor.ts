@@ -6,19 +6,19 @@
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/blob/main/LICENSE.md
  */
 
-import { Injectable } from '@angular/core';
 import {
-  HttpInterceptor,
-  HttpRequest,
+  HttpEvent,
   HttpHandler,
-  HttpEvent
+  HttpInterceptor,
+  HttpRequest
 } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
-import { Observable, combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
+import { UrlRegex } from '../interfaces/keycloak-options';
 
 import { KeycloakService } from '../services/keycloak.service';
-import { ExcludedUrlRegex } from '../interfaces/keycloak-options';
 
 /**
  * This interceptor includes the bearer by default in all HttpClient requests.
@@ -48,28 +48,6 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
   }
 
   /**
-   * @deprecated
-   * Checks if the url is excluded from having the Bearer Authorization
-   * header added.
-   *
-   * @param req http request from @angular http module.
-   * @param excludedUrlRegex contains the url pattern and the http methods,
-   * excluded from adding the bearer at the Http Request.
-   */
-  private isUrlExcluded(
-    { method, url }: HttpRequest<unknown>,
-    { urlPattern, httpMethods }: ExcludedUrlRegex
-  ): boolean {
-    const httpTest =
-      httpMethods.length === 0 ||
-      httpMethods.join().indexOf(method.toUpperCase()) > -1;
-
-    const urlTest = urlPattern.test(url);
-
-    return httpTest && urlTest;
-  }
-
-  /**
    * Intercept implementation that checks if the request url matches the excludedUrls.
    * If not, adds the Authorization header to the request if the user is logged in.
    *
@@ -80,15 +58,17 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
     req: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    const { enableBearerInterceptor, excludedUrls } = this.keycloak;
-    if (!enableBearerInterceptor) {
-      return next.handle(req);
-    }
+    const { enableBearerInterceptor, excludedUrls, includedUrls } =
+      this.keycloak;
+    const skipInterceptor = shouldSkipInterceptor(
+      req,
+      this.keycloak.shouldAddToken(req),
+      enableBearerInterceptor,
+      excludedUrls,
+      includedUrls
+    );
 
-    const shallPass: boolean =
-      !this.keycloak.shouldAddToken(req) ||
-      excludedUrls.findIndex((item) => this.isUrlExcluded(req, item)) > -1;
-    if (shallPass) {
+    if (skipInterceptor) {
       return next.handle(req);
     }
 
@@ -121,4 +101,53 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
       })
     );
   }
+}
+
+/**
+ *
+ * @param req http request from @angular http module.
+ * @param shouldAddToken boolean signaling whether we should add a bearer token
+ * @param enableBearerInterceptor boolean signaling whether the interceptor is enabled
+ * @param excludedUrls list of excluded URLs for which the interceptor should be skipped
+ * @param includedUrls list of included URLs for which the interceptor should be enabled
+ */
+function shouldSkipInterceptor(
+  req: HttpRequest<unknown>,
+  shouldAddToken: boolean,
+  enableBearerInterceptor: boolean,
+  excludedUrls: UrlRegex[],
+  includedUrls: UrlRegex[]
+) {
+  const excludedUrlMatch =
+    !excludedUrls ||
+    excludedUrls.findIndex((urlRegex) => urlMatches(req, urlRegex)) > -1;
+  const includedUrlMatch =
+    !includedUrls ||
+    includedUrls.findIndex((urlRegex) => urlMatches(req, urlRegex)) > -1;
+
+  return (
+    !enableBearerInterceptor ||
+    !shouldAddToken ||
+    excludedUrlMatch ||
+    !includedUrlMatch
+  );
+}
+
+/**
+ * Checks if the url matched the UrlRegex
+ *
+ * @param req http request from @angular http module.
+ * @param UrlRegex contains the url pattern and the http methods
+ */
+function urlMatches(
+  { method, url }: HttpRequest<unknown>,
+  { urlPattern, httpMethods }: UrlRegex
+): boolean {
+  const httpTest =
+    !httpMethods ||
+    httpMethods.length === 0 ||
+    httpMethods.join().indexOf(method.toUpperCase()) > -1;
+
+  const urlTest = urlPattern.test(url);
+  return httpTest && urlTest;
 }

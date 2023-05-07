@@ -38,7 +38,7 @@ export type HttpMethods =
  * If the url is informed but httpMethod is undefined, then the bearer
  * will not be added for all HTTP Methods.
  */
-export interface ExcludedUrl {
+export interface UrlAndHttpMethods {
   url: string;
   httpMethods?: HttpMethods[];
 }
@@ -48,7 +48,7 @@ export interface ExcludedUrl {
  * include the url patterns.
  * This interface is used internally by the KeycloakService.
  */
-export interface ExcludedUrlRegex {
+export interface UrlRegex {
   urlPattern: RegExp;
   httpMethods?: HttpMethods[];
 }
@@ -90,13 +90,22 @@ export interface KeycloakOptions {
    * The default value is true.
    */
   loadUserProfileAtStartUp?: boolean;
+
   /**
    * @deprecated
-   * String Array to exclude the urls that should not have the Authorization Header automatically
+   * Array to exclude the urls that should not have the Authorization Header automatically
    * added. This library makes use of Angular Http Interceptor, to automatically add the Bearer
    * token to the request.
    */
-  bearerExcludedUrls?: (string | ExcludedUrl)[];
+  bearerExcludedUrls?: (string | UrlAndHttpMethods)[];
+
+  /**
+   * Array to include the urls that should have the Authorization Header automatically
+   * added. This library makes use of Angular Http Interceptor, to automatically add the Bearer
+   * token to the request.
+   */
+  bearerIncludedUrls?: (string | UrlAndHttpMethods)[];
+
   /**
    * This value will be used as the Authorization Http Header name. The default value is
    * **Authorization**. If the backend expects requests to have a token in a different header, you
