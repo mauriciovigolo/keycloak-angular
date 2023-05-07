@@ -209,7 +209,9 @@ await keycloak.init({
 
     const isGetRequest = 'GET' === method.toUpperCase();
     const acceptablePaths = ['/assets', '/clients/public'];
-    const isAcceptablePathMatch = acceptablePaths.some((path) => url.includes(path));
+    const isAcceptablePathMatch = acceptablePaths.some((path) =>
+      url.includes(path)
+    );
 
     return !(isGetRequest && isAcceptablePathMatch);
   }
@@ -233,7 +235,7 @@ await keycloak.init({
       window.location.origin + '/assets/silent-check-sso.html'
   },
   bearerExcludedUrls: ['/assets', '/clients/public'],
-  shouldUpdateToken: (request) => {
+  shouldUpdateToken(request) {
     return !request.headers.get('token-update') === 'false';
   }
 });
@@ -247,8 +249,8 @@ For example you make keycloak-angular auto refreshing your access token when exp
 
 ```ts
 keycloakService.keycloakEvents$.subscribe({
-  next: (e) => {
-    if (e.type == KeycloakEventType.OnTokenExpired) {
+  next(event) {
+    if (event.type == KeycloakEventType.OnTokenExpired) {
       keycloakService.updateToken(20);
     }
   }
