@@ -60,10 +60,7 @@
               "projects/example/src/favicon.ico",
               "projects/example/src/assets"
             ],
-            "allowedCommonJsDependencies": [
-              "base64-js",
-              "js-sha256"
-            ],
+            "allowedCommonJsDependencies": ["base64-js", "js-sha256"],
             "styles": ["projects/example/src/styles.css"],
             "scripts": []
           },
