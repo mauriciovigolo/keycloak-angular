@@ -14,7 +14,7 @@ import {
   HttpEvent
 } from '@angular/common/http';
 
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, from } from "rxjs";
 import { mergeMap } from 'rxjs/operators';
 
 import { KeycloakService } from '../services/keycloak.service';
@@ -85,19 +85,16 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    const shallPass: boolean =
+    const shallPass =
       !this.keycloak.shouldAddToken(req) ||
       excludedUrls.findIndex((item) => this.isUrlExcluded(req, item)) > -1;
     if (shallPass) {
       return next.handle(req);
     }
 
-    return combineLatest([
-      this.conditionallyUpdateToken(req),
-      this.keycloak.isLoggedIn()
-    ]).pipe(
-      mergeMap(([_, isLoggedIn]) =>
-        isLoggedIn
+    return from(this.conditionallyUpdateToken(req)).pipe(
+      mergeMap(() =>
+        this.keycloak.isLoggedIn()
           ? this.handleRequestWithTokenHeader(req, next)
           : next.handle(req)
       )
@@ -114,11 +111,9 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
     req: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    return this.keycloak.addTokenToHeader(req.headers).pipe(
-      mergeMap((headersWithBearer) => {
-        const kcReq = req.clone({ headers: headersWithBearer });
-        return next.handle(kcReq);
-      })
-    );
+    const headersWithBearer = this.keycloak.addTokenToHeader(req.headers);
+
+    const kcReq = req.clone({ headers: headersWithBearer });
+    return next.handle(kcReq);
   }
 }

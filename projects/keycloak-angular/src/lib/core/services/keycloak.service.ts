@@ -9,8 +9,7 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpRequest } from '@angular/common/http';
 
-import { Subject, from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Subject } from "rxjs";
 import Keycloak from 'keycloak-js';
 
 import {
@@ -233,7 +232,7 @@ export class KeycloakService {
    * @returns
    * A Promise with a boolean indicating if the initialization was successful.
    */
-  public async init(options: KeycloakOptions = {}) {
+  public async init(options: KeycloakOptions = {}): Promise<boolean> {
     this.initServiceValues(options);
     const { config, initOptions } = options;
 
@@ -270,7 +269,7 @@ export class KeycloakService {
    * @returns
    * A void Promise if the login is successful and after the user profile loading.
    */
-  public async login(options: Keycloak.KeycloakLoginOptions = {}) {
+  public async login(options: Keycloak.KeycloakLoginOptions = {}): Promise<void> {
     await this._instance.login(options);
 
     if (this._loadUserProfileAtStartUp) {
@@ -286,7 +285,7 @@ export class KeycloakService {
    * @returns
    * A void Promise if the logout was successful, cleaning also the userProfile.
    */
-  public async logout(redirectUri?: string) {
+  public async logout(redirectUri?: string): Promise<void> {
     const options = {
       redirectUri
     };
@@ -307,7 +306,7 @@ export class KeycloakService {
    */
   public async register(
     options: Keycloak.KeycloakLoginOptions = { action: 'register' }
-  ) {
+  ): Promise<void> {
     await this._instance.register(options);
   }
 
@@ -365,7 +364,7 @@ export class KeycloakService {
    * @returns
    * A boolean that indicates if the user is logged in.
    */
-  async isLoggedIn(): Promise<boolean> {
+  isLoggedIn(): boolean {
     if (!this._instance) {
       return false;
     }
@@ -393,11 +392,12 @@ export class KeycloakService {
    * anymore, the promise is rejected.
    *
    * @param minValidity
-   * Seconds left. (minValidity is optional, if not specified updateMinValidity - default 20 is used)
+   * Seconds left. (minValidity is optional, if not specified updateMinValidity - default 20 is used).
+   * For the forced refresh -1 can be used.
    * @returns
-   * Promise with a boolean indicating if the token was succesfully updated.
+   * Promise with a boolean indicating if the token was successfully updated.
    */
-  public async updateToken(minValidity = this._updateMinValidity) {
+  public async updateToken(minValidity = this._updateMinValidity): Promise<boolean> {
     // TODO: this is a workaround until the silent refresh (issue #43)
     // is not implemented, avoiding the redirect loop.
     if (this._silentRefresh) {
@@ -431,7 +431,7 @@ export class KeycloakService {
    * @returns
    * A promise with the KeycloakProfile data loaded.
    */
-  public async loadUserProfile(forceReload = false) {
+  public async loadUserProfile(forceReload = false): Promise<Keycloak.KeycloakProfile> {
     if (this._userProfile && !forceReload) {
       return this._userProfile;
     }
@@ -446,9 +446,9 @@ export class KeycloakService {
   }
 
   /**
-   * Returns the authenticated token, calling updateToken to get a refreshed one if necessary.
+   * Returns the authenticated token.
    */
-  public async getToken() {
+  public getToken(): string | undefined {
     return this._instance.token;
   }
 
@@ -458,7 +458,7 @@ export class KeycloakService {
    * @returns
    * The logged username.
    */
-  public getUsername() {
+  public getUsername(): string {
     if (!this._userProfile) {
       throw new Error('User not logged in or user profile was not loaded.');
     }
@@ -481,21 +481,19 @@ export class KeycloakService {
    * If the headers param is undefined it will create the Angular headers object.
    *
    * @param headers
-   * Updated header with Authorization and Keycloak token.
+   * Existing headers.
    * @returns
-   * An observable with with the HTTP Authorization header and the current token.
+   * Updated header with Authorization and Keycloak token.
    */
-  public addTokenToHeader(headers: HttpHeaders = new HttpHeaders()) {
-    return from(this.getToken()).pipe(
-      map((token) =>
-        token
-          ? headers.set(
-              this._authorizationHeaderName,
-              this._bearerPrefix + token
-            )
-          : headers
+  public addTokenToHeader(headers: HttpHeaders = new HttpHeaders()): HttpHeaders {
+    const token = this.getToken();
+
+    return token
+      ? headers.set(
+        this._authorizationHeaderName,
+        this._bearerPrefix + token
       )
-    );
+      : headers
   }
 
   /**

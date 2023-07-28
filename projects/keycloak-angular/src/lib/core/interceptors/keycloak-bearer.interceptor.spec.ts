@@ -10,7 +10,7 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { KeycloakBearerInterceptor } from './keycloak-bearer.interceptor';
 import { KeycloakService } from '../services/keycloak.service';
-import { of } from 'rxjs';
+import { firstValueFrom, of } from "rxjs";
 import { HttpHandler, HttpHeaders, HttpRequest } from '@angular/common/http';
 
 describe('KeycloakBearerInterceptor', () => {
@@ -20,6 +20,7 @@ describe('KeycloakBearerInterceptor', () => {
     keycloak = new KeycloakService();
     keycloak.shouldAddToken = () => true;
     keycloak.shouldUpdateToken = () => true;
+    keycloak.isLoggedIn = () => true;
 
     TestBed.configureTestingModule({
       providers: [
@@ -34,7 +35,6 @@ describe('KeycloakBearerInterceptor', () => {
     spyOnProperty(keycloak, 'enableBearerInterceptor').and.returnValue(true);
     spyOnProperty(keycloak, 'excludedUrls').and.returnValue([]);
     spyOn(keycloak, 'updateToken').and.returnValue(of(true));
-    spyOn(keycloak, 'isLoggedIn').and.returnValue(of(true));
   });
 
   it('should be created', inject(
@@ -53,30 +53,25 @@ describe('KeycloakBearerInterceptor', () => {
         })
       });
       spyOn(keycloak, 'addTokenToHeader').and.returnValue(
-        of(
-          new HttpHeaders({
-            'header-a': 'value',
-            Authorization: 'Bearer token'
-          })
-        )
+        new HttpHeaders({
+          'header-a': 'value',
+          Authorization: 'Bearer token'
+        })
       );
 
-      let newRequest: HttpRequest<unknown> = null;
-      await service
+      await firstValueFrom(
+        service
         .intercept(request, {
-          handle: (req: HttpRequest<unknown>) => {
-            newRequest = req;
-            return of(null);
-          }
+          handle: () => of(null)
         } as HttpHandler)
-        .toPromise();
+      );
 
       expect(keycloak['addTokenToHeader']).toHaveBeenCalled();
       expect(keycloak['updateToken']).toHaveBeenCalled();
     }
   ));
 
-  it('should not add token to request', inject(
+  it('should not add token to request if \'shouldAddToken\' returns \'false\'', inject(
     [KeycloakBearerInterceptor],
     async (service: KeycloakBearerInterceptor) => {
       const request = new HttpRequest<unknown>('GET', 'test', {
@@ -87,15 +82,12 @@ describe('KeycloakBearerInterceptor', () => {
       spyOn(keycloak, 'shouldAddToken').and.returnValue(false);
       spyOn(keycloak, 'addTokenToHeader');
 
-      let newRequest: HttpRequest<unknown> = null;
-      await service
-        .intercept(request, {
-          handle: (req: HttpRequest<unknown>) => {
-            newRequest = req;
-            return of(null);
-          }
-        } as HttpHandler)
-        .toPromise();
+      await firstValueFrom(
+        service
+          .intercept(request, {
+            handle: () => of(null)
+          } as HttpHandler)
+      );
 
       expect(keycloak['addTokenToHeader']).not.toHaveBeenCalled();
       expect(keycloak['updateToken']).not.toHaveBeenCalled();
@@ -112,26 +104,44 @@ describe('KeycloakBearerInterceptor', () => {
       });
       spyOn(keycloak, 'shouldUpdateToken').and.returnValue(false);
       spyOn(keycloak, 'addTokenToHeader').and.returnValue(
-        of(
-          new HttpHeaders({
-            'header-b': 'value2',
-            Authorization: 'Bearer token'
-          })
-        )
+        new HttpHeaders({
+          'header-b': 'value2',
+          Authorization: 'Bearer token'
+        })
       );
 
-      let newRequest: HttpRequest<unknown> = null;
-      await service
-        .intercept(request, {
-          handle: (req: HttpRequest<unknown>) => {
-            newRequest = req;
-            return of(null);
-          }
-        } as HttpHandler)
-        .toPromise();
+      await firstValueFrom(
+        service
+          .intercept(request, {
+            handle: () => of(null)
+          } as HttpHandler)
+      );
 
       expect(keycloak['addTokenToHeader']).toHaveBeenCalled();
       expect(keycloak['updateToken']).not.toHaveBeenCalled();
+    }
+  ));
+
+  it('should not add token to request if the user is not logged in', inject(
+    [KeycloakBearerInterceptor],
+    async (service: KeycloakBearerInterceptor) => {
+      const request = new HttpRequest<unknown>('GET', 'test', {
+        headers: new HttpHeaders({
+          'header-a': 'value'
+        })
+      });
+      spyOn(keycloak, 'isLoggedIn').and.returnValue(false);
+      spyOn(keycloak, 'addTokenToHeader');
+
+      await firstValueFrom(
+        service
+          .intercept(request, {
+            handle: () => of(null)
+          } as HttpHandler)
+      );
+
+      expect(keycloak['updateToken']).toHaveBeenCalled();
+      expect(keycloak['addTokenToHeader']).not.toHaveBeenCalled();
     }
   ));
 });

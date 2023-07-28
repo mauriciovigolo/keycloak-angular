@@ -49,8 +49,8 @@ export abstract class KeycloakAuthGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Promise<boolean | UrlTree> {
     try {
-      this.authenticated = await this.keycloakAngular.isLoggedIn();
-      this.roles = await this.keycloakAngular.getUserRoles(true);
+      this.authenticated = this.keycloakAngular.isLoggedIn();
+      this.roles = this.keycloakAngular.getUserRoles(true);
 
       return await this.isAccessAllowed(route, state);
     } catch (error) {

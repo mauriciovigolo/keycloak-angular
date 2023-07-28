@@ -72,7 +72,7 @@ describe('KeycloakService', () => {
           token: 'testToken'
         };
 
-        const token = await service.getToken();
+        const token = service.getToken();
 
         expect(token).toEqual('testToken');
       }
