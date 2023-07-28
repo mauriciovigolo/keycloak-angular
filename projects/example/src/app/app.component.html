@@ -1,6 +1,9 @@
 <h1>Keycloak Angular Example</h1>
 
-<button *ngIf="isLoggedIn" type="button" (click)="logout()">Log out</button>
+<ng-container *ngIf="isLoggedIn">
+  <button type="button" (click)="logout()">Log out</button>
+  <button type="button" (click)="updateToken()" style="margin-left: 4px;">Update token</button>
+</ng-container>
 <button *ngIf="!isLoggedIn" type="button" (click)="login()">Log in</button>
 
 <ng-container *ngIf="userProfile">

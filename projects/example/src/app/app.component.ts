@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
   constructor(private readonly keycloak: KeycloakService) {}
 
   public async ngOnInit() {
-    this.isLoggedIn = await this.keycloak.isLoggedIn();
+    this.isLoggedIn = this.keycloak.isLoggedIn();
 
     if (this.isLoggedIn) {
       this.userProfile = await this.keycloak.loadUserProfile();
@@ -27,5 +27,9 @@ export class AppComponent implements OnInit {
 
   public logout() {
     this.keycloak.logout();
+  }
+
+  public async updateToken(): Promise<void> {
+    await this.keycloak.updateToken(-1);
   }
 }
