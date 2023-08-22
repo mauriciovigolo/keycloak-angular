@@ -1,6 +1,6 @@
 {
   "name": "keycloak-angular",
-  "version": "14.0.0",
+  "version": "14.1.0",
   "description": "Easy Keycloak setup for Angular applications",
   "scripts": {
     "clean": "shx rm -rf ./dist/",
@@ -62,7 +62,7 @@
     "karma-coverage-istanbul-reporter": "~3.0.3",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.0.0",
-    "keycloak-js": "^22.0.0",
+    "keycloak-js": "^22.0.1",
     "ng-packagr": "^16.0.0",
     "prettier": "^2.8.8",
     "rxjs": "^7.8.1",

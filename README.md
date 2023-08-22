@@ -274,7 +274,7 @@ document.
 [license-mit]: https://opensource.org/licenses/MIT
 [build-badge]: https://img.shields.io/github/actions/workflow/status/mauriciovigolo/keycloak-angular/main.yml?branch=main&label=CI&logo=github
 [build]: https://github.com/mauriciovigolo/keycloak-angular/actions/workflows/main.yml?query=branch%3Amain
-[vulnerabilities-badge]: https://img.shields.io/snyk/vulnerabilities/github/mauriciovigolo/keycloak-angular?logo=snyk
+[vulnerabilities-badge]: https://snyk.io/test/github/mauriciovigolo/keycloak-angular/badge.svg
 [vulnerabilities]: https://snyk.io/test/github/mauriciovigolo/keycloak-angular
 [npm-version-badge]: https://img.shields.io/npm/v/keycloak-angular?logo=npm&logoColor=fff
 [npm-badge]: https://img.shields.io/npm/dm/keycloak-angular?logo=npm&logoColor=fff
