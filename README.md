@@ -52,8 +52,8 @@ Note that `keycloak-js` is a peer dependency of Keycloak Angular. This change al
 
 | Angular | keycloak-js | keycloak-angular |       Support       |
 | :-----: | :---------: | :--------------: | :-----------------: |
-|  16.x   |   18 - 21   |      14.x.x      | New Features / Bugs |
-|  15.x   |   18 - 21   |      13.x.x      |        Bugs         |
+|  16.x   |   18 - 22   |      14.x.x      | New Features / Bugs |
+|  15.x   |   18 - 22   |      13.x.x      |        Bugs         |
 |  14.x   |   18 - 19   |      12.x.x      |          -          |
 |  14.x   |   10 - 17   |      11.x.x      |          -          |
 
@@ -274,7 +274,7 @@ document.
 [license-mit]: https://opensource.org/licenses/MIT
 [build-badge]: https://img.shields.io/github/actions/workflow/status/mauriciovigolo/keycloak-angular/main.yml?branch=main&label=CI&logo=github
 [build]: https://github.com/mauriciovigolo/keycloak-angular/actions/workflows/main.yml?query=branch%3Amain
-[vulnerabilities-badge]: https://img.shields.io/snyk/vulnerabilities/github/mauriciovigolo/keycloak-angular?logo=snyk
+[vulnerabilities-badge]: https://snyk.io/test/github/mauriciovigolo/keycloak-angular/badge.svg
 [vulnerabilities]: https://snyk.io/test/github/mauriciovigolo/keycloak-angular
 [npm-version-badge]: https://img.shields.io/npm/v/keycloak-angular?logo=npm&logoColor=fff
 [npm-badge]: https://img.shields.io/npm/dm/keycloak-angular?logo=npm&logoColor=fff
