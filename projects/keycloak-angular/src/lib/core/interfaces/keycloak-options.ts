@@ -85,7 +85,7 @@ export interface KeycloakOptions {
    * Forces the execution of loadUserProfile after the keycloak initialization considering that the
    * user logged in.
    * This option is recommended if is desirable to have the user details at the beginning,
-   * so after the login, the loadUserProfile function will be called and it's value cached.
+   * so after the login, the loadUserProfile function will be called and its value cached.
    *
    * The default value is true.
    */
