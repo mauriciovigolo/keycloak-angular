@@ -8,6 +8,8 @@
 
 import { TestBed, inject } from '@angular/core/testing';
 
+import Keycloak from 'keycloak-js';
+
 import { KeycloakService } from './keycloak.service';
 
 describe('KeycloakService', () => {
@@ -83,6 +85,125 @@ describe('KeycloakService', () => {
       async (service: KeycloakService) => {
         await expectAsync(service.updateToken()).toBeRejectedWithError(
           /not initialized/
+        );
+      }
+    ));
+  });
+
+  describe('#getUserRoles', () => {
+    it('should return all resource and realm roles', inject(
+      [KeycloakService],
+      async (service: KeycloakService) => {
+        (service['_instance'] as Partial<Keycloak>) = {
+          resourceAccess: {
+            client1: {
+              roles: ['client1Role1', 'client1Role2']
+            },
+            client2: {
+              roles: ['client2Role1', 'client2Role2']
+            }
+          },
+          realmAccess: {
+            roles: ['realmRole1', 'realmRole2']
+          }
+        };
+
+        const userRoles = service.getUserRoles();
+
+        expect(userRoles).toEqual(
+          jasmine.arrayWithExactContents([
+            'client1Role1',
+            'client1Role2',
+            'client2Role1',
+            'client2Role2',
+            'realmRole1',
+            'realmRole2'
+          ])
+        );
+      }
+    ));
+
+    it('should return only resource roles if realmRoles is set to false', inject(
+      [KeycloakService],
+      async (service: KeycloakService) => {
+        (service['_instance'] as Partial<Keycloak>) = {
+          resourceAccess: {
+            client1: {
+              roles: ['client1Role1', 'client1Role2']
+            },
+            client2: {
+              roles: ['client2Role1', 'client2Role2']
+            }
+          },
+          realmAccess: {
+            roles: ['realmRole1', 'realmRole2']
+          }
+        };
+
+        const userRoles = service.getUserRoles(false);
+
+        expect(userRoles).toEqual(
+          jasmine.arrayWithExactContents([
+            'client1Role1',
+            'client1Role2',
+            'client2Role1',
+            'client2Role2'
+          ])
+        );
+      }
+    ));
+
+    it('should return only resource roles from the given resource if realmRoles is set to false and resource is specified', inject(
+      [KeycloakService],
+      async (service: KeycloakService) => {
+        (service['_instance'] as Partial<Keycloak>) = {
+          resourceAccess: {
+            client1: {
+              roles: ['client1Role1', 'client1Role2']
+            },
+            client2: {
+              roles: ['client2Role1', 'client2Role2']
+            }
+          },
+          realmAccess: {
+            roles: ['realmRole1', 'realmRole2']
+          }
+        };
+
+        const userRoles = service.getUserRoles(false, 'client2');
+
+        expect(userRoles).toEqual(
+          jasmine.arrayWithExactContents(['client2Role1', 'client2Role2'])
+        );
+      }
+    ));
+
+    it('should return only resource roles from the given resource and realm roles if realmRoles is set to true and resource is specified', inject(
+      [KeycloakService],
+      async (service: KeycloakService) => {
+        (service['_instance'] as Partial<Keycloak>) = {
+          resourceAccess: {
+            client1: {
+              roles: ['client1Role1', 'client1Role2']
+            },
+            client2: {
+              roles: ['client2Role1', 'client2Role2']
+            }
+          },
+          realmAccess: {
+            roles: ['realmRole1', 'realmRole2']
+          }
+        };
+
+        const userRoles = service.getUserRoles(true, 'client1');
+
+        expect(userRoles).toEqual(
+          jasmine.arrayWithExactContents([
+            'client1Role1',
+            'client1Role2',
+            'realmRole1',
+            'realmRole2'
+          ])
         );
       }
     ));
