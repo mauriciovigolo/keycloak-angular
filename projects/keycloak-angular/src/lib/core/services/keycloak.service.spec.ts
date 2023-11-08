@@ -70,7 +70,7 @@ describe('KeycloakService', () => {
       [KeycloakService],
       async (service: KeycloakService) => {
         service.updateToken = () => Promise.resolve(true);
-        (service['_instance'] as any) = {
+        (service['_instance'] as Partial<Keycloak>) = {
           token: 'testToken'
         };
 
