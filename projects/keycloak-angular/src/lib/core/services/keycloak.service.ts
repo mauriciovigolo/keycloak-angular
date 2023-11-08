@@ -313,12 +313,12 @@ export class KeycloakService {
 
   /**
    * Check if the user has access to the specified role. It will look for roles in
-   * realm and clientId, but will not check if the user is logged in for better performance.
+   * realm and the given resource, but will not check if the user is logged in for better performance.
    *
    * @param role
    * role name
    * @param resource
-   * resource name If not specified, `clientId` is used
+   * resource name. If not specified, `clientId` is used
    * @returns
    * A boolean meaning if the user has the specified Role.
    */
