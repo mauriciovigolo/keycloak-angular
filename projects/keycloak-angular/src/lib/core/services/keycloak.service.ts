@@ -193,7 +193,7 @@ export class KeycloakService {
 
   /**
    * Keycloak initialization. It should be called to initialize the adapter.
-   * Options is a object with 2 main parameters: config and initOptions. The first one
+   * Options is an object with 2 main parameters: config and initOptions. The first one
    * will be used to create the Keycloak instance. The second one are options to initialize the
    * keycloak instance.
    *
@@ -365,7 +365,7 @@ export class KeycloakService {
    * @returns
    * A boolean that indicates if the user is logged in.
    */
-  async isLoggedIn(): Promise<boolean> {
+  isLoggedIn(): boolean {
     if (!this._instance) {
       return false;
     }
