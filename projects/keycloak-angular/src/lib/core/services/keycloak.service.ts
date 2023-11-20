@@ -346,21 +346,24 @@ export class KeycloakService {
    */
   getUserRoles(realmRoles: boolean = true, resource?: string): string[] {
     let roles: string[] = [];
+
     if (this._instance.resourceAccess) {
-      for (const key in this._instance.resourceAccess) {
-        if (this._instance.resourceAccess.hasOwnProperty(key)) {
-          if (!resource || resource == key) {
-            const resourceAccess = this._instance.resourceAccess[key];
-            const clientRoles = resourceAccess['roles'] || [];
-            roles = roles.concat(clientRoles);
-          }
+      Object.keys(this._instance.resourceAccess).forEach(key => {
+        if (resource && resource !== key) {
+          return;
         }
-      }
+
+        const resourceAccess = this._instance.resourceAccess[key];
+        const clientRoles = resourceAccess['roles'] || [];
+        roles = roles.concat(clientRoles);
+      });
     }
+
     if (realmRoles && this._instance.realmAccess) {
       const realmRoles = this._instance.realmAccess['roles'] || [];
       roles.push(...realmRoles);
     }
+
     return roles;
   }
 
