@@ -348,7 +348,7 @@ export class KeycloakService {
     let roles: string[] = [];
 
     if (this._instance.resourceAccess) {
-      Object.keys(this._instance.resourceAccess).forEach(key => {
+      Object.keys(this._instance.resourceAccess).forEach((key) => {
         if (resource && resource !== key) {
           return;
         }
