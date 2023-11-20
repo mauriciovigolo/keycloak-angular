@@ -14,7 +14,7 @@ import {
   HttpEvent
 } from '@angular/common/http';
 
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, from, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { KeycloakService } from '../services/keycloak.service';
@@ -93,8 +93,8 @@ export class KeycloakBearerInterceptor implements HttpInterceptor {
     }
 
     return combineLatest([
-      this.conditionallyUpdateToken(req),
-      this.keycloak.isLoggedIn()
+      from(this.conditionallyUpdateToken(req)),
+      of(this.keycloak.isLoggedIn())
     ]).pipe(
       mergeMap(([_, isLoggedIn]) =>
         isLoggedIn
