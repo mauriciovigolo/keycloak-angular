@@ -313,12 +313,12 @@ export class KeycloakService {
 
   /**
    * Check if the user has access to the specified role. It will look for roles in
-   * realm and clientId, but will not check if the user is logged in for better performance.
+   * realm and the given resource, but will not check if the user is logged in for better performance.
    *
    * @param role
    * role name
    * @param resource
-   * resource name If not specified, `clientId` is used
+   * resource name. If not specified, `clientId` is used
    * @returns
    * A boolean meaning if the user has the specified Role.
    */
@@ -332,30 +332,38 @@ export class KeycloakService {
   }
 
   /**
-   * Return the roles of the logged user. The allRoles parameter, with default value
-   * true, will return the clientId and realm roles associated with the logged user. If set to false
-   * it will only return the user roles associated with the clientId.
+   * Return the roles of the logged user. The realmRoles parameter, with default value
+   * true, will return the resource roles and realm roles associated with the logged user. If set to false
+   * it will only return the resource roles. The resource parameter, if specified, will return only resource roles
+   * associated with the given resource.
    *
-   * @param allRoles
-   * Flag to set if all roles should be returned.(Optional: default value is true)
+   * @param realmRoles
+   * Set to false to exclude realm roles (only client roles)
+   * @param resource
+   * resource name If not specified, returns roles from all resources
    * @returns
    * Array of Roles associated with the logged user.
    */
-  getUserRoles(allRoles: boolean = true): string[] {
+  getUserRoles(realmRoles: boolean = true, resource?: string): string[] {
     let roles: string[] = [];
+
     if (this._instance.resourceAccess) {
-      for (const key in this._instance.resourceAccess) {
-        if (this._instance.resourceAccess.hasOwnProperty(key)) {
-          const resourceAccess = this._instance.resourceAccess[key];
-          const clientRoles = resourceAccess['roles'] || [];
-          roles = roles.concat(clientRoles);
+      Object.keys(this._instance.resourceAccess).forEach((key) => {
+        if (resource && resource !== key) {
+          return;
         }
-      }
+
+        const resourceAccess = this._instance.resourceAccess[key];
+        const clientRoles = resourceAccess['roles'] || [];
+        roles = roles.concat(clientRoles);
+      });
     }
-    if (allRoles && this._instance.realmAccess) {
+
+    if (realmRoles && this._instance.realmAccess) {
       const realmRoles = this._instance.realmAccess['roles'] || [];
       roles.push(...realmRoles);
     }
+
     return roles;
   }
 
