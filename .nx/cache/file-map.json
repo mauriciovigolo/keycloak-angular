@@ -1,0 +1,292 @@
+{
+  "version": "6.0",
+  "nxVersion": "17.1.2",
+  "deps": {
+    "tslib": "^2.3.1",
+    "@angular-devkit/build-angular": "^17.0.1",
+    "@angular-eslint/builder": "17.1.0",
+    "@angular-eslint/eslint-plugin": "17.1.0",
+    "@angular-eslint/eslint-plugin-template": "17.1.0",
+    "@angular-eslint/schematics": "17.1.0",
+    "@angular-eslint/template-parser": "17.1.0",
+    "@angular/cli": "^17.0.1",
+    "@angular/common": "^17.0.3",
+    "@angular/compiler": "^17.0.3",
+    "@angular/compiler-cli": "^17.0.3",
+    "@angular/core": "^17.0.3",
+    "@angular/language-service": "^17.0.3",
+    "@angular/platform-browser": "^17.0.3",
+    "@angular/platform-browser-dynamic": "^17.0.3",
+    "@angular/router": "^17.0.3",
+    "@types/jasmine": "^5.1.2",
+    "@typescript-eslint/eslint-plugin": "^6.11.0",
+    "@typescript-eslint/parser": "^6.11.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.54.0",
+    "jasmine-core": "^5.1.1",
+    "jasmine-spec-reporter": "^7.0.0",
+    "karma": "~6.4.1",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage-istanbul-reporter": "~3.0.3",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "^2.1.0",
+    "keycloak-js": "^22.0.5",
+    "ng-packagr": "^17.0.1",
+    "prettier": "^3.1.0",
+    "rxjs": "^7.8.1",
+    "shx": "^0.3.4",
+    "typescript": "5.2.2",
+    "zone.js": "~0.14.2"
+  },
+  "pathMappings": {
+    "keycloak-angular": [
+      "dist/keycloak-angular"
+    ]
+  },
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "projectFileMap": {},
+    "nonProjectFiles": [
+      {
+        "file": ".all-contributorsrc",
+        "hash": "7923949831564668480"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "10880570667437942452"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "3509746318561552548"
+      },
+      {
+        "file": ".gitattributes",
+        "hash": "4295675927499356931"
+      },
+      {
+        "file": ".github/ISSUE_TEMPLATE.md",
+        "hash": "7690129893146060759"
+      },
+      {
+        "file": ".github/PULL_REQUEST_TEMPLATE.md",
+        "hash": "4894009596781954700"
+      },
+      {
+        "file": ".github/dependabot.yml",
+        "hash": "1990725872818242639"
+      },
+      {
+        "file": ".github/stale.yml",
+        "hash": "8314837728120506652"
+      },
+      {
+        "file": ".github/workflows/codeql.yml",
+        "hash": "6156520921822085277"
+      },
+      {
+        "file": ".github/workflows/main.yml",
+        "hash": "6995496766932381053"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "1593802293829372394"
+      },
+      {
+        "file": ".npmignore",
+        "hash": "17341027480032909213"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "18357369135848277925"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "18174592296968987490"
+      },
+      {
+        "file": "CONTRIBUTING.md",
+        "hash": "1348189879915769675"
+      },
+      {
+        "file": "LICENSE.md",
+        "hash": "14141912926102642804"
+      },
+      {
+        "file": "README.md",
+        "hash": "6469465761894377758"
+      },
+      {
+        "file": "angular.json",
+        "hash": "12837836495863103727"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "7212878755461439468"
+      },
+      {
+        "file": "package.json",
+        "hash": "3445812330247091651"
+      },
+      {
+        "file": "projects/example/.eslintrc.json",
+        "hash": "10880838431600915104"
+      },
+      {
+        "file": "projects/example/README.md",
+        "hash": "12342430528320092147"
+      },
+      {
+        "file": "projects/example/config/keycloak-angular-sandbox-realm.json",
+        "hash": "10479251153097574805"
+      },
+      {
+        "file": "projects/example/docker-compose.yml",
+        "hash": "6544699963607408408"
+      },
+      {
+        "file": "projects/example/src/app/app-routing.module.ts",
+        "hash": "6614342298989807317"
+      },
+      {
+        "file": "projects/example/src/app/app.component.css",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "projects/example/src/app/app.component.html",
+        "hash": "1877156713163170529"
+      },
+      {
+        "file": "projects/example/src/app/app.component.ts",
+        "hash": "13771900311541430403"
+      },
+      {
+        "file": "projects/example/src/app/app.module.ts",
+        "hash": "3775442176893437351"
+      },
+      {
+        "file": "projects/example/src/assets/silent-check-sso.html",
+        "hash": "10161528353428383605"
+      },
+      {
+        "file": "projects/example/src/favicon.ico",
+        "hash": "3464744996580215640"
+      },
+      {
+        "file": "projects/example/src/index.html",
+        "hash": "6392497400625528705"
+      },
+      {
+        "file": "projects/example/src/main.ts",
+        "hash": "3259059517603285449"
+      },
+      {
+        "file": "projects/example/src/styles.css",
+        "hash": "5195668842064076916"
+      },
+      {
+        "file": "projects/example/tsconfig.app.json",
+        "hash": "5277818030913062960"
+      },
+      {
+        "file": "projects/example/tsconfig.spec.json",
+        "hash": "14350575697719338770"
+      },
+      {
+        "file": "projects/keycloak-angular/.eslintrc.json",
+        "hash": "4152531871005701416"
+      },
+      {
+        "file": "projects/keycloak-angular/karma.conf.js",
+        "hash": "11477939852096935778"
+      },
+      {
+        "file": "projects/keycloak-angular/ng-package.json",
+        "hash": "14461547446751781091"
+      },
+      {
+        "file": "projects/keycloak-angular/ng-package.prod.json",
+        "hash": "474369093365769141"
+      },
+      {
+        "file": "projects/keycloak-angular/package.json",
+        "hash": "9180596085874688946"
+      },
+      {
+        "file": "projects/keycloak-angular/src/lib/core/core.module.spec.ts",
+        "hash": "9221215993731775499"
+      },
+      {
+        "file": "projects/keycloak-angular/src/lib/core/core.module.ts",
+        "hash": "1899979707238620865"
+      },
+      {
+        "file": "projects/keycloak-angular/src/lib/core/interceptors/keycloak-bearer-fn.interceptor.spec.ts",
+        "hash": "16432992620502770378"
+      },
+      {
+        "file": "projects/keycloak-angular/src/lib/core/interceptors/keycloak-bearer-fn.interceptor.ts",
+        "hash": "5691148039159818034"
+      },
+      {
+        "file": "projects/keycloak-angular/src/lib/core/interceptors/keycloak-bearer.interceptor.spec.ts",
+        "hash": "9610696019963302710"
+      },
+      {
+        "file": "projects/keycloak-angular/src/lib/core/interceptors/keycloak-bearer.interceptor.ts",
+        "hash": "1279668969084899800"
+      },
+      {
+        "file": "projects/keycloak-angular/src/lib/core/interfaces/keycloak-event.ts",
+        "hash": "827222092517635209"
+      },
+      {
+        "file": "projects/keycloak-angular/src/lib/core/interfaces/keycloak-options.ts",
+        "hash": "5654259043708595141"
+      },
+      {
+        "file": "projects/keycloak-angular/src/lib/core/services/keycloak-auth-guard.ts",
+        "hash": "5327380804421264285"
+      },
+      {
+        "file": "projects/keycloak-angular/src/lib/core/services/keycloak.service.spec.ts",
+        "hash": "5466175290412693145"
+      },
+      {
+        "file": "projects/keycloak-angular/src/lib/core/services/keycloak.service.ts",
+        "hash": "13851995022561686144"
+      },
+      {
+        "file": "projects/keycloak-angular/src/lib/keycloak-angular.module.ts",
+        "hash": "14741541467266633275"
+      },
+      {
+        "file": "projects/keycloak-angular/src/lib/keycloak-angular.provide.ts",
+        "hash": "11496747358695893716"
+      },
+      {
+        "file": "projects/keycloak-angular/src/public_api.ts",
+        "hash": "8508757642956782706"
+      },
+      {
+        "file": "projects/keycloak-angular/src/test.ts",
+        "hash": "17433480227819541744"
+      },
+      {
+        "file": "projects/keycloak-angular/tsconfig.lib.json",
+        "hash": "8009626374580932126"
+      },
+      {
+        "file": "projects/keycloak-angular/tsconfig.lib.prod.json",
+        "hash": "174503844014784742"
+      },
+      {
+        "file": "projects/keycloak-angular/tsconfig.spec.json",
+        "hash": "9504807348533760050"
+      },
+      {
+        "file": "tsconfig.json",
+        "hash": "12561970996066889363"
+      }
+    ]
+  }
+}
