@@ -237,6 +237,25 @@ await keycloak.init({
 });
 ```
 
+You may also opt to have keycloak attempt to refresh the token when getToken() is called. This is useful if you do not want to use the `keycloakEvents$` RxJS subject and do not use Angular's HTTP module (For example, if you use Axios). This is set to `true` by default, so it's not necessary to pass this value to the initializer. You may, however, set this to `false` to disable the automatic refresh, should you chose.
+
+```ts
+await keycloak.init({
+  config: {
+    url: 'http://localhost:8080',
+    realm: 'your-realm',
+    clientId: 'your-client-id'
+  },
+  initOptions: {
+    onLoad: 'check-sso',
+    silentCheckSsoRedirectUri:
+      window.location.origin + '/assets/silent-check-sso.html'
+  },
+  bearerExcludedUrls: ['/assets', '/clients/public'],
+  refreshOnGet: true
+});
+```
+
 ## Keycloak-js Events
 
 The callback events from [keycloak-js](https://www.keycloak.org/docs/latest/securing_apps/index.html#javascript-adapter-reference) are available through a RxJS subject which is defined by `keycloakEvents$`.
