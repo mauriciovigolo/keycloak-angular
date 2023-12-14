@@ -74,6 +74,10 @@ export class KeycloakService {
    */
   private _updateMinValidity: number;
   /**
+   * Indicates that the token will be refreshed prior to returning it when `getToken()` is called.
+   */
+  private _refreshOnGet: boolean;
+  /**
    * Returns true if the request should have the token added to the headers by the KeycloakBearerInterceptor.
    */
   shouldAddToken: (request: HttpRequest<unknown>) => boolean;
@@ -177,6 +181,7 @@ export class KeycloakService {
     bearerPrefix = 'Bearer',
     initOptions,
     updateMinValidity = 20,
+    refreshOnGet = true,
     shouldAddToken = () => true,
     shouldUpdateToken = () => true
   }: KeycloakOptions): void {
@@ -187,6 +192,7 @@ export class KeycloakService {
     this._excludedUrls = this.loadExcludedUrls(bearerExcludedUrls);
     this._silentRefresh = initOptions ? initOptions.flow === 'implicit' : false;
     this._updateMinValidity = updateMinValidity;
+    this._refreshOnGet = refreshOnGet;
     this.shouldAddToken = shouldAddToken;
     this.shouldUpdateToken = shouldUpdateToken;
   }
@@ -455,8 +461,17 @@ export class KeycloakService {
 
   /**
    * Returns the authenticated token, calling updateToken to get a refreshed one if necessary.
+   *
+   * @param minValidity
+   * Seconds left. (minValidity) is optional. Default value is 0.
+   * @returns
+   * The token.
    */
-  public async getToken() {
+  public async getToken(minValidity: number = 0) {
+    if (this.isTokenExpired(minValidity) && this._refreshOnGet) {
+      this.updateToken(minValidity);
+    }
+
     return this._instance.token;
   }
 

@@ -121,6 +121,16 @@ export interface KeycloakOptions {
    * The default value is 20.
    */
   updateMinValidity?: number;
+
+  /**
+   * This value determines whether or not a token will be refreshed when `getToken()` is called. If the
+   * value is `true`, then the token's expiry time will be checked when `getToken()` is called, and
+   * if it is less than the number of seconds configured by updateMinValidity, then it will be updated
+   * before the token is returned.
+   *
+   * The default is true.
+   */
+  refreshOnGet?: boolean;
   /**
    * A function that will tell the KeycloakBearerInterceptor whether to add the token to the request
    * or to leave the request as it is. If the returned value is `true`, the request will have the token

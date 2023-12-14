@@ -70,6 +70,7 @@ describe('KeycloakService', () => {
       [KeycloakService],
       async (service: KeycloakService) => {
         service.updateToken = () => Promise.resolve(true);
+        service.isTokenExpired = () => false;
         (service['_instance'] as Partial<Keycloak>) = {
           token: 'testToken'
         };
@@ -77,6 +78,27 @@ describe('KeycloakService', () => {
         const token = await service.getToken();
 
         expect(token).toEqual('testToken');
+      }
+    ));
+
+    it('should return an updated token when getToken is called', inject(
+      [KeycloakService],
+      async (service: KeycloakService) => {
+        service.updateToken = () => {
+          (service['_instance'] as Partial<Keycloak>) = {
+            token: 'newToken'
+          };
+          return Promise.resolve(true);
+        };
+        service.isTokenExpired = () => true;
+        service['_refreshOnGet'] = true;
+        (service['_instance'] as Partial<Keycloak>) = {
+          token: 'oldToken'
+        };
+
+        const token = await service.getToken();
+
+        expect(token).toEqual('newToken');
       }
     ));
 
