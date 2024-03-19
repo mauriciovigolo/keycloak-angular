@@ -454,7 +454,7 @@ export class KeycloakService {
   }
 
   /**
-   * Returns the authenticated token, calling updateToken to get a refreshed one if necessary.
+   * Returns the authenticated token.
    */
   public async getToken() {
     return this._instance.token;
