@@ -78,7 +78,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 function initializeKeycloak(keycloak: KeycloakService) {
-  return () =>
+  return () => {
     keycloak.init({
       config: {
         url: 'http://localhost:8080',
@@ -91,6 +91,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
           window.location.origin + '/assets/silent-check-sso.html'
       }
     });
+  }
 }
 
 @NgModule({
@@ -189,7 +190,7 @@ By default, all HttpClient requests will add the Authorization header in the for
 There is also the possibility to exclude requests that should not have the authorization header. This is accomplished by implementing the `shouldAddToken` method in the keycloak initialization. For example, the configuration below will not add the token to `GET` requests that match the paths `/assets` or `/clients/public`:
 
 ```ts
-await keycloak.init({
+keycloak.init({
   config: {
     url: 'http://localhost:8080',
     realm: 'your-realm',
@@ -219,7 +220,7 @@ In the case where your application frequently polls an authenticated endpoint, y
 In the example below, any http requests with the header `token-update: false` will not trigger the user's keycloak token to be updated.
 
 ```ts
-await keycloak.init({
+keycloak.init({
   config: {
     url: 'http://localhost:8080',
     realm: 'your-realm',
