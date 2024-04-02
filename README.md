@@ -114,6 +114,8 @@ In the example we have set up Keycloak to use a silent `check-sso`. With this fe
 
 To ensure that Keycloak can communicate through the iframe you will have to serve a static HTML asset from your application at the location provided in `silentCheckSsoRedirectUri`.
 
+If your app should be accessible only to authorized users, then set `onLoad: 'login-required'` and `await keycloak.init()`.
+
 Create a file called `silent-check-sso.html` in the `assets` directory of your application and paste in the contents as seen below.
 
 ```html
