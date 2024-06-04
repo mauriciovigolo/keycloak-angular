@@ -13,15 +13,18 @@
 
 ---
 
-- [About](#about)
-- [Installation](#installation)
-- [Setup](#setup)
-- [Example project](#example-project)
-- [AuthGuard](#authguard)
-- [HttpClient Interceptor](#httpclient-interceptor)
-- [Keycloak-js Events](#keycloak-js-events)
-- [Contributors](#contributors)
-- [License](#license)
+- [Keycloak Angular](#keycloak-angular)
+  - [About](#about)
+  - [Installation](#installation)
+    - [Versions](#versions)
+      - [Choosing the right keycloak-js version](#choosing-the-right-keycloak-js-version)
+  - [Setup](#setup)
+  - [Example project](#example-project)
+  - [AuthGuard](#authguard)
+  - [HttpClient Interceptor](#httpclient-interceptor)
+  - [Keycloak-js Events](#keycloak-js-events)
+  - [Contributors](#contributors)
+  - [License](#license)
 
 ---
 
@@ -52,8 +55,9 @@ Note that `keycloak-js` is a peer dependency of Keycloak Angular. This change al
 
 | Angular | keycloak-js | keycloak-angular |       Support       |
 | :-----: | :---------: | :--------------: | :-----------------: |
-|  17.x   |   18 - 24   |      15.x.x      | New Features / Bugs |
-|  16.x   |   18 - 24   |      14.x.x      |        Bugs         |
+|  18.x   |   18 - 24   |      16.x.x      | New Features / Bugs |
+|  17.x   |   18 - 24   |      15.x.x      |        Bugs         |
+|  16.x   |   18 - 24   |      14.x.x      |          -          |
 |  15.x   |   18 - 21   |      13.x.x      |          -          |
 |  14.x   |   18 - 19   |      12.x.x      |          -          |
 |  14.x   |   10 - 17   |      11.x.x      |          -          |
