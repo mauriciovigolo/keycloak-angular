@@ -16,3 +16,9 @@ export { KeycloakService } from './lib/core/services/keycloak.service';
 export { KeycloakBearerInterceptor } from './lib/core/interceptors/keycloak-bearer.interceptor';
 export { CoreModule } from './lib/core/core.module';
 export { KeycloakAngularModule } from './lib/keycloak-angular.module';
+
+/**
+ * @description - Keycloak Angular without module
+ */
+export * from './lib/keycloak-angular.provide';
+export * from './lib/core/interceptors/keycloak-bearer-fn.interceptor';
