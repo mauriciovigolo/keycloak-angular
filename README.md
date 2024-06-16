@@ -6,25 +6,21 @@
 [![Known Vulnerabilities][vulnerabilities-badge]][vulnerabilities]
 [![npm version][npm-version-badge]][npm]
 [![npm][npm-badge]][npm]
-[![Discord][discord-badge]][discord]
 <!-- prettier-ignore-end -->
 
 > Easy Keycloak setup for Angular applications.
 
 ---
 
-- [Keycloak Angular](#keycloak-angular)
-  - [About](#about)
-  - [Installation](#installation)
-    - [Versions](#versions)
-      - [Choosing the right keycloak-js version](#choosing-the-right-keycloak-js-version)
-  - [Setup](#setup)
-  - [Example project](#example-project)
-  - [AuthGuard](#authguard)
-  - [HttpClient Interceptor](#httpclient-interceptor)
-  - [Keycloak-js Events](#keycloak-js-events)
-  - [Contributors](#contributors)
-  - [License](#license)
+- [About](#about)
+- [Installation](#installation)
+- [Setup](#setup)
+- [Example project](#example-project)
+- [AuthGuard](#authguard)
+- [HttpClient Interceptor](#httpclient-interceptor)
+- [Keycloak-js Events](#keycloak-js-events)
+- [Contributors](#contributors)
+- [License](#license)
 
 ---
 
@@ -262,8 +258,8 @@ keycloakService.keycloakEvents$.subscribe({
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 
 <!-- prettier-ignore -->
- |[<img src="https://avatars3.githubusercontent.com/u/676270?v=4" width="89px;"/><br /><sub><b>Mauricio Vigolo</b></sub>](https://github.com/mauriciovigolo)<br />|[<img src="https://avatars1.githubusercontent.com/u/695720?s=400&v=4" width="89px;"/><br /><sub><b>Jon Koops</b></sub>](https://github.com/jonkoops)<br />|
-| :---: | :---: |
+ | [<img src="https://avatars3.githubusercontent.com/u/676270?v=4" width="89px;"/><br /><sub><b>Mauricio Vigolo</b></sub>](https://github.com/mauriciovigolo)<br /> | [<img src="https://avatars1.githubusercontent.com/u/695720?s=400&v=4" width="89px;"/><br /><sub><b>Jon Koops</b></sub>](https://github.com/https://github.com/jonkoops)<br /> |
+ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
@@ -285,6 +281,4 @@ document.
 [npm-badge]: https://img.shields.io/npm/dm/keycloak-angular?logo=npm&logoColor=fff
 [npm]: https://www.npmjs.com/package/keycloak-angular
 [contributors-badge]: https://img.shields.io/badge/all_contributors-5-orange
-[discord-badge]: https://img.shields.io/discord/790617227853692958?color=7389d8&labelColor=6a7ec2&logo=discord&logoColor=fff
-[discord]: https://discord.gg/mmzEhYXXDG
 <!-- prettier-ignore-end -->
