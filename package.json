@@ -1,6 +1,6 @@
 {
   "name": "keycloak-angular",
-  "version": "15.2.1",
+  "version": "15.3.0",
   "description": "Easy Keycloak setup for Angular applications",
   "scripts": {
     "clean": "shx rm -rf ./dist/",
@@ -19,7 +19,7 @@
   },
   "author": {
     "name": "Mauricio Gemelli Vigolo",
-    "email": "@mauriciovigolo",
+    "email": "@mauriciovigolo@mastodon.social",
     "url": "https://github.com/mauriciovigolo"
   },
   "license": "MIT",
@@ -62,7 +62,7 @@
     "karma-coverage-istanbul-reporter": "~3.0.3",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
-    "keycloak-js": "^24.0.1",
+    "keycloak-js": "^25.0.0",
     "ng-packagr": "^17.0.1",
     "prettier": "^3.1.0",
     "rxjs": "^7.8.1",
