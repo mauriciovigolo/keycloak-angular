@@ -6,7 +6,6 @@
 [![Known Vulnerabilities][vulnerabilities-badge]][vulnerabilities]
 [![npm version][npm-version-badge]][npm]
 [![npm][npm-badge]][npm]
-[![Discord][discord-badge]][discord]
 <!-- prettier-ignore-end -->
 
 > Easy Keycloak setup for Angular applications.
@@ -52,7 +51,7 @@ Note that `keycloak-js` is a peer dependency of Keycloak Angular. This change al
 
 | Angular | keycloak-js | keycloak-angular |       Support       |
 | :-----: |:-----------:| :--------------: | :-----------------: |
-|  16.x   |   18 - 24   |      14.x.x      | New Features / Bugs |
+|  16.x   |   18 - 25   |      14.x.x      | New Features / Bugs |
 |  15.x   |   18 - 21   |      13.x.x      |        Bugs         |
 |  14.x   |   18 - 19   |      12.x.x      |          -          |
 |  14.x   |   10 - 17   |      11.x.x      |          -          |
@@ -257,8 +256,8 @@ keycloakService.keycloakEvents$.subscribe({
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 
 <!-- prettier-ignore -->
- |[<img src="https://avatars3.githubusercontent.com/u/676270?v=4" width="89px;"/><br /><sub><b>Mauricio Vigolo</b></sub>](https://github.com/mauriciovigolo)<br />|[<img src="https://avatars1.githubusercontent.com/u/695720?s=400&v=4" width="89px;"/><br /><sub><b>Jon Koops</b></sub>](https://github.com/https://github.com/jonkoops)<br />|
-| :---: | :---: |
+ |[<img src="https://avatars3.githubusercontent.com/u/676270?v=4" width="89px;"/><br /><sub><b>Mauricio Vigolo</b></sub>](https://github.com/mauriciovigolo)<br />|[<img src="https://avatars1.githubusercontent.com/u/695720?s=400&v=4" width="89px;"/><br /><sub><b>Jon Koops</b></sub>](https://github.com/jonkoops)<br />|
+| :---: |:--------------------------------------------------------------------------------------------------------------------------------------------------------:|
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
@@ -280,6 +279,4 @@ document.
 [npm-badge]: https://img.shields.io/npm/dm/keycloak-angular?logo=npm&logoColor=fff
 [npm]: https://www.npmjs.com/package/keycloak-angular
 [contributors-badge]: https://img.shields.io/badge/all_contributors-5-orange
-[discord-badge]: https://img.shields.io/discord/790617227853692958?color=7389d8&labelColor=6a7ec2&logo=discord&logoColor=fff
-[discord]: https://discord.gg/mmzEhYXXDG
 <!-- prettier-ignore-end -->
