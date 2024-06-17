@@ -50,10 +50,10 @@ Note that `keycloak-js` is a peer dependency of Keycloak Angular. This change al
 ### Versions
 
 | Angular | keycloak-js | keycloak-angular |       Support       |
-| :-----: | :---------: | :--------------: | :-----------------: |
-|  18.x   |   18 - 24   |      16.x.x      | New Features / Bugs |
-|  17.x   |   18 - 24   |      15.x.x      |        Bugs         |
-|  16.x   |   18 - 24   |      14.x.x      |          -          |
+| :-----: |:-----------:| :--------------: | :-----------------: |
+|  18.x   |   18 - 25   |      16.x.x      | New Features / Bugs |
+|  17.x   |   18 - 25   |      15.x.x      |        Bugs         |
+|  16.x   |   18 - 25   |      14.x.x      |          -          |
 |  15.x   |   18 - 21   |      13.x.x      |          -          |
 |  14.x   |   18 - 19   |      12.x.x      |          -          |
 |  14.x   |   10 - 17   |      11.x.x      |          -          |
