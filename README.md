@@ -78,7 +78,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 function initializeKeycloak(keycloak: KeycloakService) {
-  return () =>
+  return () => {
     keycloak.init({
       config: {
         url: 'http://localhost:8080',
@@ -91,6 +91,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
           window.location.origin + '/assets/silent-check-sso.html'
       }
     });
+  }
 }
 
 @NgModule({
@@ -112,6 +113,8 @@ export class AppModule {}
 In the example we have set up Keycloak to use a silent `check-sso`. With this feature enabled, your browser will not do a full redirect to the Keycloak server and back to your application, instead this action will be performed in a hidden iframe, so your application resources only need to be loaded and parsed once by the browser when the app is initialized and not again after the redirect back from Keycloak to your app.
 
 To ensure that Keycloak can communicate through the iframe you will have to serve a static HTML asset from your application at the location provided in `silentCheckSsoRedirectUri`.
+
+If your app should be accessible only to authorized users, then set `onLoad: 'login-required'` and `await keycloak.init()`.
 
 Create a file called `silent-check-sso.html` in the `assets` directory of your application and paste in the contents as seen below.
 
@@ -189,7 +192,7 @@ By default, all HttpClient requests will add the Authorization header in the for
 There is also the possibility to exclude requests that should not have the authorization header. This is accomplished by implementing the `shouldAddToken` method in the keycloak initialization. For example, the configuration below will not add the token to `GET` requests that match the paths `/assets` or `/clients/public`:
 
 ```ts
-await keycloak.init({
+keycloak.init({
   config: {
     url: 'http://localhost:8080',
     realm: 'your-realm',
@@ -219,7 +222,7 @@ In the case where your application frequently polls an authenticated endpoint, y
 In the example below, any http requests with the header `token-update: false` will not trigger the user's keycloak token to be updated.
 
 ```ts
-await keycloak.init({
+keycloak.init({
   config: {
     url: 'http://localhost:8080',
     realm: 'your-realm',
