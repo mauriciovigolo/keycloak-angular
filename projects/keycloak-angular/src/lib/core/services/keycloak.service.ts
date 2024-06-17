@@ -32,7 +32,7 @@ export class KeycloakService {
   /**
    * Keycloak-js instance.
    */
-  private _instance: Keycloak.KeycloakInstance;
+  private _instance: Keycloak;
   /**
    * User profile as KeycloakProfile interface.
    */
