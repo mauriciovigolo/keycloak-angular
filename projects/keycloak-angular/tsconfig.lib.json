@@ -3,7 +3,7 @@
   "compilerOptions": {
     "module": "es2015",
     "declarationMap": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "declaration": true,
     "sourceMap": true,
     "inlineSources": true,
