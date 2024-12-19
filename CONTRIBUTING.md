@@ -35,24 +35,22 @@ git clone https://github.com/YOUR-USERNAME/keycloak-angular.git
 npm install
 ```
 
-- Now, lets code! :smile:
-
 ## <a name="sug"></a> Submission guidelines
 
 ### For issues
 
-Before submiting an issue, please search if there is an open issue for the same bug. A minimal reproduce scenario is necessary to help to understand the problem.
+Before submitting an issue, please search if there is an open issue for the same bug. A minimal reproduce scenario is necessary to help to understand the problem.
 
 For opening an issue, you can fill out this [issue form](https://github.com/mauriciovigolo/keycloak-angular/issues/new).
 
 ### Submitting a Pull Request (PR)
 
-Before submiting a Pull Request, please:
+Before submitting a Pull Request, please:
 
 - Search for open and closed related PRs.
 - Follow the coding rules.
 - Follow the commit message guidelines.
-- Checkout the code documentation - jsdocs.
+- Checkout the code documentation - jsdoc.
 
 ## <a name="cru"></a> Coding rules
 
@@ -126,6 +124,6 @@ Breaking Changes should start with the word BREAKING CHANGE: with a space or two
 
 ## <a name="fmg"></a> Final message
 
-Thanks for your interest in this project. Hope to see your contribution!
+Thank you for your interest in this project. Hope to see your contribution!
 
 See you and happy coding!

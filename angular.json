@@ -7,7 +7,7 @@
       "root": "projects/keycloak-angular",
       "sourceRoot": "projects/keycloak-angular/src",
       "projectType": "library",
-      "prefix": "lib",
+      "prefix": "ka",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -25,7 +25,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/keycloak-angular/src/test.ts",
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/keycloak-angular/tsconfig.spec.json",
             "karmaConfig": "projects/keycloak-angular/karma.conf.js"
           }
@@ -33,38 +33,32 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "projects/keycloak-angular/**/*.ts",
-              "projects/keycloak-angular/**/*.html"
-            ]
+            "lintFilePatterns": ["projects/keycloak-angular/**/*.ts", "projects/keycloak-angular/**/*.html"]
           }
         }
       }
     },
-    "example": {
+    "example-ngmodule": {
       "projectType": "application",
       "schematics": {},
-      "root": "projects/example",
-      "sourceRoot": "projects/example/src",
+      "root": "projects/examples/ngmodule",
+      "sourceRoot": "projects/examples/ngmodule/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": {
-              "base": "dist/example"
+              "base": "dist/examples/ngmodule"
             },
-            "index": "projects/example/src/index.html",
+            "index": "projects/examples/ngmodule/src/index.html",
             "polyfills": ["zone.js"],
-            "tsConfig": "projects/example/tsconfig.app.json",
-            "assets": [
-              "projects/example/src/favicon.ico",
-              "projects/example/src/assets"
-            ],
+            "tsConfig": "projects/examples/ngmodule/tsconfig.app.json",
+            "assets": ["projects/examples/ngmodule/src/favicon.ico", "projects/examples/ngmodule/src/assets"],
             "allowedCommonJsDependencies": ["base64-js", "js-sha256"],
-            "styles": ["projects/example/src/styles.css"],
+            "styles": ["projects/examples/ngmodule/src/styles.css"],
             "scripts": [],
-            "browser": "projects/example/src/main.ts"
+            "browser": "projects/examples/ngmodule/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -95,10 +89,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "example:build:production"
+              "buildTarget": "example-ngmodule:build:production"
             },
             "development": {
-              "buildTarget": "example:build:development"
+              "buildTarget": "example-ngmodule:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -106,35 +100,116 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "example:build"
+            "buildTarget": "example-ngmodule:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
-            "tsConfig": "projects/example/tsconfig.spec.json",
-            "assets": [
-              "projects/example/src/favicon.ico",
-              "projects/example/src/assets"
-            ],
-            "styles": ["projects/example/src/styles.css"],
+            "tsConfig": "projects/examples/ngmodule/tsconfig.spec.json",
+            "assets": ["projects/examples/ngmodule/src/favicon.ico", "projects/examples/ngmodule/src/assets"],
+            "styles": ["projects/examples/ngmodule/src/styles.css"],
             "scripts": []
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "projects/example/**/*.ts",
-              "projects/example/**/*.html"
-            ]
+            "lintFilePatterns": ["projects/examples/ngmodule/**/*.ts", "projects/examples/ngmodule/**/*.html"]
+          }
+        }
+      }
+    },
+    "example-standalone": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/examples/standalone",
+      "sourceRoot": "projects/examples/standalone/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/examples/standalone",
+            "index": "projects/examples/standalone/src/index.html",
+            "browser": "projects/examples/standalone/src/main.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "projects/examples/standalone/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/examples/standalone/public"
+              }
+            ],
+            "styles": ["projects/examples/standalone/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "example-standalone:build:production"
+            },
+            "development": {
+              "buildTarget": "example-standalone:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "tsConfig": "projects/examples/standalone/tsconfig.spec.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/examples/standalone/public"
+              }
+            ],
+            "styles": ["projects/examples/standalone/src/styles.css"],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["projects/examples/standalone/**/*.ts", "projects/examples/standalone/**/*.html"]
           }
         }
       }
     }
   },
   "cli": {
-    "schematicCollections": ["@angular-eslint/schematics"]
+    "schematicCollections": ["@angular-eslint/schematics"],
+    "analytics": false
   }
 }
