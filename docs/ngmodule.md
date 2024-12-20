@@ -21,7 +21,7 @@ This library helps you to use [keycloak-js](https://www.keycloak.org/docs/latest
   functionalities to the original functions and adding new methods to make it easier to be consumed by
   Angular applications.
 - Generic **AuthGuard implementation**, so you can customize your own AuthGuard logic inheriting the authentication logic and the roles load.
-- A **HttpClient interceptor** that adds the authorization header to all HttpClient requests.
+- An **HttpClient interceptor** that adds the authorization header to all HttpClient requests.
   It is also possible to disable this interceptor or exclude routes from having the authorization header.
 - This documentation also assists you to configure the keycloak in your Angular applications and with
   the client setup in the admin console of your keycloak installation.
