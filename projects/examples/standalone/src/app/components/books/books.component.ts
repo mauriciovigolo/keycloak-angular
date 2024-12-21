@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 
 import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book.model';
@@ -10,8 +10,7 @@ import { Book } from '../../models/book.model';
 })
 export class BooksComponent implements OnInit {
   books: Book[] = [];
-
-  constructor(private bookService: BookService) {}
+  private readonly bookService = inject(BookService);
 
   ngOnInit() {
     this.bookService.listBooks().subscribe((data) => {

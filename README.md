@@ -28,13 +28,13 @@
 
 ## About
 
-`Keycloak-Angular` is a library that makes it easier to use [Keycloak-js](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter) in Angular applications. It provides the following features:
+`Keycloak-Angular` is a library that makes it easier to use [keycloak-js](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter) in Angular applications. It provides the following features:
 
 - **Easy Initialization**: Use the `provideKeycloak` function to set up and initialize a Keycloak instance with `provideAppInitializer`. This simplifies the setup process.
 - **Angular DI Support**: The Keycloak client instance can be injected directly into Angular components, services, and other parts of your app. There’s no need to create a custom service to wrap the client.
 - **HTTP Interceptors**: Add the Bearer token to the `Authorization` header with built-in interceptors. These are modular and easy to configure using injection tokens. You can also create your own interceptors with provided helper functions.
-- **Keycloak Events as Signals**: Access Keycloak events easily using an Angular Signal, provided through the `KEYCLOAK_EVENT_SIGNAL` injection token.
-- **Automatic Token Refresh**: Use the `withRefreshToken` feature to automatically refresh tokens when they expire, considering the user activity and a sessionTimeout.
+- **Keycloak Events as Signals**: Access Keycloak events easily using Angular Signals, provided through the `KEYCLOAK_EVENT_SIGNAL` injection token.
+- **Automatic Token Refresh**: Use the `withAutoRefreshToken` feature to automatically refresh tokens when they expire, considering the user activity and a sessionTimeout.
 - **Custom Route Guards**: Use the `createAuthGuard` factory to build guards for `CanActivate` and `CanActivateChild`, helping you secure routes with custom logic.
 - **Role-Based Rendering**: The `*kaHasRoles` directive lets you show or hide parts of the DOM based on the user’s resource or realm roles.
 
@@ -46,7 +46,7 @@ Run the following command to install both Keycloak Angular and the official Keyc
 npm install keycloak-angular keycloak-js
 ```
 
-Note that `keycloak-js` is a peer dependency of Keycloak Angular. This allows greater flexibility of choosing the right version of the Keycloak client version for your project.
+Note that `keycloak-js` is a peer dependency of `keycloak-angular`. This allows greater flexibility of choosing the right version of the Keycloak client for your project.
 
 ### Versions
 
@@ -67,7 +67,7 @@ The Keycloak client documentation recommends to use the same version of your Key
 
 ## Setup
 
-To initialize Keycloak, add `provideKeycloak` to the `providers` array in the `ApplicationConfig` object (e.g., in `app.config.ts`). If `initOptions` is included, Keycloak-Angular will automatically use `provideAppInitializer` to handle initialization, following the recommended approach for starting dependencies.
+To initialize Keycloak, add `provideKeycloak` to the `providers` array in the `ApplicationConfig` object (e.g., in `app.config.ts`). If `initOptions` is included, `keycloak-angular` will automatically use `provideAppInitializer` to handle initialization, following the recommended approach for starting dependencies.
 
 Use the example code below as a guide for your application.
 
@@ -101,7 +101,7 @@ export const appConfig: ApplicationConfig = {
 >
 > 1. You do not need to call `provideAppInitializer` if `initOptions` is provided. The library handles this automatically.
 > 2. If you need to control when `keycloak.init` is called, do not pass the `initOptions` to the `provideKeycloak` function. In this case, you are responsible for calling `keycloak.init` manually.
-> 3. For reference, Angular `APP_INITIALIZER` is deprecated. The recommended approach is to use `provideAppInitializer`.
+> 3. For reference, Angular's `APP_INITIALIZER` is deprecated. The recommended approach is to use `provideAppInitializer`.
 
 In the example, Keycloak is configured to use a silent `check-sso`. With this feature enabled, your browser avoids a full redirect to the Keycloak server and back to your application. Instead, this action is performed in a hidden iframe, allowing your application resources to be loaded and parsed only once during initialization, rather than reloading after a redirect.
 

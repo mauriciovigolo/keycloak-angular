@@ -8,7 +8,6 @@ import Keycloak from 'keycloak-js';
   styleUrls: [`user-profile.component.css`]
 })
 export class UserProfileComponent implements OnInit {
-  copyMessage: string | null = null;
   user: User | undefined;
 
   constructor(private readonly keycloak: Keycloak) {}

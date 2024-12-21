@@ -18,14 +18,14 @@ import {
 export class MenuComponent {
   authenticated = false;
   keycloakStatus: string | undefined;
+  private readonly keycloak = inject(Keycloak);
+  private readonly keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
 
-  constructor(private readonly keycloak: Keycloak) {
-    const keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
-
+  constructor() {
     effect(() => {
-      const keycloakEvent = keycloakSignal();
+      const keycloakEvent = this.keycloakSignal();
 
-      this.keycloakStatus = keycloakSignal().type;
+      this.keycloakStatus = keycloakEvent.type;
 
       if (keycloakEvent.type === KeycloakEventType.Ready) {
         this.authenticated = typeEventArgs<ReadyArgs>(keycloakEvent.args);
