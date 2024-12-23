@@ -1,0 +1,26 @@
+<div class="section">
+  <header>
+    <h1>Sci-Fi Book List</h1>
+    <p class="description">
+      This component uses a service to fetch books from a mocked server. It is designed to test the Bearer Interceptor
+      feature.<br />
+      Open the developer tools in your browser and inspect the request to
+      <code>http://localhost:8181/books</code>. The request should include the <code>Authorization</code> header with
+      the Bearer token.
+    </p>
+  </header>
+
+  <main>
+    @if (books.length === 0) {
+      <p class="no-books">No books found. Did you start the <code>example-server</code> project?</p>
+    } @else {
+      <ul class="book-list">
+        @for (book of books; track book.id) {
+          <li class="book-item">
+            <strong>{{ book.title }}</strong> by {{ book.author }} ({{ book.year }})
+          </li>
+        }
+      </ul>
+    }
+  </main>
+</div>
