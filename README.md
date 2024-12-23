@@ -125,7 +125,7 @@ If you want to know more about these options and various other capabilities of t
 > Since Keycloak-Angular v19, the KeycloakAngularModule, KeycloakService, KeycloakBearerInterceptor and KeycloakAuthGuard are deprecated.
 > If your application relies on NgModules, the library still has support for it. See more information on how to configure a [NgModule the application](https://github.com/mauriciovigolo/keycloak-angular/docs/ngmodule.md).
 
-** Additional Resources**
+**Additional Resources**
 For more details, refer to the [provideKeycloak](https://github.com/mauriciovigolo/keycloak-angular/docs/provide.md) documentation.
 
 ## Example project
@@ -277,7 +277,7 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-** Additional Resources**
+**Additional Resources**
 For more details on the available interceptors and their configurations, refer to the [Keycloak HttpClient Interceptors](https://github.com/mauriciovigolo/keycloak-angular/docs/interceptors.md) documentation.
 
 ## Directives
