@@ -23,7 +23,7 @@ import { ExcludedUrlRegex } from '../interfaces/keycloak-options';
  *
  * @deprecated KeycloakBearerInterceptor is deprecated and will be removed in future versions.
  * Use the new functional interceptor such as `includeBearerTokenInterceptor`.
- * More info: https://...
+ * More info: https://github.com/mauriciovigolo/keycloak-angular/docs/migration-guides/v19.md
  */
 @Injectable()
 export class KeycloakBearerInterceptor implements HttpInterceptor {

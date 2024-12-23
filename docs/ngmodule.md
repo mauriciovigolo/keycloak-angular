@@ -1,5 +1,7 @@
 # Keycloak Angular Integration with NgModule Application
 
+> **⚠️ Note**: This implementation is **deprecated** and will be removed in future versions of Keycloak-Angular. It is recommended to migrate to the new approach based on the `provideKeycloak` function and Keycloak-Angular features for better modularity and alignment with modern Angular practices.
+
 [Return to README.md](../README.md)
 
 ---
