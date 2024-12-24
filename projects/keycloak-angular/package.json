@@ -1,14 +1,14 @@
 {
   "name": "keycloak-angular",
-  "version": "19.0.1",
-  "description": "Easy Keycloak setup for Angular applications",
+  "version": "19.0.2",
+  "description": "Easy Keycloak integration for Angular applications.",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/mauriciovigolo/keycloak-angular.git"
   },
   "author": {
     "name": "Mauricio Gemelli Vigolo",
-    "email": "@mauriciovigolo@mastodon.social",
+    "email": "@mauriciovigolo.bsky.social",
     "url": "https://github.com/mauriciovigolo"
   },
   "license": "MIT",
