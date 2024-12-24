@@ -7,7 +7,15 @@
  */
 
 import Keycloak, { KeycloakConfig, KeycloakInitOptions } from 'keycloak-js';
-import { EnvironmentProviders, makeEnvironmentProviders, provideAppInitializer, Provider } from '@angular/core';
+import {
+  EnvironmentInjector,
+  EnvironmentProviders,
+  inject,
+  makeEnvironmentProviders,
+  provideAppInitializer,
+  Provider,
+  runInInjectionContext
+} from '@angular/core';
 import { createKeycloakSignal, KEYCLOAK_EVENT_SIGNAL } from './signals/keycloak-events-signal';
 import { KeycloakFeature } from './features/keycloak.feature';
 
@@ -55,12 +63,10 @@ const provideKeycloakInAppInitializer = (
     return [];
   }
 
-  return provideAppInitializer(() => {
-    keycloak.init(initOptions).catch((error) => {
-      console.error('Keycloak initialization failed', error);
-      return Promise.reject(error);
-    });
-    features.forEach((feature) => feature.configure());
+  return provideAppInitializer(async () => {
+    const injector = inject(EnvironmentInjector);
+    runInInjectionContext(injector, () => features.forEach((feature) => feature.configure()));
+    await keycloak.init(initOptions).catch((error) => console.error('Keycloak initialization failed', error));
   });
 };
 
