@@ -10,12 +10,12 @@ import Keycloak, { KeycloakConfig, KeycloakInitOptions } from 'keycloak-js';
 import { TestBed } from '@angular/core/testing';
 
 import { provideKeycloak } from './provide-keycloak';
+import { KeycloakFeature } from './features/keycloak.feature';
+import { createInterceptorCondition } from './interceptors/keycloak.interceptor';
 import {
   INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG,
   IncludeBearerTokenCondition
 } from './interceptors/include-bearer-token.interceptor';
-import { createInterceptorCondition } from './interceptors/keycloak.interceptor';
-import { KeycloakFeature } from './features/keycloak.feature';
 
 describe('provideKeycloak', () => {
   it('should instantiate keycloak and initialize it if initOptions is provided', () => {
@@ -127,7 +127,7 @@ describe('provideKeycloak', () => {
     };
 
     const initOptions: KeycloakInitOptions = {
-      onLoad: 'login-required'
+      onLoad: 'check-sso'
     };
 
     const withCustomFeature: KeycloakFeature = {
@@ -144,7 +144,6 @@ describe('provideKeycloak', () => {
     TestBed.configureTestingModule({
       providers: [provideKeycloakAngular]
     });
-
     const keycloak = TestBed.inject(Keycloak);
 
     expect(keycloak).toBeDefined();
