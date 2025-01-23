@@ -7,7 +7,7 @@
  */
 
 /**
- * Represents a feature from keycloak-angualr that can be configured during the library initialization.
+ * Represents a feature from keycloak-angular that can be configured during the library initialization.
  *
  * This type defines the structure of a feature that includes a `configure` method,
  * which is responsible for setting up or initializing the feature's behavior or properties

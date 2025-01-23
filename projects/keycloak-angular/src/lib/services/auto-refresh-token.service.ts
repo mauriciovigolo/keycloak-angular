@@ -18,7 +18,7 @@ import { UserActivityService } from './user-activity.service';
 type AutoRefreshTokenOptions = {
   /**
    * Maximum allowed inactivity duration in milliseconds before
-   * the session times out. Default is `50000`.
+   * the session times out. Default is `300000`.
    */
   sessionTimeout?: number;
 
