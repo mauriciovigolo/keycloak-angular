@@ -109,14 +109,22 @@ export const customBearerTokenInterceptor = (
 
   const keycloak = inject(Keycloak);
 
-  const matchingCondition = conditions.find(async (condition) => await condition.shouldAddToken(req, next, keycloak));
-  if (!matchingCondition) {
-    return next(req);
-  }
+  return from(
+    Promise.all(conditions.map(async (condition) => await condition.shouldAddToken(req, next, keycloak)))
+  ).pipe(
+    mergeMap((evaluatedConditions) => {
+      const matchingConditionIndex = evaluatedConditions.findIndex(Boolean);
+      const matchingCondition = conditions[matchingConditionIndex];
 
-  return from(conditionallyUpdateToken(req, keycloak, matchingCondition)).pipe(
-    mergeMap(() =>
-      keycloak.authenticated ? addAuthorizationHeader(req, next, keycloak, matchingCondition) : next(req)
-    )
+      if (!matchingCondition) {
+        return next(req);
+      }
+
+      return from(conditionallyUpdateToken(req, keycloak, matchingCondition)).pipe(
+        mergeMap(() =>
+          keycloak.authenticated ? addAuthorizationHeader(req, next, keycloak, matchingCondition) : next(req)
+        )
+      );
+    })
   );
 };

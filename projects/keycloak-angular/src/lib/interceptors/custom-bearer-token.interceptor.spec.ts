@@ -92,4 +92,30 @@ describe('customBearerTokenInterceptor', () => {
       });
     });
   });
+
+  it('should evaluate multiple async conditions and apply the correct one', (done) => {
+    TestBed.overrideProvider(CUSTOM_BEARER_TOKEN_INTERCEPTOR_CONFIG, {
+      useValue: [
+        {
+          shouldAddToken: async (req, next, keycloak) => false
+        },
+        {
+          shouldAddToken: async (req, next, keycloak) => req.url.startsWith('/api') && keycloak.authenticated,
+          authorizationHeaderName: 'DifferentAuthorization'
+        }
+      ] as CustomBearerTokenCondition[]
+    });
+
+    TestBed.runInInjectionContext(() => {
+      const result = customBearerTokenInterceptor(request, handlerFn);
+
+      result.subscribe(() => {
+        expect(handlerFn).toHaveBeenCalled();
+        const forwardedRequest = handlerFn.calls.mostRecent().args[0] as HttpRequest<unknown>;
+        expect(forwardedRequest.headers.get('DifferentAuthorization')).toBe('Bearer mockToken');
+        done();
+      });
+    });
+
+  })
 });
