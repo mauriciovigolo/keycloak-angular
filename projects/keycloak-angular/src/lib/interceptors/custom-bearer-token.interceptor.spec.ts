@@ -116,6 +116,5 @@ describe('customBearerTokenInterceptor', () => {
         done();
       });
     });
-
-  })
+  });
 });
