@@ -88,7 +88,7 @@ Create a file called `silent-check-sso.html` in the `assets` directory of your a
 </html>
 ```
 
-If you want to know more about these options and various other capabilities of the Keycloak client is recommended to read the [JavaScript Adapter documentation](https://www.keycloak.org/docs/latest/securing_apps/#_javascript_adapter).
+If you want to know more about these options and various other capabilities of the Keycloak client is recommended to read the [JavaScript Adapter documentation](https://www.keycloak.org/securing-apps/javascript-adapter).
 
 ## Example project
 
@@ -191,7 +191,7 @@ await keycloak.init({
 
 ## Keycloak-js Events
 
-The callback events from [keycloak-js](https://www.keycloak.org/docs/latest/securing_apps/index.html#javascript-adapter-reference) are available through a RxJS subject which is defined by `keycloakEvents$`.
+The callback events from [keycloak-js](https://www.keycloak.org/securing-apps/javascript-adapter#_callback_events) are available through a RxJS subject which is defined by `keycloakEvents$`.
 
 For example you make keycloak-angular auto refreshing your access token when expired:
 

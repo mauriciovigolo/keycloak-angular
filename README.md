@@ -119,7 +119,7 @@ Create a file named `silent-check-sso.html` in the `public` or `assets` director
 </html>
 ```
 
-If you want to know more about these options and various other capabilities of the Keycloak client is recommended to read the [JavaScript Adapter documentation](https://www.keycloak.org/docs/latest/securing_apps/#_javascript_adapter).
+If you want to know more about these options and various other capabilities of the Keycloak client is recommended to read the [JavaScript Adapter documentation](https://www.keycloak.org/securing-apps/javascript-adapter).
 
 > **Note About NgModules:**
 > Since Keycloak-Angular v19, the KeycloakAngularModule, KeycloakService, KeycloakBearerInterceptor and KeycloakAuthGuard are deprecated.
