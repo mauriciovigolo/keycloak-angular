@@ -243,6 +243,7 @@ import {
   provideKeycloak,
   createInterceptorCondition,
   IncludeBearerTokenCondition,
+  includeBearerTokenInterceptor,
   INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG
 } from 'keycloak-angular';
 
