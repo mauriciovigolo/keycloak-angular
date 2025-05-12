@@ -18,7 +18,7 @@ import { KeycloakService } from './keycloak.service';
  *
  * @deprecated Class based guards are deprecated in Keycloak Angular and will be removed in future versions.
  * Use the new `createAuthGuard` function to create a Guard for your application.
- * More info: https://github.com/mauriciovigolo/keycloak-angular/docs/migration-guides/v19.md
+ * More info: https://github.com/mauriciovigolo/keycloak-angular/blob/main/docs/migration-guides/v19.md
  */
 export abstract class KeycloakAuthGuard implements CanActivate {
   /**

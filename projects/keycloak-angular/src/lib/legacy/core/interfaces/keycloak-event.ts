@@ -14,7 +14,7 @@
  * will be removed in future versions.
  * Use the new `KEYCLOAK_EVENT_SIGNAL` injection token to listen for the keycloak
  * events.
- * More info: https://github.com/mauriciovigolo/keycloak-angular/docs/migration-guides/v19.md
+ * More info: https://github.com/mauriciovigolo/keycloak-angular/blob/main/docs/migration-guides/v19.md
  */
 export enum KeycloakEventTypeLegacy {
   /**
@@ -62,7 +62,7 @@ export enum KeycloakEventTypeLegacy {
  * will be removed in future versions.
  * Use the new `KEYCLOAK_EVENT_SIGNAL` injection token to listen for the keycloak
  * events.
- * More info: https://github.com/mauriciovigolo/keycloak-angular/docs/migration-guides/v19.md
+ * More info: https://github.com/mauriciovigolo/keycloak-angular/blob/main/docs/migration-guides/v19.md
  */
 export interface KeycloakEventLegacy {
   /**

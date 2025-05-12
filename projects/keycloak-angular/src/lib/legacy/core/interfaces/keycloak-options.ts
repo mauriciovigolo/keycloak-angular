@@ -13,7 +13,7 @@ import { HttpRequest } from '@angular/common/http';
  *
  * @deprecated KeycloakBearerInterceptor is deprecated and will be removed in future versions.
  * Use the new functional interceptor `includeBearerTokenInterceptor`.
- * More info: https://github.com/mauriciovigolo/keycloak-angular/docs/migration-guides/v19.md
+ * More info: https://github.com/mauriciovigolo/keycloak-angular/blob/main/docs/migration-guides/v19.md
  */
 export type HttpMethodsLegacy = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS' | 'HEAD' | 'PATCH';
 
@@ -37,7 +37,7 @@ export type HttpMethodsLegacy = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS' | 
  *
  * @deprecated KeycloakBearerInterceptor is deprecated and will be removed in future versions.
  * Use the new functional interceptor `includeBearerTokenInterceptor`.
- * More info: https://github.com/mauriciovigolo/keycloak-angular/docs/migration-guides/v19.md
+ * More info: https://github.com/mauriciovigolo/keycloak-angular/blob/main/docs/migration-guides/v19.md
  */
 export interface ExcludedUrl {
   url: string;
@@ -51,7 +51,7 @@ export interface ExcludedUrl {
  *
  * @deprecated KeycloakBearerInterceptor is deprecated and will be removed in future versions.
  * Use the new functional interceptor `includeBearerTokenInterceptor`.
- * More info: https://github.com/mauriciovigolo/keycloak-angular/docs/migration-guides/v19.md
+ * More info: https://github.com/mauriciovigolo/keycloak-angular/blob/main/docs/migration-guides/v19.md
  */
 export interface ExcludedUrlRegex {
   urlPattern: RegExp;
@@ -63,7 +63,7 @@ export interface ExcludedUrlRegex {
  *
  * @deprecated KeycloakService is deprecated and will be removed in future versions.
  * Use the new `provideKeycloak` method to load Keycloak in an Angular application.
- * More info: https://github.com/mauriciovigolo/keycloak-angular/docs/migration-guides/v19.md
+ * More info: https://github.com/mauriciovigolo/keycloak-angular/blob/main/docs/migration-guides/v19.md
  */
 export interface KeycloakOptions {
   /**
