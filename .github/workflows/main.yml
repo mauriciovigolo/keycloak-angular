@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 env:
   FORCE_COLOR: 2
-  NODE_VERSION: 18
+  NODE_VERSION: 22
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -18,7 +18,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -54,7 +54,7 @@ jobs:
           key: setup-${{ github.sha }}
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
