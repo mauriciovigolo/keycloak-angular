@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/blob/main/LICENSE.md
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 
 import { Observable, combineLatest, from, of } from 'rxjs';
@@ -27,7 +27,8 @@ import { ExcludedUrlRegex } from '../interfaces/keycloak-options';
  */
 @Injectable()
 export class KeycloakBearerInterceptor implements HttpInterceptor {
-  constructor(private keycloak: KeycloakService) {}
+  private keycloak = inject(KeycloakService);
+
 
   /**
    * Calls to update the keycloak token if the request should update the token.
