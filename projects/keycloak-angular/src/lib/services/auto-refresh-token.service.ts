@@ -46,13 +46,13 @@ type AutoRefreshTokenOptions = {
  */
 @Injectable()
 export class AutoRefreshTokenService {
+  private readonly keycloak = inject(Keycloak);
+  private readonly userActivity = inject(UserActivityService);
+
   private options: Required<AutoRefreshTokenOptions> = this.defaultOptions;
   private initialized = false;
 
-  constructor(
-    private readonly keycloak: Keycloak,
-    private readonly userActivity: UserActivityService
-  ) {
+  constructor() {
     const keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
 
     effect(() => {

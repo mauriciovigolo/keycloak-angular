@@ -6,7 +6,11 @@ Keycloak-Angular introduces modular features that enhance its integration with A
 
 ### Purpose
 
-The `withAutoRefreshToken` feature automatically manages the Keycloak token refresh process and handles session inactivity. It ensures the token is refreshed based on user activity, improving session stability and reducing the risk of token expiration.
+The `withAutoRefreshToken` feature automatically manages the Keycloak token refresh process and handles session inactivity. It helps maintain session stability by refreshing the token based on user activity, reducing the risk of unexpected token expiration.
+
+The check is triggered when `keycloak-js` attempts to update the token, following the configuration defined on the Keycloak server. If the session timeout has passed the configured threshold, the user will be logged out. Otherwise, the token will be refreshed.
+
+This feature is particularly useful because the authorization token is not automatically renewed unless there is an explicit request to update it.
 
 ### Key Features
 

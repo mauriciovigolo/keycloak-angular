@@ -8,7 +8,7 @@ This repository contains example applications demonstrating the use of **Keycloa
 
 ### 1. **Keycloak Angular Standalone**
 
-- **Purpose**: Showcases the **standalone approach** of using **Keycloak Angular**, which is the recommended method starting from Keycloak-Angular v19 with Angular v19+.
+- **Purpose**: Showcases the **standalone approach** of using **Keycloak Angular**, which is the recommended method starting from Keycloak-Angular v19+ with Angular v19+.
 - **Features**:
   - Keycloak initialization using `provideKeycloak`.
   - Automatic token refresh with `withAutoRefreshToken`.
@@ -20,7 +20,22 @@ This repository contains example applications demonstrating the use of **Keycloa
 
 ---
 
-### 2. **Keycloak Angular NgModule**
+### 2. **Fetch Config File**
+
+- **Purpose**: Showcases how to initialize a Keycloak Angular application by fetching the config file. The application functionalities are identical as the Keycloak Angular Standalone example.
+- **Features**:
+  - Initialization of Keycloak using an external config file.
+  - Keycloak initialization using `provideKeycloak`.
+  - Automatic token refresh with `withAutoRefreshToken`.
+  - Simplified event handling using Keycloak Signal.
+  - Role-based rendering with `*kaHasRoles` directive.
+  - Bearer token interceptor and functional auth guard.
+
+[Read More](./fetch_config/README.md)
+
+---
+
+### 3. **Keycloak Angular NgModule**
 
 - **Purpose**: Demonstrates the integration of **Keycloak Angular** using the **NgModule approach**. This example is helpful for projects that still rely on the traditional Angular module system.
 - **Features**:
@@ -31,7 +46,7 @@ This repository contains example applications demonstrating the use of **Keycloa
 
 ---
 
-### 3. **Mock Server**
+### 4. **Mock Server**
 
 - **Purpose**: An Express application that serves mocked data. It is designed to act as a backend resource for Angular applications to test features like HTTP interceptors and token handling.
 - **Features**:
@@ -41,7 +56,7 @@ This repository contains example applications demonstrating the use of **Keycloa
 
 ---
 
-### 4. **Docker Setup**
+### 5. **Docker Setup**
 
 - **Purpose**: Provides a `docker-compose` and a Realm export to quickly bootstrap a Keycloak server for testing and development purposes.
 - **Features**:

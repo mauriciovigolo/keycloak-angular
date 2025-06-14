@@ -1,0 +1,57 @@
+.credentials {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.credentials li {
+  font-size: 1.1em;
+  margin: 5px 0;
+  padding: 5px 10px;
+  background: #f4f4f4;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+}
+
+.credentials li strong {
+  color: #2c3e50;
+  margin-right: 5px;
+}
+
+.credentials li code {
+  font-family: 'Courier New', Courier, monospace;
+  background: #eaeaea;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.copy-btn {
+  margin-left: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1.2em;
+}
+
+.copy-btn .copy-icon {
+  display: inline-block;
+  color: #5cb85c;
+  transition: color 0.3s ease;
+}
+
+.copy-btn .copy-icon:hover {
+  color: #4cae4c;
+}
+
+.message-box {
+  margin-top: 20px;
+  padding: 10px;
+  background: #dff0d8;
+  color: #3c763d;
+  border: 1px solid #d6e9c6;
+  border-radius: 4px;
+  font-size: 1.1em;
+}

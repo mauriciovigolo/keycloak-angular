@@ -1,0 +1,18 @@
+.no-books {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+.book-list {
+  list-style: none;
+  padding: 0;
+}
+
+.book-item {
+  padding: 0.5em 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.book-item:last-child {
+  border-bottom: none;
+}

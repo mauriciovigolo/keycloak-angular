@@ -52,8 +52,9 @@ Note that `keycloak-js` is a peer dependency of `keycloak-angular`. This allows 
 
 | Angular | keycloak-js | keycloak-angular |       Support       |
 | :-----: | :---------: | :--------------: | :-----------------: |
-|  19.x   |   18 - 26   |      19.x.x      | New Features / Bugs |
-|  18.x   |   18 - 26   |      16.x.x      |        Bugs         |
+|  20.x   |   18 - 26   |      20.x.x      | New Features / Bugs |
+|  19.x   |   18 - 26   |      19.x.x      |        Bugs         |
+|  18.x   |   18 - 26   |      16.x.x      |          -          |
 |  17.x   |   18 - 25   |      15.x.x      |          -          |
 |  16.x   |   18 - 25   |      14.x.x      |          -          |
 |  15.x   |   18 - 21   |      13.x.x      |          -          |
@@ -120,6 +121,41 @@ Create a file named `silent-check-sso.html` in the `public` or `assets` director
 ```
 
 If you want to know more about these options and various other capabilities of the Keycloak client is recommended to read the [JavaScript Adapter documentation](https://www.keycloak.org/docs/latest/securing_apps/#_javascript_adapter).
+
+## Load the keycloak configuration using an external file
+
+To initialize the Keycloak application using a configuration file hosted externally, consider the following approach:
+
+```ts
+const initializeApp = async () => {
+  // Replace the URL with the actual path to your configuration file
+  const { config, initOptions } = await fetch('/config.json').then((res) => res?.json());
+
+  const appConfig: ApplicationConfig = {
+    providers: [
+      provideKeycloakAngular(config, {
+        ...initOptions,
+        silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
+        redirectUri: window.location.origin + '/'
+      }),
+      provideZoneChangeDetection({ eventCoalescing: true }),
+      provideRouter(routes),
+      provideHttpClient(withInterceptors([includeBearerTokenInterceptor]))
+    ]
+  };
+
+  await bootstrapApplication(AppComponent, appConfig);
+};
+
+initializeApp().catch((error) => console.error(`Failed to initialize the application. ${error.message || error}`));
+```
+
+**Notes**:
+
+- This approach uses fetch to load the Keycloak configuration (config.json) before bootstrapping the Angular application.
+- Make sure that config.json is accessible at runtime and contains the correct structure for Keycloak configuration and initOptions.
+
+For a working example, refer to the [Fetch Config Example Project](projects/examples/fetch_config/README.md).
 
 > **Note About NgModules:**
 > Since Keycloak-Angular v19, the KeycloakAngularModule, KeycloakService, KeycloakBearerInterceptor and KeycloakAuthGuard are deprecated.
@@ -243,6 +279,7 @@ import {
   provideKeycloak,
   createInterceptorCondition,
   IncludeBearerTokenCondition,
+  includeBearerTokenInterceptor,
   INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG
 } from 'keycloak-angular';
 

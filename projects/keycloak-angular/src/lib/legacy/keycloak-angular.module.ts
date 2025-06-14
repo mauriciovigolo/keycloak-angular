@@ -13,7 +13,7 @@ import { CoreModule } from './core/core.module';
 /**
  * @deprecated NgModules are deprecated in Keycloak Angular and will be removed in future versions.
  * Use the new `provideKeycloak` function to load Keycloak in an Angular application.
- * More info: https://github.com/mauriciovigolo/keycloak-angular/docs/migration-guides/v19.md
+ * More info: https://github.com/mauriciovigolo/keycloak-angular/blob/main/docs/migration-guides/v19.md
  */
 @NgModule({
   imports: [CoreModule]
