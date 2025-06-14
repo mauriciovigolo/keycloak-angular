@@ -206,6 +206,92 @@
           }
         }
       }
+    },
+    "example-fetch_config": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/examples/fetch_config",
+      "sourceRoot": "projects/examples/fetch_config/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/fetch_config",
+            "index": "projects/examples/fetch_config/src/index.html",
+            "browser": "projects/examples/fetch_config/src/main.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "projects/examples/fetch_config/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/examples/fetch_config/public"
+              }
+            ],
+            "styles": ["projects/examples/fetch_config/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "example-fetch_config:build:production"
+            },
+            "development": {
+              "buildTarget": "example-fetch_config:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "tsConfig": "projects/examples/fetch_config/tsconfig.spec.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/examples/fetch_config/public"
+              }
+            ],
+            "styles": ["projects/examples/fetch_config/src/styles.css"],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["projects/examples/fetch_config/**/*.ts", "projects/examples/fetch_config/**/*.html"]
+          }
+        }
+      }
     }
   },
   "cli": {

@@ -29,7 +29,6 @@ import { ExcludedUrlRegex } from '../interfaces/keycloak-options';
 export class KeycloakBearerInterceptor implements HttpInterceptor {
   private keycloak = inject(KeycloakService);
 
-
   /**
    * Calls to update the keycloak token if the request should update the token.
    *

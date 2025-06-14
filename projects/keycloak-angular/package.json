@@ -29,6 +29,7 @@
     "@angular/common": "^20",
     "@angular/core": "^20",
     "@angular/router": "^20",
+    "rxjs": "^7",
     "keycloak-js": "^18 || ^19 || ^20 || ^21 || ^22 || ^23 || ^24 || ^25 || ^26"
   },
   "dependencies": {

@@ -1,0 +1,10 @@
+{
+  "config": {
+    "realm": "keycloak-angular-sandbox",
+    "url": "http://localhost:8080",
+    "clientId": "keycloak-angular"
+  },
+  "initOptions": {
+    "onLoad": "check-sso"
+  }
+}
