@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { User } from '../../models/user.model';
 import Keycloak from 'keycloak-js';
 
@@ -8,9 +8,9 @@ import Keycloak from 'keycloak-js';
   styleUrls: [`user-profile.component.css`]
 })
 export class UserProfileComponent implements OnInit {
-  user: User | undefined;
+  private readonly keycloak = inject(Keycloak);
 
-  constructor(private readonly keycloak: Keycloak) {}
+  user: User | undefined;
 
   async ngOnInit() {
     if (this.keycloak?.authenticated) {

@@ -74,6 +74,10 @@ import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs } fr
   selector: '[kaHasRoles]'
 })
 export class HasRolesDirective {
+  private templateRef = inject<TemplateRef<unknown>>(TemplateRef);
+  private viewContainer = inject(ViewContainerRef);
+  private keycloak = inject(Keycloak);
+
   /**
    * List of roles to validate against the resource or realm.
    */
@@ -89,11 +93,7 @@ export class HasRolesDirective {
    */
   @Input('kaHasRolesCheckRealm') checkRealm: boolean = false;
 
-  constructor(
-    private templateRef: TemplateRef<unknown>,
-    private viewContainer: ViewContainerRef,
-    private keycloak: Keycloak
-  ) {
+  constructor() {
     this.viewContainer.clear();
 
     const keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);

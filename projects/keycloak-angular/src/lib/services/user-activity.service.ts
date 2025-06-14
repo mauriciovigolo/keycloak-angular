@@ -22,6 +22,8 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
  */
 @Injectable()
 export class UserActivityService implements OnDestroy {
+  private ngZone = inject(NgZone);
+
   /**
    * Signal to store the timestamp of the last user activity.
    * The timestamp is represented as the number of milliseconds since epoch.
@@ -38,8 +40,6 @@ export class UserActivityService implements OnDestroy {
    * Computed signal to expose the last user activity as a read-only signal.
    */
   public readonly lastActivitySignal = computed(() => this.lastActivity());
-
-  constructor(private ngZone: NgZone) {}
 
   /**
    * Starts monitoring user activity events (`mousemove`, `touchstart`, `keydown`, `click`, `scroll`)
