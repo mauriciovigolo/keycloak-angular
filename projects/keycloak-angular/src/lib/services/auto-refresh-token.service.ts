@@ -7,7 +7,7 @@
  */
 
 import { effect, inject, Injectable } from '@angular/core';
-import Keycloak from 'keycloak-js';
+import Keycloak, { KeycloakLoginOptions, KeycloakLogoutOptions } from 'keycloak-js';
 
 import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType } from '../signals/keycloak-events-signal';
 import { UserActivityService } from './user-activity.service';
@@ -31,6 +31,20 @@ type AutoRefreshTokenOptions = {
    * Default is `'logout'`.
    */
   onInactivityTimeout?: 'login' | 'logout' | 'none';
+
+  /**
+   * Logout options to pass to keycloak.logout when the user is getting logged out automatically after timout.
+   *
+   * Default value: undefined
+   */
+  logoutOptions?: KeycloakLogoutOptions;
+
+  /**
+   * Login options to pass to keycloak.login when the user is getting logged in automatically after timeout.
+   *
+   * Default value: undefined
+   */
+  loginOptions?: KeycloakLoginOptions;
 };
 
 /**
@@ -67,17 +81,23 @@ export class AutoRefreshTokenService {
   private get defaultOptions(): Required<AutoRefreshTokenOptions> {
     return {
       sessionTimeout: 300000,
-      onInactivityTimeout: 'logout'
+      onInactivityTimeout: 'logout',
+      logoutOptions: undefined,
+      loginOptions: undefined
     };
   }
 
   private executeOnInactivityTimeout() {
     switch (this.options.onInactivityTimeout) {
       case 'login':
-        this.keycloak.login().catch((error) => console.error('Failed to execute the login call', error));
+        this.keycloak
+          .login(this.options.loginOptions)
+          .catch((error) => console.error('Failed to execute the login call', error));
         break;
       case 'logout':
-        this.keycloak.logout().catch((error) => console.error('Failed to execute the logout call', error));
+        this.keycloak
+          .logout(this.options.logoutOptions)
+          .catch((error) => console.error('Failed to execute the logout call', error));
         break;
       default:
         break;
