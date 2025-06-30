@@ -10,6 +10,7 @@ import { inject } from '@angular/core';
 
 import { AutoRefreshTokenService } from '../services/auto-refresh-token.service';
 import { KeycloakFeature } from './keycloak.feature';
+import { KeycloakLoginOptions, KeycloakLogoutOptions } from 'keycloak-js';
 
 /**
  * Options for configuring the auto-refresh token feature.
@@ -36,6 +37,20 @@ type WithRefreshTokenOptions = {
    * Default value: `'logout'`.
    */
   onInactivityTimeout?: 'login' | 'logout' | 'none';
+
+  /**
+   * Logout options to pass to keycloak.logout when the user is getting logged out automatically after timout.
+   *
+   * Default value: undefined
+   */
+  logoutOptions?: KeycloakLogoutOptions;
+
+  /**
+   * Login options to pass to keycloak.login when the user is getting logged in automatically after timeout.
+   *
+   * Default value: undefined
+   */
+  loginOptions?: KeycloakLoginOptions;
 };
 
 /**
@@ -65,6 +80,10 @@ type WithRefreshTokenOptions = {
  *       - `'login'`: Execute `keycloak.login` function.
  *       - `'logout'`: Logs the user out by calling `keycloak.logout`.
  *       - `'none'`: No action is taken.
+ *   - `logoutOptions` (optional): Logout options to pass to keycloak.logout
+ *     when the user is getting logged out automatically after timout.
+ *   - `loginOptions` (optional): Login options to pass to keycloak.login
+ *     when the user is getting logged in automatically after timout.
  *
  * @returns A `KeycloakFeature` instance that configures and enables the
  * auto-refresh token functionality.

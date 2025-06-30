@@ -50,17 +50,26 @@ describe('AutoRefreshTokenService', () => {
       expect(mockUserActivityService.startMonitoring).toHaveBeenCalled();
       expect(service['options']).toEqual({
         sessionTimeout: 300000,
-        onInactivityTimeout: 'logout'
+        onInactivityTimeout: 'logout',
+        loginOptions: undefined,
+        logoutOptions: undefined
       });
     });
 
     it('should merge provided options with defaults', () => {
-      service.start({ sessionTimeout: 50000, onInactivityTimeout: 'login' });
+      service.start({
+        sessionTimeout: 50000,
+        onInactivityTimeout: 'login',
+        loginOptions: { redirectUri: 'testLoginUri' },
+        logoutOptions: { redirectUri: 'testLogoutUri' }
+      });
 
       expect(mockUserActivityService.startMonitoring).toHaveBeenCalled();
       expect(service['options']).toEqual({
         sessionTimeout: 50000,
-        onInactivityTimeout: 'login'
+        onInactivityTimeout: 'login',
+        loginOptions: { redirectUri: 'testLoginUri' },
+        logoutOptions: { redirectUri: 'testLogoutUri' }
       });
     });
   });
@@ -73,6 +82,7 @@ describe('AutoRefreshTokenService', () => {
 
     it('should logout if user is inactive and inactivity timeout is set to "logout"', async () => {
       service['options'].onInactivityTimeout = 'logout';
+      service['options'].logoutOptions = { redirectUri: 'testLogoutUri' };
       mockKeycloak.authenticated = true;
       mockUserActivityService.isActive.and.returnValue(false);
       mockKeycloak.logout.and.returnValue(Promise.resolve());
@@ -81,11 +91,12 @@ describe('AutoRefreshTokenService', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 0));
 
-      expect(mockKeycloak.logout).toHaveBeenCalled();
+      expect(mockKeycloak.logout).toHaveBeenCalledWith({ redirectUri: 'testLogoutUri' });
     });
 
     it('should login if user is inactive and inactivity timeout is set to "login"', async () => {
       service['options'].onInactivityTimeout = 'login';
+      service['options'].logoutOptions = { redirectUri: 'testLoginUri' };
       mockKeycloak.authenticated = true;
       mockUserActivityService.isActive.and.returnValue(false);
       mockKeycloak.login.and.returnValue(Promise.resolve());
@@ -94,7 +105,7 @@ describe('AutoRefreshTokenService', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 0));
 
-      expect(mockKeycloak.login).toHaveBeenCalled();
+      expect(mockKeycloak.login).toHaveBeenCalledWith({ redirectUri: 'testLoginUri' });
     });
 
     it('should refresh the token if user is active', async () => {
