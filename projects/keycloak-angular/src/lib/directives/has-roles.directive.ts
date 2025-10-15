@@ -6,10 +6,10 @@
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/blob/main/LICENSE.md
  */
 
-import { Directive, Input, TemplateRef, ViewContainerRef, inject, effect } from '@angular/core';
+import { Directive, effect, inject, Input, type OnChanges, TemplateRef, ViewContainerRef } from '@angular/core';
 import Keycloak from 'keycloak-js';
 
-import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs } from '../signals/keycloak-events-signal';
+import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, type ReadyArgs, typeEventArgs } from '../signals/keycloak-events-signal';
 
 /**
  * Structural directive to conditionally display elements based on Keycloak user roles.
@@ -73,7 +73,7 @@ import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, ReadyArgs, typeEventArgs } fr
 @Directive({
   selector: '[kaHasRoles]'
 })
-export class HasRolesDirective {
+export class HasRolesDirective implements OnChanges {
   private templateRef = inject<TemplateRef<unknown>>(TemplateRef);
   private viewContainer = inject(ViewContainerRef);
   private keycloak = inject(Keycloak);
@@ -98,25 +98,53 @@ export class HasRolesDirective {
 
     const keycloakSignal = inject(KEYCLOAK_EVENT_SIGNAL);
 
+    /**
+     * This effect will reevaluate roles after authentication or token refresh.
+     * Or clear the view on logout.
+     */
     effect(() => {
       const keycloakEvent = keycloakSignal();
-      if (keycloakEvent.type !== KeycloakEventType.Ready) {
-        return;
-      }
 
-      const authenticated = typeEventArgs<ReadyArgs>(keycloakEvent.args);
-      if (authenticated) {
-        this.render();
+      switch (keycloakEvent.type) {
+        case KeycloakEventType.Ready: {
+          const authenticated = typeEventArgs<ReadyArgs>(keycloakEvent.args);
+          if (authenticated) {
+            this.render();
+          } else {
+            this.viewContainer.clear();
+          }
+          break;
+        }
+        case KeycloakEventType.AuthSuccess:
+        case KeycloakEventType.AuthRefreshSuccess:
+        case KeycloakEventType.TokenExpired:
+          this.render();
+          break;
+        case KeycloakEventType.AuthLogout:
+          this.viewContainer.clear();
+          break;
+        default: 
+          break;
       }
     });
   }
 
+  /**
+   * Here to reevaluate access when inputs change.
+   */
+  public ngOnChanges(): void {
+    this.render();
+  }
+
+  /**
+   * Clear the view and render it if user has access.
+   */
   private render(): void {
     const hasAccess = this.checkUserRoles();
+    this.viewContainer.clear();
+
     if (hasAccess) {
       this.viewContainer.createEmbeddedView(this.templateRef);
-    } else {
-      this.viewContainer.clear();
     }
   }
 
