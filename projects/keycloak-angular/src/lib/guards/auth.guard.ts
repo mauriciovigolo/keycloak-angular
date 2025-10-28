@@ -19,7 +19,7 @@ import {
 /**
  * Type representing the roles granted to a user, including both realm and resource-level roles.
  */
-type Roles = {
+export type Roles = {
   /**
    * Roles assigned at the realm level.
    */
