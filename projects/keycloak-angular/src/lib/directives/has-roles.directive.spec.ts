@@ -112,4 +112,31 @@ describe('HasRolesDirective', () => {
       expect(mockKeycloak.hasRealmRole).not.toHaveBeenCalled();
     });
   });
+
+  it('should clear the view on Keycloak logOut', () => {
+    keycloakSignal.and.returnValue({ type: KeycloakEventType.AuthLogout });
+
+    TestBed.runInInjectionContext(() => {
+      const directive = TestBed.inject(HasRolesDirective);
+      directive['render']();
+  
+      expect(mockViewContainerRef.clear).toHaveBeenCalled();
+    });
+  });
+
+  it('should re-render on TokenExpired', () => {
+    keycloakSignal.and.returnValue({ type: KeycloakEventType.TokenExpired });
+
+    mockKeycloak.hasRealmRole.and.returnValue(true);
+
+    TestBed.runInInjectionContext(() => {
+      const directive = TestBed.inject(HasRolesDirective);
+      directive.roles = ['editor'];
+      directive.checkRealm = true;
+
+      directive['render']();
+
+      expect(mockViewContainerRef.createEmbeddedView).toHaveBeenCalledWith(mockTemplateRef);
+    });
+  });
 });
