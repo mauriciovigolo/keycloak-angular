@@ -9,7 +9,12 @@
 import { Directive, effect, inject, Input, type OnChanges, TemplateRef, ViewContainerRef } from '@angular/core';
 import Keycloak from 'keycloak-js';
 
-import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType, type ReadyArgs, typeEventArgs } from '../signals/keycloak-events-signal';
+import {
+  KEYCLOAK_EVENT_SIGNAL,
+  KeycloakEventType,
+  type ReadyArgs,
+  typeEventArgs
+} from '../signals/keycloak-events-signal';
 
 /**
  * Structural directive to conditionally display elements based on Keycloak user roles.
@@ -123,7 +128,7 @@ export class HasRolesDirective implements OnChanges {
         case KeycloakEventType.AuthLogout:
           this.viewContainer.clear();
           break;
-        default: 
+        default:
           break;
       }
     });

@@ -7,7 +7,6 @@ This directory contains a `docker-compose` file designed to bootstrap a Keycloak
 The setup includes an exported realm named **`keycloak-angular-sandbox`**, preconfigured with the following users:
 
 - **Admin**
-
   - **Username**: `admin`
   - **Password**: `admin`
 
