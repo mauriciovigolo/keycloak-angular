@@ -24,12 +24,12 @@ This feature is particularly useful because the authorization token is not autom
 
 The `withAutoRefreshToken` feature accepts the following options:
 
-| Option                | Type                                | Default    | Description                                                                                 |
-| --------------------- | ----------------------------------- | ---------- | ------------------------------------------------------------------------------------------- |
-| `sessionTimeout`      | `number`                            | `300000`   | The duration of inactivity (in milliseconds) after which the session is considered expired. |
-| `onInactivityTimeout` | `'login'` \| `'logout'` \| `'none'` | `'logout'` | Action to take when the session times out due to inactivity.                                |
-| `logoutOptions`      | `KeycloakLogoutOptions`                            | `undefined`   | Logout options to pass to keycloak.logout when the user is getting logged out automatically after inactivity. |
-| `loginOptions`      | `KeycloakLoginOptions`                            | `undefined`   | Login options to pass to keycloak.login when the user is getting logged in automatically after inactivity. |
+| Option                | Type                                | Default     | Description                                                                                                   |
+| --------------------- | ----------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------- |
+| `sessionTimeout`      | `number`                            | `300000`    | The duration of inactivity (in milliseconds) after which the session is considered expired.                   |
+| `onInactivityTimeout` | `'login'` \| `'logout'` \| `'none'` | `'logout'`  | Action to take when the session times out due to inactivity.                                                  |
+| `logoutOptions`       | `KeycloakLogoutOptions`             | `undefined` | Logout options to pass to keycloak.logout when the user is getting logged out automatically after inactivity. |
+| `loginOptions`        | `KeycloakLoginOptions`              | `undefined` | Login options to pass to keycloak.login when the user is getting logged in automatically after inactivity.    |
 
 - **`onInactivityTimeout` Actions**:
   - `'login'`: Executes `keycloak.login()`.

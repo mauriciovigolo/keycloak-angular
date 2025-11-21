@@ -47,14 +47,12 @@ export type ProvideKeycloakOptions = {
 
 - **`config`**:  
   Keycloak server configuration, including:
-
   - `url`: Keycloak server URL.
   - `realm`: The realm to authenticate against.
   - `clientId`: The client ID for your application.
 
 - **`initOptions`**:  
   Initialization options for the Keycloak instance, such as:
-
   - `onLoad`: Determines whether to check SSO or require login (`'check-sso'` or `'login-required'`).
   - `silentCheckSsoRedirectUri`: URL for the iframe used in silent SSO.
 
