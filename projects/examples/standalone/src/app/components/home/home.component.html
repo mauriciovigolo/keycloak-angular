@@ -23,8 +23,10 @@
       </ul>
     </section>
 
-    <div *ngIf="copyMessage$ | async as copyMessage" class="message-box">
-      {{ copyMessage }}
-    </div>
+    @if (copyMessage$ | async; as copyMessage) {
+      <div class="message-box">
+        {{ copyMessage }}
+      </div>
+    }
   </main>
 </div>
