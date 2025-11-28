@@ -96,7 +96,7 @@ describe('AutoRefreshTokenService', () => {
 
     it('should login if user is inactive and inactivity timeout is set to "login"', async () => {
       service['options'].onInactivityTimeout = 'login';
-      service['options'].logoutOptions = { redirectUri: 'testLoginUri' };
+      service['options'].loginOptions = { redirectUri: 'testLoginUri' };
       mockKeycloak.authenticated = true;
       mockUserActivityService.isActive.and.returnValue(false);
       mockKeycloak.login.and.returnValue(Promise.resolve());
