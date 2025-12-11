@@ -119,7 +119,7 @@ describe('HasRolesDirective', () => {
     TestBed.runInInjectionContext(() => {
       const directive = TestBed.inject(HasRolesDirective);
       directive['render']();
-  
+
       expect(mockViewContainerRef.clear).toHaveBeenCalled();
     });
   });
