@@ -1,6 +1,6 @@
 {
   "name": "keycloak-angular",
-  "version": "20.1.0",
+  "version": "21.0.0",
   "description": "Easy Keycloak integration for Angular applications.",
   "repository": {
     "type": "git",
@@ -26,9 +26,9 @@
     "oidc"
   ],
   "peerDependencies": {
-    "@angular/common": "^20",
-    "@angular/core": "^20",
-    "@angular/router": "^20",
+    "@angular/common": "^21",
+    "@angular/core": "^21",
+    "@angular/router": "^21",
     "rxjs": "^7",
     "keycloak-js": "^18 || ^19 || ^20 || ^21 || ^22 || ^23 || ^24 || ^25 || ^26"
   },
