@@ -96,7 +96,7 @@ describe('AutoRefreshTokenService', () => {
 
     it('should login if user is inactive and inactivity timeout is set to "login"', async () => {
       service['options'].onInactivityTimeout = 'login';
-      service['options'].logoutOptions = { redirectUri: 'testLoginUri' };
+      service['options'].loginOptions = { redirectUri: 'testLoginUri' };
       mockKeycloak.authenticated = true;
       mockUserActivityService.isActive.and.returnValue(false);
       mockKeycloak.login.and.returnValue(Promise.resolve());
@@ -135,7 +135,7 @@ describe('AutoRefreshTokenService', () => {
   });
 
   describe('effect for KeycloakSignal', () => {
-    it('should call processTokenExpiredEvent when a TokenExpired event is received', async () => {
+    it('should call processTokenExpiredEvent when a TokenExpired event is received', (done) => {
       const processTokenExpiredSpy = spyOn(
         service as unknown as { processTokenExpiredEvent: () => void },
         'processTokenExpiredEvent'
@@ -145,14 +145,10 @@ describe('AutoRefreshTokenService', () => {
         type: KeycloakEventType.TokenExpired
       }));
 
-      const keycloakEvent = mockKeycloakSignal();
-      if (keycloakEvent.type === KeycloakEventType.TokenExpired) {
-        service['processTokenExpiredEvent']();
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      TestBed.tick();
 
       expect(processTokenExpiredSpy).toHaveBeenCalled();
+      done();
     });
   });
 });
