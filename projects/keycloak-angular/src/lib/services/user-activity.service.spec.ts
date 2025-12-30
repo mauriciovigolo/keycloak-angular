@@ -6,22 +6,19 @@
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/blob/main/LICENSE.md
  */
 
-import { TestBed } from '@angular/core/testing';
-import { NgZone } from '@angular/core';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { PLATFORM_ID } from '@angular/core';
 
 import { UserActivityService } from './user-activity.service';
 
 describe('UserActivityService', () => {
   let service: UserActivityService;
-  let ngZone: NgZone;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [UserActivityService, { provide: PLATFORM_ID, useValue: 'browser' }]
     });
     service = TestBed.inject(UserActivityService);
-    ngZone = TestBed.inject(NgZone);
   });
 
   afterEach(() => {
@@ -56,22 +53,25 @@ describe('UserActivityService', () => {
         const expectedEvents = ['mousemove', 'touchstart', 'keydown', 'click', 'scroll'];
 
         expectedEvents.forEach((event) => {
-          expect(addEventListenerSpy).toHaveBeenCalledWith(event, jasmine.any(Function), undefined);
+          expect(addEventListenerSpy).toHaveBeenCalledWith(
+            event,
+            jasmine.any(Function),
+            jasmine.objectContaining({ passive: true })
+          );
         });
       });
     });
   });
 
-  describe('updateLastActivity', () => {
-    it('should update the last activity timestamp to the current time', () => {
+  describe('debouncedUpdate', () => {
+    it('should update the last activity timestamp to the current time after debounce', fakeAsync(() => {
       const currentTime = Date.now();
 
-      spyOn(ngZone, 'run').and.callFake((fn: Function) => fn());
-
-      service['updateLastActivity']();
+      service['debouncedUpdate']();
+      tick(300);
 
       expect(service.lastActivitySignal()).toBeGreaterThanOrEqual(currentTime);
-    });
+    }));
   });
 
   describe('lastActivityTime', () => {
@@ -103,13 +103,26 @@ describe('UserActivityService', () => {
 
   describe('ngOnDestroy', () => {
     it('should clean up resources when destroyed', () => {
-      const destroySpy = spyOn(service['destroy$'], 'next').and.callThrough();
-      const completeSpy = spyOn(service['destroy$'], 'complete').and.callThrough();
+      const removeEventListenerSpy = spyOn(window, 'removeEventListener');
+      service.startMonitoring();
 
       service.ngOnDestroy();
 
-      expect(destroySpy).toHaveBeenCalled();
-      expect(completeSpy).toHaveBeenCalled();
+      const expectedEvents = ['mousemove', 'touchstart', 'keydown', 'click', 'scroll'];
+      expectedEvents.forEach((event) => {
+        expect(removeEventListenerSpy).toHaveBeenCalledWith(event, jasmine.any(Function));
+      });
     });
+
+    it('should clear debounce timeout if active', fakeAsync(() => {
+      service['debouncedUpdate']();
+      service.ngOnDestroy();
+
+      tick(300);
+
+      const initialValue = service.lastActivitySignal();
+      tick(300);
+      expect(service.lastActivitySignal()).toBe(initialValue);
+    }));
   });
 });

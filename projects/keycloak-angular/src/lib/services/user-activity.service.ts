@@ -6,10 +6,8 @@
  * found in the LICENSE file at https://github.com/mauriciovigolo/keycloak-angular/blob/main/LICENSE.md
  */
 
-import { Injectable, OnDestroy, NgZone, signal, computed, inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, OnDestroy, signal, computed, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { fromEvent, Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
 
 /**
  * Service to monitor user activity in an Angular application.
@@ -22,19 +20,15 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
  */
 @Injectable()
 export class UserActivityService implements OnDestroy {
-  private ngZone = inject(NgZone);
-
   /**
    * Signal to store the timestamp of the last user activity.
    * The timestamp is represented as the number of milliseconds since epoch.
    */
   private lastActivity = signal<number>(Date.now());
-
-  /**
-   * Subject to signal the destruction of the service.
-   * Used to clean up RxJS subscriptions.
-   */
-  private destroy$ = new Subject<void>();
+  private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+  private eventListeners: Array<() => void> = [];
+  private debounceTimeoutId: any = null;
+  private readonly debounceTime = 300;
 
   /**
    * Computed signal to expose the last user activity as a read-only signal.
@@ -43,34 +37,34 @@ export class UserActivityService implements OnDestroy {
 
   /**
    * Starts monitoring user activity events (`mousemove`, `touchstart`, `keydown`, `click`, `scroll`)
-   * and updates the last activity timestamp using RxJS with debounce.
-   * The events are processed outside Angular zone for performance optimization.
+   * and updates the last activity timestamp using debouncing for performance optimization.
    */
   startMonitoring(): void {
-    const isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
-    if (!isBrowser) {
+    if (!this.isBrowser) {
       return;
     }
 
-    this.ngZone.runOutsideAngular(() => {
-      const events = ['mousemove', 'touchstart', 'keydown', 'click', 'scroll'];
+    const events: Array<keyof WindowEventMap> = ['mousemove', 'touchstart', 'keydown', 'click', 'scroll'];
 
-      events.forEach((event) => {
-        fromEvent(window, event)
-          .pipe(debounceTime(300), takeUntil(this.destroy$))
-          .subscribe(() => this.updateLastActivity());
-      });
+    const handler = () => this.debouncedUpdate();
+
+    events.forEach((event) => {
+      window.addEventListener(event, handler, { passive: true });
+      this.eventListeners.push(() => window.removeEventListener(event, handler));
     });
   }
 
   /**
-   * Updates the last activity timestamp to the current time.
-   * This method runs inside Angular's zone to ensure reactivity with Angular signals.
+   * Updates the last activity timestamp with debounce.
    */
-  private updateLastActivity(): void {
-    this.ngZone.run(() => {
+  private debouncedUpdate(): void {
+    if (this.debounceTimeoutId !== null) {
+      clearTimeout(this.debounceTimeoutId);
+    }
+    this.debounceTimeoutId = setTimeout(() => {
       this.lastActivity.set(Date.now());
-    });
+      this.debounceTimeoutId = null;
+    }, this.debounceTime);
   }
 
   /**
@@ -82,7 +76,7 @@ export class UserActivityService implements OnDestroy {
   }
 
   /**
-   * Determines whether the user interacted with the application, meaning it is activily using the application, based on
+   * Determines whether the user interacted with the application, meaning it is actively using the application, based on
    * the specified duration.
    * @param timeout - The inactivity timeout in milliseconds.
    * @returns {boolean} `true` if the user is inactive, otherwise `false`.
@@ -92,11 +86,15 @@ export class UserActivityService implements OnDestroy {
   }
 
   /**
-   * Cleans up RxJS subscriptions and resources when the service is destroyed.
+   * Cleans up event listeners and debouncing timer on destroy.
    * This method is automatically called by Angular when the service is removed.
    */
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.eventListeners.forEach((remove) => remove());
+    this.eventListeners = [];
+    if (this.debounceTimeoutId !== null) {
+      clearTimeout(this.debounceTimeoutId);
+      this.debounceTimeoutId = null;
+    }
   }
 }
