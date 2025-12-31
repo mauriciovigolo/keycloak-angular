@@ -1,6 +1,6 @@
 {
   "name": "keycloak-angular",
-  "version": "20.0.0",
+  "version": "20.1.0",
   "description": "Easy Keycloak integration for Angular applications.",
   "scripts": {
     "build": "ng build keycloak-angular --configuration production",
