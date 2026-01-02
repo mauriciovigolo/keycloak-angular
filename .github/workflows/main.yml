@@ -25,7 +25,7 @@ jobs:
 
       - name: Cache Node modules
         id: cache-node-modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
@@ -35,7 +35,7 @@ jobs:
         run: npm ci
 
       - name: Cache setup
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./*
           key: setup-${{ github.sha }}
@@ -48,7 +48,7 @@ jobs:
         command: [lint, test -- --no-watch --no-progress --browsers=ChromeHeadless, build]
     steps:
       - name: Restore setup
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./*
           key: setup-${{ github.sha }}
