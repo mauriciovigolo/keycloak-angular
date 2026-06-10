@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book.model';
@@ -6,6 +6,7 @@ import { Book } from '../../models/book.model';
 @Component({
   selector: 'app-books',
   templateUrl: './books.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./books.component.css']
 })
 export class BooksComponent implements OnInit {

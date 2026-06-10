@@ -33,7 +33,8 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["projects/keycloak-angular/**/*.ts", "projects/keycloak-angular/**/*.html"]
+            "lintFilePatterns": ["projects/keycloak-angular/**/*.ts", "projects/keycloak-angular/**/*.html"],
+            "eslintConfig": "projects/keycloak-angular/eslint.config.js"
           }
         }
       }
@@ -116,7 +117,8 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["projects/examples/ngmodule/**/*.ts", "projects/examples/ngmodule/**/*.html"]
+            "lintFilePatterns": ["projects/examples/ngmodule/**/*.ts", "projects/examples/ngmodule/**/*.html"],
+            "eslintConfig": "projects/examples/ngmodule/eslint.config.js"
           }
         }
       }
@@ -202,7 +204,8 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["projects/examples/standalone/**/*.ts", "projects/examples/standalone/**/*.html"]
+            "lintFilePatterns": ["projects/examples/standalone/**/*.ts", "projects/examples/standalone/**/*.html"],
+            "eslintConfig": "projects/examples/standalone/eslint.config.js"
           }
         }
       }
@@ -288,7 +291,8 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["projects/examples/fetch_config/**/*.ts", "projects/examples/fetch_config/**/*.html"]
+            "lintFilePatterns": ["projects/examples/fetch_config/**/*.ts", "projects/examples/fetch_config/**/*.html"],
+            "eslintConfig": "projects/examples/fetch_config/eslint.config.js"
           }
         }
       }
