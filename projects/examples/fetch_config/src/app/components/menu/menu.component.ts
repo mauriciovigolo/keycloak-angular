@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import Keycloak from 'keycloak-js';
 import {
@@ -13,6 +13,7 @@ import {
   selector: 'app-menu',
   imports: [RouterModule, HasRolesDirective],
   templateUrl: './menu.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent {

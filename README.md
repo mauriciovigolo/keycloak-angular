@@ -52,8 +52,9 @@ Note that `keycloak-js` is a peer dependency of `keycloak-angular`. This allows 
 
 | Angular | keycloak-js | keycloak-angular |       Support       |
 | :-----: | :---------: | :--------------: | :-----------------: |
-|  21.x   |   18 - 26   |      21.x.x      | New Features / Bugs |
-|  20.x   |   18 - 26   |      20.x.x      |        Bugs         |
+|  22.x   |   18 - 26   |      22.x.x      | New Features / Bugs |
+|  21.x   |   18 - 26   |      21.x.x      |        Bugs         |
+|  20.x   |   18 - 26   |      20.x.x      |          -          |
 |  19.x   |   18 - 26   |      19.x.x      |          -          |
 |  18.x   |   18 - 26   |      16.x.x      |          -          |
 |  17.x   |   18 - 25   |      15.x.x      |          -          |

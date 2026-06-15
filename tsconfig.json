@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "strict": false,
     "module": "ES2022",
     "outDir": "./dist/out-tsc",
     "esModuleInterop": true,
@@ -13,7 +13,7 @@
     "typeRoots": ["node_modules/@types"],
     "lib": ["ES2022", "dom"],
     "paths": {
-      "keycloak-angular": ["dist/keycloak-angular"]
+      "keycloak-angular": ["./dist/keycloak-angular"]
     },
     "skipLibCheck": true,
     "useDefineForClassFields": false
