@@ -1,11 +1,11 @@
 services:
   keycloak:
-    image: quay.io/keycloak/keycloak:26.4.7
+    image: quay.io/keycloak/keycloak:26.6.3
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
       - 8080:8080
     volumes:
-      - ./config/:/opt/keycloak/data/import:ro
-    entrypoint: '/opt/keycloak/bin/kc.sh start-dev --import-realm'
+      - ./config/:/opt/keycloak/data/import:ro,Z
+    command: start-dev --import-realm

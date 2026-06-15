@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { MenuComponent } from './components/menu/menu.component';
@@ -13,6 +13,7 @@ import { MenuComponent } from './components/menu/menu.component';
       <router-outlet></router-outlet>
     </main>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [``]
 })
 export class AppComponent {

@@ -1,6 +1,6 @@
 import { provideRouter } from '@angular/router';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
 import { includeBearerTokenInterceptor } from 'keycloak-angular';
 
 import { provideKeycloakAngular } from './keycloak.config';
@@ -11,6 +11,6 @@ export const appConfig: ApplicationConfig = {
     provideKeycloakAngular(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([includeBearerTokenInterceptor]))
+    provideHttpClient(withXhr(), withInterceptors([includeBearerTokenInterceptor]))
   ]
 };

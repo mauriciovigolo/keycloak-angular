@@ -1,6 +1,6 @@
 import { provideRouter } from '@angular/router';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { includeBearerTokenInterceptor } from 'keycloak-angular';
 
@@ -20,7 +20,7 @@ const initializeApp = async () => {
       }),
       provideZoneChangeDetection({ eventCoalescing: true }),
       provideRouter(routes),
-      provideHttpClient(withInterceptors([includeBearerTokenInterceptor]))
+      provideHttpClient(withXhr(), withInterceptors([includeBearerTokenInterceptor]))
     ]
   };
 
