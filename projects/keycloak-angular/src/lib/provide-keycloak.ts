@@ -24,9 +24,11 @@ import { KeycloakFeature } from './features/keycloak.feature';
  */
 export type ProvideKeycloakOptions = {
   /**
-   * Keycloak configuration, including the server URL, realm, and client ID.
+   * Keycloak configuration. Can be either a KeycloakConfig object with
+   * the server URL, realm, and client ID, or a string URL pointing to
+   * a keycloak.json configuration file (e.g., '/keycloak.json').
    */
-  config: KeycloakConfig;
+  config: KeycloakConfig | string;
 
   /**
    * Optional initialization options for the Keycloak instance.
@@ -82,7 +84,8 @@ const provideKeycloakInAppInitializer = (
  * In such cases, the application must call `keycloak.init()` explicitly.
  *
  * @param options - Configuration object for Keycloak:
- *   - `config`: The Keycloak configuration, including the server URL, realm, and client ID.
+ *   - `config`: The Keycloak configuration. Can be either a KeycloakConfig object with
+ *     url, realm, and clientId, or a string URL pointing to a keycloak.json file.
  *   - `initOptions` (Optional): Initialization options for the Keycloak instance.
  *   - `providers` (Optional): Additional Angular providers to include.
  *   - `features` (Optional): Keycloak Angular features to configure during initialization.
@@ -91,23 +94,24 @@ const provideKeycloakInAppInitializer = (
  *
  * @example
  * ```ts
- * import { provideKeycloak } from './keycloak.providers';
- * import { bootstrapApplication } from '@angular/platform-browser';
- * import { AppComponent } from './app/app.component';
+ * // Using a KeycloakConfig object
+ * provideKeycloak({
+ *   config: {
+ *     url: 'https://auth-server.example.com',
+ *     realm: 'my-realm',
+ *     clientId: 'my-client',
+ *   },
+ *   initOptions: {
+ *     onLoad: 'login-required',
+ *   },
+ * });
  *
- * bootstrapApplication(AppComponent, {
- *   providers: [
- *     provideKeycloak({
- *       config: {
- *         url: 'https://auth-server.example.com',
- *         realm: 'my-realm',
- *         clientId: 'my-client',
- *       },
- *       initOptions: {
- *         onLoad: 'login-required',
- *       },
- *     }),
- *   ],
+ * // Using a string URL to a keycloak.json file
+ * provideKeycloak({
+ *   config: '/keycloak.json',
+ *   initOptions: {
+ *     onLoad: 'login-required',
+ *   },
  * });
  * ```
  */

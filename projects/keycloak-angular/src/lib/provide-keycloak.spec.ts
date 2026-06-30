@@ -56,6 +56,19 @@ describe('provideKeycloak', () => {
     expect(keycloak.didInitialize).toBeFalse();
   });
 
+  it('should instantiate keycloak with a string URL config', () => {
+    const config = '/keycloak.json';
+
+    TestBed.configureTestingModule({
+      providers: [provideKeycloak({ config })]
+    });
+
+    const keycloak = TestBed.inject(Keycloak);
+
+    expect(keycloak).toBeDefined();
+    expect(keycloak.didInitialize).toBeFalse();
+  });
+
   it('should instantiate keycloak and be able to initialize the instance later', () => {
     const config: KeycloakConfig = {
       url: 'kc-server-url',
