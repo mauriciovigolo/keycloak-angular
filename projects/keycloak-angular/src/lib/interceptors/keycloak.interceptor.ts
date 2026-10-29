@@ -9,6 +9,7 @@
 import { Observable } from 'rxjs';
 import Keycloak from 'keycloak-js';
 import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
+import { KEYCLOAK_TOKEN_ATTACHED } from '../http/keycloak-http-context';
 
 /**
  * Default value for the authorization header prefix, used to construct the Authorization token.
@@ -104,6 +105,10 @@ export const addAuthorizationHeader = (
   condition: BearerTokenCondition
 ): Observable<HttpEvent<unknown>> => {
   const { bearerPrefix = BEARER_PREFIX, authorizationHeaderName = AUTHORIZATION_HEADER_NAME } = condition;
+
+  if (authorizationHeaderName.toLowerCase() === 'authorization' && bearerPrefix === BEARER_PREFIX) {
+    req.context.set(KEYCLOAK_TOKEN_ATTACHED, true);
+  }
 
   const clonedRequest = req.clone({
     setHeaders: {

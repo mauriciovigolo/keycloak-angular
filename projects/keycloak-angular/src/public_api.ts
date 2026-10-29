@@ -10,6 +10,7 @@ export * from './lib/directives/has-roles.directive';
 export * from './lib/features/keycloak.feature';
 export * from './lib/features/with-refresh-token.feature';
 export * from './lib/guards/auth.guard';
+export * from './lib/http/keycloak-dpop-http-backend';
 export * from './lib/interceptors/custom-bearer-token.interceptor';
 export * from './lib/interceptors/include-bearer-token.interceptor';
 export * from './lib/interceptors/keycloak.interceptor';
