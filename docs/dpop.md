@@ -2,7 +2,7 @@
 
 Keycloak JS creates the DPoP proof and handles nonce challenges. `provideKeycloakDpopHttpBackend()` sends matching Angular `HttpClient` requests through Keycloak JS and converts its responses for Angular. Angular interceptors still run.
 
-Use a Keycloak JS build that supports `dpopConfig` and its DPoP-aware `fetch` method. The browser app must run in a secure context (HTTPS, or localhost) for Web Crypto. The API must also validate DPoP-bound tokens and proofs; enabling DPoP in the client alone does not protect the API. See [Keycloak's DPoP guide](https://www.keycloak.org/securing-apps/dpop) for the server side.
+Use Keycloak JS 26.2.5 or later, which provides `dpopConfig` and its DPoP-aware `fetch` method. The browser app must run in a secure context (HTTPS, or localhost) for Web Crypto. The API must also validate DPoP-bound tokens and proofs; enabling DPoP in the client alone does not protect the API. See [Keycloak's DPoP guide](https://www.keycloak.org/securing-apps/dpop) for the server side.
 
 ## Setup
 
@@ -54,7 +54,7 @@ The Bearer interceptor refreshes the token and adds `Authorization: Bearer <toke
 
 When DPoP is active, Keycloak JS sends `Authorization: DPoP <token>` and a signed proof in the `DPoP` header. It also handles nonce challenges and retries. If a Keycloak Angular Bearer interceptor attaches the token and it changes before the request is sent, the request fails rather than being sent without a DPoP proof.
 
-Requests routed through Keycloak JS use Fetch, even if DPoP is in `auto` mode and Keycloak falls back to Bearer. Fetch cannot report upload progress, so requests that ask for it fail. Download progress is supported.
+Requests routed through Keycloak JS use Fetch, even if DPoP is in `auto` mode and Keycloak falls back to Bearer. Fetch cannot report upload progress, so requests with `reportUploadProgress: true` fail. Download progress is supported through `reportDownloadProgress: true`. The deprecated `reportProgress` option still reports download progress for existing callers.
 
 ## Backend options
 

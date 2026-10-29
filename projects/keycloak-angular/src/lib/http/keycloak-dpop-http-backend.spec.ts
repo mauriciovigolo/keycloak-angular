@@ -15,11 +15,12 @@ import {
   HttpHeaders,
   HttpRequest,
   HttpResponse,
+  httpResource,
   provideHttpClient,
   withInterceptors,
   withNoXsrfProtection
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { ApplicationRef, Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import Keycloak from 'keycloak-js';
 import { firstValueFrom, Observable, of, toArray } from 'rxjs';
@@ -121,6 +122,17 @@ describe('Keycloak DPoP HTTP backend', () => {
     expect(signal.aborted).toBeTrue();
   });
 
+  it('cancels an in-flight request when its injector is destroyed', () => {
+    keycloak.fetch.and.returnValue(new Promise<Response>(() => {}));
+    const subscription = http.get('/api', { headers: { Authorization: 'Bearer token' } }).subscribe();
+    const signal = keycloak.fetch.calls.mostRecent().args[1].signal as AbortSignal;
+
+    TestBed.resetTestingModule();
+
+    expect(signal.aborted).toBeTrue();
+    expect(subscription.closed).toBeTrue();
+  });
+
   it('fails rather than sending a token that changed before subscription', async () => {
     const backend = TestBed.inject(HttpBackend);
     const request = new HttpRequest('GET', '/api', null, {
@@ -166,12 +178,62 @@ describe('Keycloak DPoP HTTP backend', () => {
     expect(signal!.reason.name).toBe('TimeoutError');
   });
 
+  it('reports status zero when a timeout interrupts the response body', async () => {
+    keycloak.fetch.and.callFake((_url: string, init: RequestInit) =>
+      Promise.resolve(
+        new Response(
+          new ReadableStream({
+            start(controller) {
+              init.signal!.addEventListener('abort', () => controller.error(init.signal!.reason), { once: true });
+            }
+          })
+        )
+      )
+    );
+
+    await expectAsync(
+      firstValueFrom(
+        http.get('/api', {
+          headers: { Authorization: 'Bearer token' },
+          timeout: 10
+        })
+      )
+    ).toBeRejectedWith(
+      jasmine.objectContaining({
+        status: 0,
+        error: jasmine.objectContaining({ name: 'TimeoutError' })
+      })
+    );
+  });
+
+  it('supports httpResource text with FetchBackend UTF-8 semantics and download progress', async () => {
+    keycloak.fetch.and.resolveTo(
+      new Response('olá', {
+        headers: { 'Content-Type': 'text/plain; charset=iso-8859-1' }
+      })
+    );
+    const resource = TestBed.runInInjectionContext(() =>
+      httpResource.text(() => ({
+        url: '/api',
+        headers: { Authorization: 'Bearer token' },
+        reportProgress: true
+      }))
+    );
+
+    TestBed.tick();
+    await TestBed.inject(ApplicationRef).whenStable();
+
+    expect(resource.value()).toBe('olá');
+    expect(resource.error()).toBeUndefined();
+    expect(resource.progress()?.loaded).toBe(4);
+  });
+
   it('preserves cumulative text download progress and the final response', async () => {
-    const encoder = new TextEncoder();
+    const bytes = new TextEncoder().encode('olá mundo');
     const stream = new ReadableStream<Uint8Array>({
       start(controller) {
-        controller.enqueue(encoder.encode('hello'));
-        controller.enqueue(encoder.encode(' world'));
+        controller.enqueue(bytes.subarray(0, 3));
+        controller.enqueue(bytes.subarray(3));
         controller.close();
       }
     });
@@ -189,8 +251,8 @@ describe('Keycloak DPoP HTTP backend', () => {
 
     expect(events[0].type).toBe(HttpEventType.Sent);
     const progress = events.filter((event) => event.type === HttpEventType.DownloadProgress);
-    expect(progress.map((event) => event.partialText)).toEqual(['hello', 'hello world']);
-    expect((events.at(-1) as HttpResponse<string>).body).toBe('hello world');
+    expect(progress.map((event) => event.partialText)).toEqual(['ol', 'olá mundo']);
+    expect((events.at(-1) as HttpResponse<string>).body).toBe('olá mundo');
   });
 
   it('preserves the HTTP status when a successful JSON response is malformed', async () => {
@@ -198,5 +260,22 @@ describe('Keycloak DPoP HTTP backend', () => {
     await expectAsync(
       firstValueFrom(http.get('/api', { headers: { Authorization: 'Bearer token' } }))
     ).toBeRejectedWith(jasmine.objectContaining({ status: 200, error: jasmine.any(SyntaxError) }));
+  });
+
+  it('preserves download progress for callers using the legacy reportProgress option', async () => {
+    keycloak.fetch.and.resolveTo(new Response('hello'));
+    const events = await firstValueFrom(
+      http
+        .get('/api', {
+          headers: { Authorization: 'Bearer token' },
+          responseType: 'text',
+          observe: 'events',
+          reportProgress: true
+        })
+        .pipe(toArray())
+    );
+
+    expect(events.some((event) => event.type === HttpEventType.DownloadProgress && event.loaded === 5)).toBeTrue();
+    expect((events.at(-1) as HttpResponse<string>).body).toBe('hello');
   });
 });

@@ -18,6 +18,7 @@ import {
   HttpResponse
 } from '@angular/common/http';
 import {
+  DestroyRef,
   EnvironmentProviders,
   inject,
   Injectable,
@@ -25,13 +26,10 @@ import {
   makeEnvironmentProviders,
   Type
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import Keycloak from 'keycloak-js';
 import { Observable, Observer } from 'rxjs';
 import { KEYCLOAK_TOKEN_ATTACHED } from './keycloak-http-context';
-
-type KeycloakDpopClient = Keycloak & {
-  fetch?: (url: URL | RequestInfo, init?: RequestInit) => Promise<Response>;
-};
 
 /** Options for requests that do not carry the current Keycloak token. */
 export type KeycloakDpopHttpBackendOptions = {
@@ -44,8 +42,9 @@ const XSSI_PREFIX = /^\)\]\}',?\n/;
 
 @Injectable()
 class KeycloakDpopHttpBackend extends HttpBackend {
-  private readonly keycloak = inject(Keycloak) as KeycloakDpopClient;
+  private readonly keycloak = inject(Keycloak);
   private readonly delegate = inject(DELEGATE_BACKEND);
+  private readonly destroyRef = inject(DestroyRef);
 
   override handle(request: HttpRequest<unknown>): Observable<HttpEvent<unknown>> {
     const token = this.keycloak.token;
@@ -55,7 +54,7 @@ class KeycloakDpopHttpBackend extends HttpBackend {
       return this.delegate.handle(request);
     }
 
-    return new Observable((observer) => {
+    return new Observable<HttpEvent<unknown>>((observer) => {
       if (!matchesToken || !this.keycloak.authenticated || this.keycloak.token !== token) {
         observer.error(
           new HttpErrorResponse({
@@ -66,30 +65,32 @@ class KeycloakDpopHttpBackend extends HttpBackend {
         return;
       }
       const abort = new AbortController();
-      let finished = false;
       const timeout = request.timeout
         ? setTimeout(() => abort.abort(new DOMException('Request timed out', 'TimeoutError')), request.timeout)
         : undefined;
 
       this.send(request, abort.signal, observer).then(
         (response) => {
-          finished = true;
           observer.next(response);
           observer.complete();
         },
         (error: unknown) => {
-          finished = true;
           observer.error(
-            error instanceof HttpErrorResponse ? error : new HttpErrorResponse({ error, url: request.urlWithParams })
+            error instanceof HttpErrorResponse
+              ? error
+              : new HttpErrorResponse({
+                  error: abort.signal.aborted ? abort.signal.reason : error,
+                  url: request.urlWithParams
+                })
           );
         }
       );
 
       return () => {
         if (timeout !== undefined) clearTimeout(timeout);
-        if (!finished) abort.abort();
+        abort.abort();
       };
-    });
+    }).pipe(takeUntilDestroyed(this.destroyRef));
   }
 
   private async send(
@@ -141,17 +142,19 @@ class KeycloakDpopHttpBackend extends HttpBackend {
       redirected: response.redirected,
       responseType: response.type
     };
-    const reportProgress = request.reportProgress || request.reportDownloadProgress;
-    if (reportProgress) observer.next(new HttpHeaderResponse(responseInfo));
+    // Angular still accepts reportProgress for existing HttpClient and httpResource callers.
+    const reportDownloadProgress = request.reportDownloadProgress || request.reportProgress;
+    if (reportDownloadProgress) observer.next(new HttpHeaderResponse(responseInfo));
 
     let body: unknown = null;
-    try {
-      if (response.body) {
-        const bytes = reportProgress ? await readBody(response, request, observer) : await response.arrayBuffer();
+    if (response.body) {
+      // Body read failures are transport errors; only parsing failures retain the HTTP status.
+      const bytes = reportDownloadProgress ? await readBody(response, request, observer) : await response.arrayBuffer();
+      try {
         body = parseBody(bytes, request.responseType, response.headers.get('Content-Type') ?? '', response.status);
+      } catch (error) {
+        throw new HttpErrorResponse({ ...responseInfo, error });
       }
-    } catch (error) {
-      throw new HttpErrorResponse({ ...responseInfo, error });
     }
 
     const status = response.status === 0 && body ? 200 : response.status;
@@ -171,7 +174,7 @@ async function readBody(
   const chunks: Uint8Array[] = [];
   const length = response.headers.get('Content-Length');
   const total = length === null ? undefined : Number(length);
-  const decoder = request.responseType === 'text' ? textDecoder(response.headers.get('Content-Type') ?? '') : undefined;
+  const decoder = request.responseType === 'text' ? new TextDecoder() : undefined;
   let loaded = 0;
   let partialText = '';
 
@@ -214,7 +217,7 @@ function parseBody(
     case 'blob':
       return new Blob([bytes], { type: contentType });
     case 'text':
-      return textDecoder(contentType).decode(bytes);
+      return new TextDecoder().decode(bytes);
     case 'json': {
       const text = new TextDecoder().decode(bytes).replace(XSSI_PREFIX, '');
       if (!text) return null;
@@ -225,15 +228,6 @@ function parseBody(
         throw error;
       }
     }
-  }
-}
-
-function textDecoder(contentType: string): TextDecoder {
-  const charset = /charset\s*=\s*["']?([^;"'\s]+)/i.exec(contentType)?.[1];
-  try {
-    return new TextDecoder(charset);
-  } catch {
-    return new TextDecoder();
   }
 }
 
