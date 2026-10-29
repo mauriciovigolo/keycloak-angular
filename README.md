@@ -19,6 +19,7 @@
 - [Keycloak Angular Features](#Keycloak-angular-features)
 - [Guards](#guards)
 - [HttpClient Interceptors](#httpclient-interceptors)
+- [DPoP with HttpClient](#dpop-with-httpclient)
 - [Directives](#directives)
 - [Keycloak Events Signal](#keycloak-events-signal)
 - [Contributors](#contributors)
@@ -318,6 +319,10 @@ export const appConfig: ApplicationConfig = {
 
 **Additional Resources**
 For more details on the available interceptors and their configurations, refer to the [Keycloak HttpClient Interceptors](https://github.com/mauriciovigolo/keycloak-angular/blob/main/docs/interceptors.md) documentation.
+
+### DPoP with HttpClient
+
+See [DPoP with Angular HttpClient](docs/dpop.md) for setup and request behavior.
 
 ## Directives
 
